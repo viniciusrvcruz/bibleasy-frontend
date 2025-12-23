@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@primevue/nuxt-module',
     '@nuxtjs/color-mode',
+    '@pinia/nuxt',
   ],
 
   runtimeConfig: {
