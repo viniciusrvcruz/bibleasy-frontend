@@ -7,13 +7,13 @@ defineProps<{
 
 const ICON_MAP = {
   circle_question: 'lucide:circle-question-mark',
-  book: 'mdi:book-open-outline',
+  book_open: 'lucide:book-open-text',
   document: 'mdi:file-document-outline',
   clock: 'mdi:clock-outline',
   edit: 'mdi:pencil',
   help: 'mdi:help-circle-outline',
   palette: 'mdi:palette-outline',
-  menu: 'mdi:menu',
+  menu: 'lucide:menu',
   user: 'lucide:user',
   book_marked: 'lucide:book-marked',
 } as const
