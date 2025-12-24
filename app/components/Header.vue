@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ThemeSelectorPopover from '~/components/global/popover/ThemeSelectorPopover.vue';
 
 const themeSelectorPopoverRef = ref()
 
