@@ -22,6 +22,7 @@ const ICON_MAP = {
   history: 'tabler:history',
   letter_case: 'tabler:letter-case',
   globe: 'lucide:globe',
+  search: 'lucide:search',
 } as const
 
 </script>
