@@ -19,6 +19,7 @@ onBeforeUnmount(() => {
 
 <template>
   <input v-model="isOpen" type="checkbox" id="select_verse_modal" class="modal-toggle" />
+
   <div
     class="lg:w-1/5 lg:sticky lg:top-header lg:h-screen-header"
     :class="{'modal': isOpen}"
@@ -39,8 +40,10 @@ onBeforeUnmount(() => {
           <Icon icon="close" :size="25" />
         </label>
       </div>
-      <BibleVerseSelector class="bg-base-100 rounded-2xl" />
+
+      <BibleVerseSelector class="bg-base-100 rounded-2xl" select-verse />
     </div>
+
     <label class="modal-backdrop" for="select_verse_modal" />
   </div>
 </template>
