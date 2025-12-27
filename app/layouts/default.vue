@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import type { Version } from '~/types/version/Version.type'
 
 const versionStore = useVersionStore()
 
-const isLoading = ref(true)
+const { data: versions } = await useApiFetch<Version[]>('versions')
 
-versionStore.getVersions().finally(() => {
-  isLoading.value = false
-})
+if (versions.value?.length) {
+  versionStore.setVersions(versions.value)
+}
 
 </script>
 

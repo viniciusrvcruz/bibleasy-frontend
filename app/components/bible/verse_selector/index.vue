@@ -2,11 +2,15 @@
 import type { BookNameEnum } from '~/types/book/Book.enum'
 import type { ChapterSelection } from '~/types/chapter/Chapter.type'
 import type { VerseSelection } from '~/types/verse/Verse.type'
+import { useChapterService } from '~/composables/services/useChapterService'
 
 interface ChapterVerses {
-  chapter: number
-  verses: number
+  number: number
+  verses_count: number
 }
+
+const chapterService = useChapterService()
+const versionStore = useVersionStore()
 
 interface Props {
   selectVerse?: boolean
@@ -35,8 +39,8 @@ const selectedBookInfo = computed(() => {
 const selectedChapterVerses = computed(() => {
   if (!selectedChapter.value) return 0
 
-  const chapterData = chaptersWithVerses.value.find(c => c.chapter === selectedChapter.value)
-  return chapterData?.verses ?? 0
+  const chapterData = chaptersWithVerses.value.find(c => c.number === selectedChapter.value)
+  return chapterData?.verses_count ?? 0
 })
 
 const filteredBooks = computed(() => {
@@ -46,23 +50,21 @@ const filteredBooks = computed(() => {
     .filter(({ info }) => normalizeString(info.name).includes(normalizedSearch))
 })
 
-// Simula dados vindos da API (capítulos com quantidade de versículos)
-const fetchChaptersWithVerses = async (_book: BookNameEnum): Promise<ChapterVerses[]> => {
-  // TODO: Substituir por chamada real à API
-  // Simulando dados: cada capítulo tem entre 10 e 40 versículos
-  const bookInfo = getBookInfo(_book)
+const getChaptersWithVerses = async (book: BookNameEnum) => {
+  if (!versionStore.currentVersion) return
 
-  return Array.from({ length: bookInfo.chapters }, (_, i) => ({
-    chapter: i + 1,
-    verses: Math.floor(Math.random() * 31) + 10, // 10-40 versículos
-  }))
+  chapterService.index(book, versionStore.currentVersion.id)
+    .then(chapters => {
+      chaptersWithVerses.value = chapters
+    })
+    .catch(console.error)
 }
 
-const selectBook = async (key: BookNameEnum) => {
+const selectBook = (key: BookNameEnum) => {
   selectedBook.value = key
 
   if (props.selectVerse) {
-    chaptersWithVerses.value = await fetchChaptersWithVerses(key)
+    getChaptersWithVerses(key)
   }
 }
 
