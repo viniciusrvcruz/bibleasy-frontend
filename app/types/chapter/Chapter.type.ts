@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { ChapterSchema } from './Chapter.schema'
+import { chapterSelectionSchema, chapterSchema } from './Chapter.schema'
 
-export type ChapterSelection = z.infer<typeof ChapterSchema>
-
+export type Chapter = z.infer<typeof chapterSchema>
+export type ChapterSelection = z.infer<typeof chapterSelectionSchema>

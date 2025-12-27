@@ -66,4 +66,3 @@ export enum BookNameEnum {
   JUD = 'jud',
   REV = 'rev',
 }
-

@@ -1,7 +1,7 @@
-import type { Book } from '~/types/book/Book.type'
+import type { BookInfo } from '~/types/book/Book.type'
 import { BookNameEnum } from '~/types/book/Book.enum'
 
-export const BOOKS_INFO: Record<BookNameEnum, Book> = {
+export const BOOKS_INFO: Record<BookNameEnum, BookInfo> = {
   [BookNameEnum.GEN]: { name: 'Gênesis', chapters: 50 },
   [BookNameEnum.EXO]: { name: 'Êxodo', chapters: 40 },
   [BookNameEnum.LEV]: { name: 'Levítico', chapters: 27 },
@@ -70,11 +70,11 @@ export const BOOKS_INFO: Record<BookNameEnum, Book> = {
   [BookNameEnum.REV]: { name: 'Apocalipse', chapters: 22 },
 };
 
-export function getBookInfo(bookName: BookNameEnum): Book {
+export function getBookInfo(bookName: BookNameEnum): BookInfo {
   return BOOKS_INFO[bookName];
 }
 
-export function getAllBooks(): Array<{ key: BookNameEnum; info: Book }> {
+export function getAllBooks(): Array<{ key: BookNameEnum; info: BookInfo }> {
   return Object.entries(BOOKS_INFO).map(([key, info]) => ({
     key: key as BookNameEnum,
     info,

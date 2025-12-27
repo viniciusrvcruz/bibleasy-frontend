@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BookSchema } from './Book.schema'
+import { bookInfoSchema, bookSchema } from './Book.schema'
 
-export type Book = z.infer<typeof BookSchema>
-
+export type Book = z.infer<typeof bookSchema>
+export type BookInfo = z.infer<typeof bookInfoSchema>
