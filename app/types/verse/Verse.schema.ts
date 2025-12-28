@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BookNameEnum } from '../book/Book.enum'
+import { BookName } from '~/utils/book'
 
 export const verseSchema = z.object({
   id: z.int(),
@@ -8,7 +8,7 @@ export const verseSchema = z.object({
 })
 
 export const verseSelectionSchema = z.object({
-  book: z.enum(BookNameEnum),
+  book: z.enum(BookName),
   chapter: z.number().int().positive(),
   verse: z.number().int().positive(),
 })

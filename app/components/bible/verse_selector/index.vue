@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BookNameEnum } from '~/types/book/Book.enum'
+import type { BookNameType } from '~/utils/book'
 import type { ChapterSelection } from '~/types/chapter/Chapter.type'
 import type { VerseSelection } from '~/types/verse/Verse.type'
 import { useChapterService } from '~/composables/services/useChapterService'
@@ -26,7 +26,7 @@ const emit = defineEmits<{
 }>()
 
 const search = ref('')
-const selectedBook = ref<BookNameEnum | null>(null)
+const selectedBook = ref<BookNameType | null>(null)
 const selectedChapter = ref<number | null>(null)
 const chaptersWithVerses = ref<ChapterVerses[]>([])
 
@@ -50,7 +50,7 @@ const filteredBooks = computed(() => {
     .filter(({ info }) => normalizeString(info.name).includes(normalizedSearch))
 })
 
-const getChaptersWithVerses = async (book: BookNameEnum) => {
+const getChaptersWithVerses = async (book: BookNameType) => {
   if (!versionStore.currentVersion) return
 
   chapterService.index(book, versionStore.currentVersion.id)
@@ -60,7 +60,7 @@ const getChaptersWithVerses = async (book: BookNameEnum) => {
     .catch(console.error)
 }
 
-const selectBook = (key: BookNameEnum) => {
+const selectBook = (key: BookNameType) => {
   selectedBook.value = key
 
   if (props.selectVerse) {

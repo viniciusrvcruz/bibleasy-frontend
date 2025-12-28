@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { VerseSelection } from '~/types/verse/Verse.type'
+
+const { goToChapter } = useNavigateToBible()
 
 const isOpen = ref(false)
 const lgBreakpoint = ref<MediaQueryList | null>(null)
@@ -15,6 +18,12 @@ const handleBreakpointChange = (e: MediaQueryListEvent) => {
 onBeforeUnmount(() => {
   lgBreakpoint.value?.removeEventListener('change', handleBreakpointChange)
 })
+
+const handleSelectVerse = (verse: VerseSelection) => {
+  isOpen.value = false
+
+  goToChapter(verse.book, verse.chapter, verse.verse)
+}
 </script>
 
 <template>
@@ -41,7 +50,11 @@ onBeforeUnmount(() => {
         </label>
       </div>
 
-      <BibleVerseSelector class="bg-base-100 rounded-2xl" select-verse />
+      <BibleVerseSelector
+        class="bg-base-100 rounded-2xl"
+        select-verse
+        @select-verse="handleSelectVerse"
+      />
     </div>
 
     <label class="modal-backdrop" for="select_verse_modal" />

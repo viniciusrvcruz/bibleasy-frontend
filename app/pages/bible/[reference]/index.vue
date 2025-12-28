@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useChapterService } from '~/composables/services/useChapterService'
-import { BookNameEnum } from '~/types/book/Book.enum'
+import { getBookName, BookName } from '~/utils/book'
 
 const route = useRoute()
 
@@ -15,20 +15,20 @@ const [
   versionNameParam
 ] = reference?.toString().split('.') ?? []
 
-const book = BookNameEnum[bookParam?.toUpperCase() as keyof typeof BookNameEnum] ?? BookNameEnum.GEN
+const book = getBookName(bookParam ?? '') ?? BookName.gen
 const chapter = parseInt(chapterParam ?? '1')
 const version = versionNameParam
   ? versionStore.getVersionByName(versionNameParam)
   : versionStore.currentVersion
 
 if (!version) {
-  throw navigateTo('/bible/chapter-not-found')
+  throw createError({ statusCode: 404, statusMessage: 'A versão não foi encontrada'})
 }
 
 const chapterData = await chapterService.show(book, chapter, version.id)
 
 if (!chapterData) {
-  throw navigateTo('/bible/chapter-not-found')
+  throw createError({ statusCode: 404, statusMessage: 'O capítulo não foi encontrado'})
 }
 
 
@@ -43,5 +43,5 @@ if (!chapterData) {
     <section class="hidden h-40 fixed left-0 bottom-0 right-0 bg-blue-500 lg:relative lg:w-2/6 lg:h-auto">
       Seleted verses
     </section>
-  </main>2
+  </main>
 </template>

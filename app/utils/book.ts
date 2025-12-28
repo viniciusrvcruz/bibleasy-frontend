@@ -1,83 +1,102 @@
 import type { BookInfo } from '~/types/book/Book.type'
-import { BookNameEnum } from '~/types/book/Book.enum'
 
-export const BOOKS_INFO: Record<BookNameEnum, BookInfo> = {
-  [BookNameEnum.GEN]: { name: 'Gênesis', chapters: 50 },
-  [BookNameEnum.EXO]: { name: 'Êxodo', chapters: 40 },
-  [BookNameEnum.LEV]: { name: 'Levítico', chapters: 27 },
-  [BookNameEnum.NUM]: { name: 'Números', chapters: 36 },
-  [BookNameEnum.DEU]: { name: 'Deuteronômio', chapters: 34 },
-  [BookNameEnum.JOS]: { name: 'Josué', chapters: 24 },
-  [BookNameEnum.JDG]: { name: 'Juízes', chapters: 21 },
-  [BookNameEnum.RUT]: { name: 'Rute', chapters: 4 },
-  [BookNameEnum.SA1]: { name: '1 Samuel', chapters: 31 },
-  [BookNameEnum.SA2]: { name: '2 Samuel', chapters: 24 },
-  [BookNameEnum.KI1]: { name: '1 Reis', chapters: 22 },
-  [BookNameEnum.KI2]: { name: '2 Reis', chapters: 25 },
-  [BookNameEnum.CH1]: { name: '1 Crônicas', chapters: 29 },
-  [BookNameEnum.CH2]: { name: '2 Crônicas', chapters: 36 },
-  [BookNameEnum.EZR]: { name: 'Esdras', chapters: 10 },
-  [BookNameEnum.NEH]: { name: 'Neemias', chapters: 13 },
-  [BookNameEnum.EST]: { name: 'Ester', chapters: 10 },
-  [BookNameEnum.JOB]: { name: 'Jó', chapters: 42 },
-  [BookNameEnum.PSA]: { name: 'Salmos', chapters: 150 },
-  [BookNameEnum.PRO]: { name: 'Provérbios', chapters: 31 },
-  [BookNameEnum.ECC]: { name: 'Eclesiastes', chapters: 12 },
-  [BookNameEnum.SNG]: { name: 'Cantares', chapters: 8 },
-  [BookNameEnum.ISA]: { name: 'Isaías', chapters: 66 },
-  [BookNameEnum.JER]: { name: 'Jeremias', chapters: 52 },
-  [BookNameEnum.LAM]: { name: 'Lamentações', chapters: 5 },
-  [BookNameEnum.EZK]: { name: 'Ezequiel', chapters: 48 },
-  [BookNameEnum.DAN]: { name: 'Daniel', chapters: 12 },
-  [BookNameEnum.HOS]: { name: 'Oséias', chapters: 14 },
-  [BookNameEnum.JOL]: { name: 'Joel', chapters: 3 },
-  [BookNameEnum.AMO]: { name: 'Amós', chapters: 9 },
-  [BookNameEnum.OBA]: { name: 'Obadias', chapters: 1 },
-  [BookNameEnum.JON]: { name: 'Jonas', chapters: 4 },
-  [BookNameEnum.MIC]: { name: 'Miquéias', chapters: 7 },
-  [BookNameEnum.NAM]: { name: 'Naum', chapters: 3 },
-  [BookNameEnum.HAB]: { name: 'Habacuque', chapters: 3 },
-  [BookNameEnum.ZEP]: { name: 'Sofonias', chapters: 3 },
-  [BookNameEnum.HAG]: { name: 'Ageu', chapters: 2 },
-  [BookNameEnum.ZEC]: { name: 'Zacarias', chapters: 14 },
-  [BookNameEnum.MAL]: { name: 'Malaquias', chapters: 4 },
-  [BookNameEnum.MAT]: { name: 'Mateus', chapters: 28 },
-  [BookNameEnum.MRK]: { name: 'Marcos', chapters: 16 },
-  [BookNameEnum.LUK]: { name: 'Lucas', chapters: 24 },
-  [BookNameEnum.JHN]: { name: 'João', chapters: 21 },
-  [BookNameEnum.ACT]: { name: 'Atos', chapters: 28 },
-  [BookNameEnum.ROM]: { name: 'Romanos', chapters: 16 },
-  [BookNameEnum.CO1]: { name: '1 Coríntios', chapters: 16 },
-  [BookNameEnum.CO2]: { name: '2 Coríntios', chapters: 13 },
-  [BookNameEnum.GAL]: { name: 'Gálatas', chapters: 6 },
-  [BookNameEnum.EPH]: { name: 'Efésios', chapters: 6 },
-  [BookNameEnum.PHP]: { name: 'Filipenses', chapters: 4 },
-  [BookNameEnum.COL]: { name: 'Colossenses', chapters: 4 },
-  [BookNameEnum.TH1]: { name: '1 Tessalonicenses', chapters: 5 },
-  [BookNameEnum.TH2]: { name: '2 Tessalonicenses', chapters: 3 },
-  [BookNameEnum.TI1]: { name: '1 Timóteo', chapters: 6 },
-  [BookNameEnum.TI2]: { name: '2 Timóteo', chapters: 4 },
-  [BookNameEnum.TIT]: { name: 'Tito', chapters: 3 },
-  [BookNameEnum.PHM]: { name: 'Filemom', chapters: 1 },
-  [BookNameEnum.HEB]: { name: 'Hebreus', chapters: 13 },
-  [BookNameEnum.JAS]: { name: 'Tiago', chapters: 5 },
-  [BookNameEnum.PE1]: { name: '1 Pedro', chapters: 5 },
-  [BookNameEnum.PE2]: { name: '2 Pedro', chapters: 3 },
-  [BookNameEnum.JN1]: { name: '1 João', chapters: 5 },
-  [BookNameEnum.JN2]: { name: '2 João', chapters: 1 },
-  [BookNameEnum.JN3]: { name: '3 João', chapters: 1 },
-  [BookNameEnum.JUD]: { name: 'Judas', chapters: 1 },
-  [BookNameEnum.REV]: { name: 'Apocalipse', chapters: 22 },
-};
+const BOOKS = [
+  ['gen', 'Gênesis', 50],
+  ['exo', 'Êxodo', 40],
+  ['lev', 'Levítico', 27],
+  ['num', 'Números', 36],
+  ['deu', 'Deuteronômio', 34],
+  ['jos', 'Josué', 24],
+  ['jdg', 'Juízes', 21],
+  ['rut', 'Rute', 4],
+  ['1sa', '1 Samuel', 31],
+  ['2sa', '2 Samuel', 24],
+  ['1ki', '1 Reis', 22],
+  ['2ki', '2 Reis', 25],
+  ['1ch', '1 Crônicas', 29],
+  ['2ch', '2 Crônicas', 36],
+  ['ezr', 'Esdras', 10],
+  ['neh', 'Neemias', 13],
+  ['est', 'Ester', 10],
+  ['job', 'Jó', 42],
+  ['psa', 'Salmos', 150],
+  ['pro', 'Provérbios', 31],
+  ['ecc', 'Eclesiastes', 12],
+  ['sng', 'Cantares', 8],
+  ['isa', 'Isaías', 66],
+  ['jer', 'Jeremias', 52],
+  ['lam', 'Lamentações', 5],
+  ['ezk', 'Ezequiel', 48],
+  ['dan', 'Daniel', 12],
+  ['hos', 'Oséias', 14],
+  ['jol', 'Joel', 3],
+  ['amo', 'Amós', 9],
+  ['oba', 'Obadias', 1],
+  ['jon', 'Jonas', 4],
+  ['mic', 'Miquéias', 7],
+  ['nam', 'Naum', 3],
+  ['hab', 'Habacuque', 3],
+  ['zep', 'Sofonias', 3],
+  ['hag', 'Ageu', 2],
+  ['zec', 'Zacarias', 14],
+  ['mal', 'Malaquias', 4],
+  ['mat', 'Mateus', 28],
+  ['mrk', 'Marcos', 16],
+  ['luk', 'Lucas', 24],
+  ['jhn', 'João', 21],
+  ['act', 'Atos', 28],
+  ['rom', 'Romanos', 16],
+  ['1co', '1 Coríntios', 16],
+  ['2co', '2 Coríntios', 13],
+  ['gal', 'Gálatas', 6],
+  ['eph', 'Efésios', 6],
+  ['php', 'Filipenses', 4],
+  ['col', 'Colossenses', 4],
+  ['1th', '1 Tessalonicenses', 5],
+  ['2th', '2 Tessalonicenses', 3],
+  ['1ti', '1 Timóteo', 6],
+  ['2ti', '2 Timóteo', 4],
+  ['tit', 'Tito', 3],
+  ['phm', 'Filemom', 1],
+  ['heb', 'Hebreus', 13],
+  ['jas', 'Tiago', 5],
+  ['1pe', '1 Pedro', 5],
+  ['2pe', '2 Pedro', 3],
+  ['1jn', '1 João', 5],
+  ['2jn', '2 João', 1],
+  ['3jn', '3 João', 1],
+  ['jud', 'Judas', 1],
+  ['rev', 'Apocalipse', 22],
+] as const
 
-export function getBookInfo(bookName: BookNameEnum): BookInfo {
-  return BOOKS_INFO[bookName];
+export type BookNameType = typeof BOOKS[number][0]
+
+export const BookName = Object.fromEntries(
+  BOOKS.map(([key]) => [key, key])
+) as { [K in BookNameType]: K }
+
+export const BOOKS_INFO = Object.fromEntries(
+  BOOKS.map(([key, name, chapters]) => [key, { name, chapters }])
+) as Record<BookNameType, BookInfo>
+
+const bookNameSet = new Set<string>(BOOKS.map(([key]) => key))
+
+export function isValidBookName(value: string): value is BookNameType {
+  return bookNameSet.has(value)
 }
 
-export function getAllBooks(): Array<{ key: BookNameEnum; info: BookInfo }> {
-  return Object.entries(BOOKS_INFO).map(([key, info]) => ({
-    key: key as BookNameEnum,
-    info,
-  }));
+export function getBookName(key: string): BookNameType | undefined {
+  const lowerKey = key.toLowerCase()
+  return isValidBookName(lowerKey) ? lowerKey : undefined
 }
 
+export function getBookInfo(bookName: BookNameType): BookInfo {
+  return BOOKS_INFO[bookName]
+}
+
+export function getAllBooks(): Array<{ key: BookNameType; info: BookInfo }> {
+  return BOOKS.map(([key, name, chapters]) => ({
+    key,
+    info: { name, chapters },
+  }))
+}
