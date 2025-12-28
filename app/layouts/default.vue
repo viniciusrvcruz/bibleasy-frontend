@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { Version } from '~/types/version/Version.type'
+import { useVersionService } from '~/composables/services/useVersionService'
 
 const versionStore = useVersionStore()
+const versionService = useVersionService()
 
-const { data: versions } = await useApiFetch<Version[]>('versions')
+const { data: versions } = await versionService.index()
 
 if (versions.value?.length) {
   versionStore.setVersions(versions.value)

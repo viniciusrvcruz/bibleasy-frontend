@@ -25,6 +25,10 @@ if (!version) {
   throw createError({ statusCode: 404, statusMessage: 'A versão não foi encontrada'})
 }
 
+if (version.id !== versionStore.currentVersion?.id) {
+  versionStore.setCurrentVersion(version)
+}
+
 const chapterData = await chapterService.show(book, chapter, version.id)
 
 if (!chapterData) {
