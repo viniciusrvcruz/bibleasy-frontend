@@ -24,6 +24,8 @@ const ICON_MAP = {
   globe: 'lucide:globe',
   search: 'lucide:search',
   close: 'lucide:x',
+  github: 'lucide:github',
+  linkedin: 'lucide:linkedin',
 } as const
 
 </script>
