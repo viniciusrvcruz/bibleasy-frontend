@@ -1,154 +1,115 @@
 <script setup lang="ts">
 import type { Version } from '~/types/version/Version.type'
 
-const isOpen = defineModel<boolean>('isOpen', { default: false })
-
-const versionStore = useVersionStore()
-const versions = ref<Version[]>([])
-const versionSearchQuery = ref('')
-const selectedLanguage = ref<'all' | 'pt_br' | 'en'>('all')
-
-const filteredVersions = computed(() => {
-  let result = versions.value
-  
-  if (selectedLanguage.value !== 'all') {
-    result = result.filter(v => v.language === selectedLanguage.value)
-  }
-  
-  if (versionSearchQuery.value) {
-    const query = versionSearchQuery.value.toLowerCase()
-    result = result.filter(v => 
-      v.name.toLowerCase().includes(query) || 
-      v.full_name.toLowerCase().includes(query)
-    )
-  }
-  
-  return result
-})
-
 const emit = defineEmits<{
   select: [version: Version]
 }>()
 
-const loadVersions = async () => {
-  if (versions.value.length === 0) {
-    const { data } = await useApiFetch<Version[]>('versions')
-    if (data.value) {
-      versions.value = data.value
-    }
-  }
+const versionStore = useVersionStore()
+
+const versionSearch = ref('')
+const dialogRef = useTemplateRef<HTMLDialogElement>('dialogRef')
+
+const languageNames: Record<string, string> = {
+  pt_br: 'Português',
+  en: 'English'
 }
 
-watch(isOpen, async (newValue) => {
-  if (newValue) {
-    await loadVersions()
-  }
+const filteredVersions = computed(() => {
+  if (!versionSearch.value) return versionStore.versions
+
+  const searchValue = versionSearch.value.toLowerCase()
+
+  return versionStore.versions.filter(v => 
+    v.name.toLowerCase().includes(searchValue) || 
+    v.full_name.toLowerCase().includes(searchValue)
+  )
 })
 
-const selectVersion = (version: Version) => {
-  emit('select', version)
-  isOpen.value = false
+const open = () => {
+  dialogRef.value?.showModal()
 }
 
 const close = () => {
-  isOpen.value = false
+  dialogRef.value?.close()
 }
+
+const selectVersion = (version: Version) => {
+  emit('select', version)
+  close()
+}
+
+defineExpose({
+  open
+})
 </script>
 
 <template>
-  <input type="checkbox" id="version_modal" class="modal-toggle" v-model="isOpen" />
-  <div class="modal modal-bottom sm:modal-middle">
-    <div class="modal-box max-w-3xl sm:rounded-lg version-modal-box">
-      <!-- Header com botão de fechar -->
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-lg">Selecionar Versão</h3>
+  <dialog
+    ref="dialogRef"
+    class="modal modal-bottom sm:modal-middle"
+    @click.self="close"
+  >
+    <div class="modal-box max-w-2xl sm:rounded-lg max-sm:max-w-full max-sm:w-full max-sm:h-[calc(100vh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none max-sm:flex max-sm:flex-col">
+      <!-- Header with close button -->
+      <div class="flex items-center justify-between mb-4 shrink-0">
+        <h3 class="font-bold text-lg">
+          Selecionar Versão
+        </h3>
         <button 
           class="btn btn-sm btn-ghost btn-circle"
           @click="close"
-          v-tooltip="'Fechar'"
         >
           <Icon icon="close" :size="20" />
         </button>
       </div>
-      
-      <!-- Versão Atual -->
-      <div v-if="versionStore.currentVersion" class="alert mb-4">
+
+      <!-- Current Version -->
+      <div v-if="versionStore.currentVersion" class="alert mb-4 shrink-0">
         <div>
-          <div class="font-semibold">Versão Atual</div>
+          <div class="font-semibold">
+            Versão Atual
+          </div>
           <div class="text-sm">
             {{ versionStore.currentVersion.name }} - {{ versionStore.currentVersion.full_name }}
           </div>
         </div>
       </div>
       
-      <!-- Filtros -->
-      <div class="mb-4 space-y-3">
+      <!-- Search input -->
+      <div class="mb-4 shrink-0">
         <div class="form-control">
           <input
-            v-model="versionSearchQuery"
+            v-model="versionSearch"
             type="text"
             placeholder="Buscar versão..."
             class="input input-bordered w-full"
           />
         </div>
-        
-        <div class="flex gap-2">
-          <button
-            class="btn btn-sm"
-            :class="{ 'btn-primary': selectedLanguage === 'all' }"
-            @click="selectedLanguage = 'all'"
-          >
-            Todos
-          </button>
-          <button
-            class="btn btn-sm"
-            :class="{ 'btn-primary': selectedLanguage === 'pt_br' }"
-            @click="selectedLanguage = 'pt_br'"
-          >
-            Português
-          </button>
-          <button
-            class="btn btn-sm"
-            :class="{ 'btn-primary': selectedLanguage === 'en' }"
-            @click="selectedLanguage = 'en'"
-          >
-            English
-          </button>
-        </div>
       </div>
       
-      <!-- Lista de Versões -->
-      <div class="space-y-2 max-h-96 overflow-y-auto">
+      <!-- List of Versions -->
+      <div class="space-y-2 overflow-y-auto flex-1 sm:max-h-96">
         <button
           v-for="version in filteredVersions"
           :key="version.id"
-          class="w-full text-left p-3 rounded-lg hover:bg-base-200 transition-colors border border-base-300"
+          class="w-full text-left p-3 rounded-lg transition-colors flex items-center gap-3 border border-base-300 cursor-pointer hover:bg-base-200"
           :class="{
             'bg-primary/10 border-primary': versionStore.currentVersion?.id === version.id
           }"
           @click="selectVersion(version)"
         >
-          <div class="font-semibold">{{ version.name }}</div>
-          <div class="text-sm text-base-content/70">{{ version.full_name }}</div>
-          <div class="text-xs text-base-content/50 mt-1">
-            {{ version.language === 'pt_br' ? 'Português' : 'English' }}
+          <div class="flex-1">
+            <div class="font-semibold">{{ version.name }}</div>
+            <div class="text-sm text-base-content/70">{{ version.full_name }}</div>
+            <div class="text-xs text-base-content/50 mt-1">
+              {{ languageNames[version.language] || version.language }}
+            </div>
           </div>
+          <Icon icon="chevron_right" :size="20" class="text-base-content/40 self-center" />
         </button>
       </div>
     </div>
-    <label class="modal-backdrop" for="version_modal">Fechar</label>
-  </div>
+  </dialog>
 </template>
-
-<style scoped>
-@media (max-width: 640px) {
-  .version-modal-box {
-    max-width: 100%;
-    width: 100%;
-    height: 100vh;
-    margin: 0;
-    border-radius: 0 !important;
-  }
-}
-</style>
 

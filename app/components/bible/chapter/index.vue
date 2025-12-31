@@ -12,7 +12,7 @@ const { goToChapter } = useNavigateToBible()
 const versionStore = useVersionStore()
 
 const historyModalRef = ref()
-const isVersionModalOpen = ref(false)
+const versionModalRef = ref()
 const focusedVerseId = ref<string | null>(null)
 const isFocusActive = ref(false)
 
@@ -46,12 +46,14 @@ onMounted(() => {
 
 const handleVersionSelect = async (version: Version) => {
   versionStore.setCurrentVersion(version)
-  await goToChapter(props.chapter.book.name, props.chapter.number, undefined, true)
+
+  await goToChapter(props.chapter.book.name, props.chapter.number)
 }
 
 const clearFocus = () => {
   focusedVerseId.value = null
   isFocusActive.value = false
+
   if (route.hash) {
     history.replaceState(history.state, '', route.path)
   }
@@ -135,7 +137,7 @@ const initializeVerseFocus = () => {
           <!-- Botão Versão -->
           <button 
             class="btn btn-sm"
-            @click="isVersionModalOpen = true"
+            @click="versionModalRef?.open()"
             title="Selecionar versão"
           >
             <Icon icon="globe" :size="20" />
@@ -257,7 +259,7 @@ const initializeVerseFocus = () => {
 
     <BibleChapterHistoryModal ref="historyModalRef" />
     <BibleChapterVersionModal
-      v-model:is-open="isVersionModalOpen"
+      ref="versionModalRef"
       @select="handleVersionSelect"
     />
   </section>

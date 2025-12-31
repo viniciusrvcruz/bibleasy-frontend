@@ -89,7 +89,6 @@ defineExpose({
         <button 
           class="btn btn-sm btn-ghost btn-circle"
           @click="close"
-          v-tooltip="'Fechar'"
         >
           <Icon icon="close" :size="20" />
         </button>
