@@ -19,11 +19,8 @@ const fontFamilies = [
   { label: 'Courier', value: 'font-courier' },
 ]
 
-// Use v-model to receive values from parent component
 const selectedFontSize = defineModel<string | null>('fontSize', { required: true })
 const selectedFontFamily = defineModel<string | null>('fontFamily', { required: true })
-
-const popoverRef = ref()
 
 const currentSizeIndex = computed(() => {
   return fontSizes.findIndex(size => size === selectedFontSize.value)
@@ -52,38 +49,39 @@ const decreaseFontSize = () => {
 const setFontFamily = (fontValue: string) => {
   selectedFontFamily.value = fontValue
 }
-
-const toggle = (event: Event) => {
-  popoverRef.value.toggle(event)
-}
-
-// Expose function to open popover
-defineExpose({
-  toggle,
-})
 </script>
 
 <template>
-  <Popover ref="popoverRef" class="max-w-80">
-    <div class="p-4 w-80 bg-base-100 text-base-content">
-      <h3 class="font-bold text-lg mb-4">Configurações de Texto</h3>
-      
+  <div class="dropdown dropdown-center">
+    <div tabindex="0" role="button" class="btn btn-sm" title="Configurações de texto">
+      <Icon icon="letter_case" :size="20" />
+    </div>
+    <ul
+      tabindex="0"
+      class="dropdown-content menu bg-base-100 rounded-box z-1 w-56 p-4 shadow-lg text-base-content"
+    >
+      <h3 class="font-bold text-lg mb-4">
+        Configurações de Texto
+      </h3>
+
       <!-- Font size controls with join buttons -->
       <div class="mb-4">
         <label class="label">
-          <span class="label-text font-semibold">Tamanho da Fonte</span>
+          <span class="label-text font-semibold">
+            Tamanho da Fonte
+          </span>
         </label>
         <div class="join w-full">
           <button
             class="btn btn-sm join-item flex-1 text-sm"
-            :disabled="currentSizeIndex === 0"
+            :class="{'opacity-45 hover:bg-base-200': currentSizeIndex === 0}"
             @click="decreaseFontSize"
           >
             A-
           </button>
           <button
             class="btn btn-sm join-item flex-1 text-lg font-semibold"
-            :disabled="currentSizeIndex === fontSizes.length - 1"
+            :class="{'opacity-45 hover:bg-base-200': currentSizeIndex === fontSizes.length - 1}"
             @click="increaseFontSize"
           >
             A+
@@ -94,7 +92,9 @@ defineExpose({
       <!-- Font family selection -->
       <div>
         <label class="label">
-          <span class="label-text font-semibold">Fonte</span>
+          <span class="label-text font-semibold">
+            Fonte
+          </span>
         </label>
         <div class="grid grid-cols-2 gap-2">
           <button
@@ -102,7 +102,7 @@ defineExpose({
             :key="font.value"
             class="btn btn-sm justify-start hover:bg-base-200"
             :class="{
-              'bg-base-300': selectedFontFamily === font.value
+              'bg-base-300 border-2 border-primary': selectedFontFamily === font.value
             }"
             @click="setFontFamily(font.value)"
           >
@@ -110,6 +110,6 @@ defineExpose({
           </button>
         </div>
       </div>
-    </div>
-  </Popover>
+    </ul>
+  </div>
 </template>
