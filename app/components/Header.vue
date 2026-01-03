@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const route = useRoute()
 
-const themeSelectorPopoverRef = ref()
+const themeSelectorPopoverRef = useTemplateRef('themeSelectorPopoverRef')
+const userDropdownRef = useTemplateRef('userDropdownRef')
 
 const closeDrawer = () => {
   document.getElementById('drawer')?.click()
@@ -55,12 +56,15 @@ const bibleLink = computed(() =>
             </RouterLink>
           </li>
           <li>
-            <button v-tooltip.bottom="'Temas'" class="p-2" @click="themeSelectorPopoverRef.toggle">
+            <button v-tooltip.bottom="'Temas'" class="p-2" @click="themeSelectorPopoverRef?.toggle">
               <Icon icon="palette" :size="22" />
             </button>
           </li>
           <li class="ms-2">
-            <button class="rounded-full p-3 bg-base-100">
+            <button 
+              class="rounded-full p-3 bg-base-100" 
+              @click="userDropdownRef?.toggle"
+            >
               <Icon icon="user" :size="22" />
             </button>
           </li>
@@ -81,5 +85,6 @@ const bibleLink = computed(() =>
     </div>
 
     <ThemeSelectorPopover ref="themeSelectorPopoverRef" />
+    <UserDropdown ref="userDropdownRef" />
   </div>
 </template>
