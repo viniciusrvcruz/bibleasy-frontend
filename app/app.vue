@@ -1,20 +1,9 @@
 <script setup lang="ts">
 const searchModalRef = useTemplateRef<{ open: (char?: string) => void }>('searchModalRef')
 
-const isInputFocused = () => {
-  const activeElement = document.activeElement
-  if (!activeElement) return false
-  
-  const tagName = activeElement.tagName.toLowerCase()
-  const isInput = tagName === 'input' || tagName === 'textarea'
-  const isContentEditable = activeElement.getAttribute('contenteditable') === 'true'
-  
-  return isInput || isContentEditable
-}
-
 const handleKeydown = (e: KeyboardEvent) => {
   if (isInputFocused()) return
-  
+
   const char = e.key
   if (char.length === 1 && /[a-zA-Z1-3]/.test(char)) {
     e.preventDefault()
