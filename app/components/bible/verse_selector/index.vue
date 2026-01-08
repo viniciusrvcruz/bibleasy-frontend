@@ -189,7 +189,7 @@ defineExpose({
       </div>
       <div class="flex flex-wrap gap-2">
         <button
-          v-for="verse in selectedChapterVerses + 1"
+          v-for="verse in selectedChapterVerses"
           :key="verse"
           class="btn btn-ghost bg-base-200 aspect-square w-14"
           @click="selectVerseNumber(verse)"

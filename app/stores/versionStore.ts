@@ -8,6 +8,19 @@ export const useVersionStore = defineStore('version', () => {
 
   const currentVersionName = useCookie<string | null>('current-version-name')
 
+  // Flatten all chapters from all books into a single array
+  const allChapters = computed(() => {
+    return currentVersionBooks.value.flatMap(book => 
+      book.chapters.map(chapter => ({
+        ...chapter,
+        book: {
+          abbreviation: book.abbreviation,
+          name: book.name
+        }
+      }))
+    )
+  })
+
   const setVersions = (data: Version[]) => {
     versions.value = data
 
@@ -45,6 +58,7 @@ export const useVersionStore = defineStore('version', () => {
     versions,
     currentVersion,
     currentVersionBooks,
+    allChapters,
     setVersions,
     setCurrentVersion,
     setCurrentVersionBooks,

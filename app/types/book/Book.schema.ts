@@ -4,7 +4,6 @@ import { BookAbbreviation } from '~/utils/book'
 export const chapterInBookSchema = z.object({
   id: z.int(),
   number: z.int(),
-  position: z.int(),
   verses_count: z.int(),
 })
 
