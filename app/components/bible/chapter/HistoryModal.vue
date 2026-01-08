@@ -28,7 +28,9 @@ const navigateToChapter = (item: ChapterHistory) => {
 
 // Formats the chapter display text (e.g., "Genesis 1:5" or "Genesis 1")
 const formatChapter = (item: ChapterHistory) => {
-  const bookName = getBookInfo(item.book).name
+  const versionStore = useVersionStore()
+  const bookData = versionStore.getBookByAbbreviation(item.book)
+  const bookName = bookData?.name ?? ''
 
   if (!item.verse) return `${bookName} ${item.chapter}`
 

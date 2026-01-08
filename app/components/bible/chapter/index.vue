@@ -3,6 +3,7 @@ import type { Chapter } from '~/types/chapter/Chapter.type'
 import type { Version } from '~/types/version/Version.type'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
+import { useBookService } from '~/composables/services/useBookService'
 
 const props = defineProps<{
   chapter: Chapter
@@ -19,7 +20,7 @@ const fontSize = useCookie<string>('bible-font-size', { default: () => 'text-lg'
 const fontFamily = useCookie<string>('bible-font-family', { default: () => 'font-sans' })
 
 const bookName = computed(() => {
-  return getBookInfo(props.chapter.book.name).name
+  return props.chapter.book.name
 })
 
 const verseNumber = computed(() => {
@@ -51,30 +52,41 @@ const addCurrentChapterToHistory = () => {
   const verseNumber = route.hash ? parseInt(route.hash.slice(2)) : undefined
 
   addToHistory({
-    book: props.chapter.book.name,
+    book: props.chapter.book.abbreviation,
     chapter: props.chapter.number,
     verse: verseNumber,
-    versionName: versionStore.currentVersion?.name ?? '',
+    versionName: versionStore.currentVersion?.abbreviation ?? '',
     timestamp: Date.now()
   })
 }
 
 const handleVersionSelect = async (version: Version) => {
-  versionStore.setCurrentVersion(version)
+  const bookService = useBookService()
 
-  await goToChapter(props.chapter.book.name, props.chapter.number)
+  versionStore.setCurrentVersion(version)
+  // Load books for the new version
+  const books = await bookService.index(version.id)
+  versionStore.setCurrentVersionBooks(books)
+
+  await goToChapter(props.chapter.book.abbreviation, props.chapter.number)
 }
 
 const goToPreviousChapter = () => {
   if (!props.chapter.previous) return
 
-  goToChapter(props.chapter.previous.book.name, props.chapter.previous.number)
+  goToChapter(
+    props.chapter.previous.book.abbreviation,
+    props.chapter.previous.number
+  )
 }
 
 const goToNextChapter = () => {
   if (!props.chapter.next) return
 
-  goToChapter(props.chapter.next.book.name, props.chapter.next.number)
+  goToChapter(
+    props.chapter.next.book.abbreviation,
+    props.chapter.next.number
+  )
 }
 
 </script>

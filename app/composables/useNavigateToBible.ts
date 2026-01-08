@@ -8,7 +8,7 @@ export const useNavigateToBible = () => {
     replace: boolean = false,
   ) => {
     const version = versionStore.currentVersion
-      ? `.${versionStore.currentVersion.name}`
+      ? `.${versionStore.currentVersion.abbreviation}`
       : ''
     const hash = verse && verse > 1
       ? `#v${verse}`

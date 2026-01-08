@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useChapterService } from '~/composables/services/useChapterService'
-import { getBookName, BookName } from '~/utils/book'
+import { useBookService } from '~/composables/services/useBookService'
+import { getBookAbbreviation, BookAbbreviation } from '~/utils/book'
 
 const route = useRoute()
 
 const versionStore = useVersionStore()
 const chapterService = useChapterService()
+const bookService = useBookService()
 
 const reference = route.params.reference
 
@@ -15,7 +17,7 @@ const [
   versionNameParam
 ] = reference?.toString().split('.') ?? []
 
-const book = getBookName(bookParam ?? '') ?? BookName.gen
+const book = getBookAbbreviation(bookParam ?? '') ?? BookAbbreviation.jhn
 const chapter = parseInt(chapterParam ?? '1')
 const version = versionNameParam
   ? versionStore.getVersionByName(versionNameParam)
@@ -27,6 +29,9 @@ if (!version) {
 
 if (version.id !== versionStore.currentVersion?.id) {
   versionStore.setCurrentVersion(version)
+  // Load books for the new version
+  const books = await bookService.index(version.id)
+  versionStore.setCurrentVersionBooks(books)
 }
 
 const chapterData = await chapterService.show(book, chapter, version.id)

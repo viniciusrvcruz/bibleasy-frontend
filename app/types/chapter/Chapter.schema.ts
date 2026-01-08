@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BookName } from '~/utils/book'
+import { BookAbbreviation } from '~/utils/book'
 import { bookSchema } from '../book/Book.schema'
 import { VersionSchema } from '../version/Version.schema'
 import { verseSchema } from '../verse/Verse.schema'
@@ -20,6 +20,6 @@ export const chapterSchema = chapterBaseSchema.extend({
 })
 
 export const chapterSelectionSchema = z.object({
-  book: z.enum(BookName),
+  book: z.enum(BookAbbreviation),
   chapter: z.number().int().positive(),
 })
