@@ -8,13 +8,20 @@ const bookService = useBookService()
 
 const { data: versions } = await versionService.index()
 
-if (versions.value?.length) {
-  versionStore.setVersions(versions.value)
-
-  // Load books for current version
-  const books = await bookService.index(versionStore.currentVersion!.id)
-  versionStore.setCurrentVersionBooks(books)
+if (!versions.value) {
+  throw createAppError('As versões não foram encontradas')
 }
+
+versionStore.setVersions(versions.value)
+
+// Load books for current version
+const { data: books } = await bookService.indexFetch(versionStore.currentVersion!.id)
+
+if (!books.value) {
+  throw createAppError('Os livros não foram encontrados')
+}
+
+versionStore.setCurrentVersionBooks(books.value)
 
 const searchModalRef = useTemplateRef('searchModalRef')
 

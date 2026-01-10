@@ -8,7 +8,9 @@ export function useApiFetch<T>(url: string) {
   return useFetch<T>(`/api/${url}`, {
     baseURL,
     headers: {
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
+    key: url,
   })
 }

@@ -24,7 +24,7 @@ const version = versionNameParam
   : versionStore.currentVersion
 
 if (!version) {
-  throw createError({ statusCode: 404, statusMessage: 'A versão não foi encontrada'})
+  throw createAppError('A versão não foi encontrada')
 }
 
 if (version.id !== versionStore.currentVersion?.id) {
@@ -34,12 +34,11 @@ if (version.id !== versionStore.currentVersion?.id) {
   versionStore.setCurrentVersionBooks(books)
 }
 
-const chapterData = await chapterService.show(book, chapter, version.id)
+const { data: chapterData } = await chapterService.show(book, chapter, version.id)
 
-if (!chapterData) {
-  throw createError({ statusCode: 404, statusMessage: 'O capítulo não foi encontrado'})
+if (!chapterData.value) {
+  throw createAppError('O capítulo não foi encontrado')
 }
-
 
 </script>
 
@@ -47,7 +46,7 @@ if (!chapterData) {
   <main class="flex-1 flex justify-between">
     <BibleVerseSelectorResponsivePanel :current-book="book" />
 
-    <BibleChapter :chapter="chapterData" />
+    <BibleChapter v-if="chapterData" :chapter="chapterData" />
 
     <!-- TODO: Add selected verses section -->
   </main>
