@@ -20,7 +20,7 @@ const [
 const book = getBookAbbreviation(bookParam ?? '') ?? BookAbbreviation.jhn
 const chapter = parseInt(chapterParam ?? '1')
 const version = versionNameParam
-  ? versionStore.getVersionByName(versionNameParam)
+  ? versionStore.getVersionByAbbreviation(versionNameParam)
   : versionStore.currentVersion
 
 if (!version) {

@@ -42,8 +42,8 @@ export const useVersionStore = defineStore('version', () => {
     currentVersionBooks.value = books
   }
 
-  const getVersionByName = (name: string) => {
-    return versions.value.find(version => version.abbreviation === name) ?? null
+  const getVersionByAbbreviation = (abbreviation: string) => {
+    return versions.value.find(version => version.abbreviation === abbreviation) ?? null
   }
 
   const getBookByAbbreviation = (abbreviation: string) => {
@@ -62,7 +62,7 @@ export const useVersionStore = defineStore('version', () => {
     setVersions,
     setCurrentVersion,
     setCurrentVersionBooks,
-    getVersionByName,
+    getVersionByAbbreviation,
     getBookByAbbreviation,
     getBookByName,
   }

@@ -2,6 +2,7 @@
 import type { ChapterHistory } from '~/types/chapterHistory/ChapterHistory.type'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 
+const versionStore = useVersionStore()
 const { goToChapter } = useNavigateToBible()
 const {
   chapterHistory,
@@ -22,6 +23,10 @@ const close = () => {
 }
 
 const navigateToChapter = (item: ChapterHistory) => {
+  const version = versionStore.getVersionByAbbreviation(item.versionName)
+
+  if (version) versionStore.setCurrentVersion(version)
+
   goToChapter(item.book, item.chapter, item.verse)
   close()
 }
