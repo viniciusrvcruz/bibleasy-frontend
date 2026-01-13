@@ -108,9 +108,12 @@ const handleVersionSelect = async (version: Version) => {
   const books = await bookService.index(version.id)
   versionStore.setCurrentVersionBooks(books)
 
-  await goToChapter(props.chapter.book.abbreviation, props.chapter.number)
+  await goToChapter(
+    props.chapter.book.abbreviation,
+    props.chapter.number,
+    verseNumber.value ?? undefined
+  )
 }
-
 
 </script>
 
@@ -159,7 +162,6 @@ const handleVersionSelect = async (version: Version) => {
             :id="`v${verse.number}`"
             :verse="verse"
             :is-focused="verse.number === focusedVerseNumber"
-            :is-focus-active="!!focusedVerseNumber"
           />
         </div>
 

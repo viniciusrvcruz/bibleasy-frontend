@@ -32,6 +32,7 @@ const ICON_MAP = {
   compare: 'lucide:git-compare',
   copy: 'lucide:copy',
   info: 'lucide:info',
+  file_text: 'lucide:file-text',
 } as const
 
 </script>
