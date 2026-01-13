@@ -7,7 +7,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="tooltip tooltip-bottom inline-flex items-center justify-center align-middle mx-3 text-base-content/60 hover:text-base-content/90 transition-colors cursor-pointer relative -top-1">
+  <div class="tooltip tooltip-bottom inline-flex items-center justify-center align-middle mx-3 text-base-content/60 hover:text-base-content/90 transition-colors cursor-pointer relative -top-2">
     <button
       type="button"
       class="inline-flex items-center justify-center"
@@ -15,7 +15,7 @@ const props = defineProps<{
       <Icon icon="file_text" :size="16" />
     </button>
     <div class="tooltip-content max-w-sm p-4">
-      <p class="leading-relaxed whitespace-pre-line">
+      <p class="leading-relaxed whitespace-pre-line text-start">
         {{ reference.text }}
       </p>
     </div>
