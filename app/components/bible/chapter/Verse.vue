@@ -65,7 +65,7 @@ const createReferencePart = (reference: VerseReference): ReferencePart => {
 </script>
 
 <template>
-  <p
+  <div
     class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line"
     :class="{
       'relative bg-base-100 rounded shadow-lg z-2': isFocused,
@@ -74,7 +74,7 @@ const createReferencePart = (reference: VerseReference): ReferencePart => {
     <span class="text-[0.8em] align-super leading-0 font-bold text-base-content/50 me-2">
       {{ verse.number }}
     </span>
-    <span class="leading-[1.9]">
+    <div class="inline leading-[1.9]">
       <template v-for="(part, index) in processedText" :key="index">
         <template v-if="part.type === 'text'">
           {{ part.content }}
@@ -84,6 +84,6 @@ const createReferencePart = (reference: VerseReference): ReferencePart => {
           :reference="part.reference"
         />
       </template>
-    </span>
-  </p>
+    </div>
+  </div>
 </template>
