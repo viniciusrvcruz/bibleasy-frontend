@@ -5,6 +5,7 @@ import { useBibleReference } from '~/composables/bible/useBibleReference'
 
 const route = useRoute()
 const versionStore = useVersionStore()
+const lastChapterStore = useLastChapterStore()
 
 const reference = route.params.reference?.toString() ?? ''
 const { book, chapter, version } = useBibleReference(reference)
@@ -29,8 +30,11 @@ if (version.id !== versionStore.currentVersion?.id) {
 const { data: chapterData } = await chapterService.useShow(book, chapter, version.id)
 
 if (!chapterData.value) {
+  lastChapterStore.clearLastChapter()
   throw createAppError('O capítulo não foi encontrado')
 }
+
+lastChapterStore.setLastChapter(book, chapter)
 </script>
 
 <template>

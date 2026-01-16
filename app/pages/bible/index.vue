@@ -2,8 +2,15 @@
 import { BookAbbreviation } from '~/utils/book'
 
 const { goToChapter } = useNavigateToBible()
+const lastChapterStore = useLastChapterStore()
 
-goToChapter(BookAbbreviation.jhn, 1, 1, true)
+const lastChapter = lastChapterStore.parsedReference
+
+if (lastChapter) {
+  goToChapter(lastChapter.book, lastChapter.chapter, 1, true)
+} else {
+  goToChapter(BookAbbreviation.jhn, 1, 1, true)
+}
 </script>
 
 <template>

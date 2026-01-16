@@ -16,7 +16,7 @@ export const useBibleReference = (reference: string): ParsedReference => {
   const chapter = Number(chapterParam) || 1
 
   const version = versionNameParam
-    ? versionStore.getVersionByAbbreviation(versionNameParam)
+    ? versionStore.getVersionByAbbreviation(versionNameParam) ?? versionStore.currentVersion
     : versionStore.currentVersion
 
   if (!version) {
