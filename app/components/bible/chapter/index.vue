@@ -182,14 +182,14 @@ const handleVersionSelect = async (version: Version) => {
         <RouterLink
           v-if="previousChapterLink"
           :to="previousChapterLink"
-          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-40"
+          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-64 xl:ms-48 2xl:ms-72"
         >
           <Icon icon="chevron_left" />
         </RouterLink>
   
         <label
           for="select_verse_modal"
-          class="btn text-sm flex-1 mx-2 sm:mx-5 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:text-lg lg:hidden"
+          class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
         >
           {{ bookName }} {{ chapter.number }}
         </label>
@@ -197,7 +197,7 @@ const handleVersionSelect = async (version: Version) => {
         <RouterLink
           v-if="nextChapterLink"
           :to="nextChapterLink"
-          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-40"
+          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-64 xl:me-48 2xl:me-72"
         >
           <Icon icon="chevron_right" />
         </RouterLink>
