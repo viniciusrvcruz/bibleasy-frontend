@@ -168,11 +168,11 @@ const handleVersionSelect = async (version: Version) => {
         <!-- Version Copyright -->
         <div 
           v-if="versionStore.currentVersion?.copyright"
-          class="mt-12 mb-6 text-center text-sm text-base-content/60 max-w-4xl mx-auto"
           v-html="versionStore.currentVersion.copyright"
+          class="mt-8 mb-6 text-center text-sm text-base-content/60 max-w-lg mx-auto"
         />
 
-        <div class="divider my-8" />
+        <div class="divider my-8 mx-96" />
 
         <BibleChapterFooter />
       </div>
@@ -182,7 +182,7 @@ const handleVersionSelect = async (version: Version) => {
         <RouterLink
           v-if="previousChapterLink"
           :to="previousChapterLink"
-          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-64 xl:ms-48 2xl:ms-72"
+          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
         >
           <Icon icon="chevron_left" />
         </RouterLink>
@@ -197,7 +197,7 @@ const handleVersionSelect = async (version: Version) => {
         <RouterLink
           v-if="nextChapterLink"
           :to="nextChapterLink"
-          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-64 xl:me-48 2xl:me-72"
+          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
         >
           <Icon icon="chevron_right" />
         </RouterLink>
