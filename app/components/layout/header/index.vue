@@ -2,8 +2,6 @@
 import ThemeSelectorPopover from './ThemeSelectorPopover.vue'
 import UserDropdown from './UserDropdown.vue'
 
-const route = useRoute()
-
 const themeSelectorPopoverRef = useTemplateRef('themeSelectorPopoverRef')
 const userDropdownRef = useTemplateRef('userDropdownRef')
 
@@ -11,11 +9,6 @@ const closeDrawer = () => {
   document.getElementById('drawer')?.click()
 }
 
-const bibleLink = computed(() =>
-  route.path.startsWith('/bible/')
-    ? route.path
-    : '/bible'
-)
 </script>
 
 <template>
@@ -37,7 +30,7 @@ const bibleLink = computed(() =>
 
           <ul class="menu menu-horizontal gap-2 ms-5">
             <li>
-              <RouterLink :to="bibleLink">
+              <RouterLink to="/bible">
                 <Icon icon="book_open" :size="20" />
                 Bíblia
               </RouterLink>
@@ -87,7 +80,7 @@ const bibleLink = computed(() =>
         </div>
         <div class="flex-1 flex flex-col gap-2 overflow-y-auto px-4 py-4 border-t border-base-300">
           <RouterLink 
-            :to="bibleLink" 
+            to="/bible" 
             @click="closeDrawer" 
             class="btn btn-ghost justify-start w-full text-base"
           >

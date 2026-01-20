@@ -33,7 +33,7 @@ html {
 .p-popover {
   border: var(--border);
   border-radius: var(--radius-box);
-  background-color: var(--color-base-200);
+  background-color: var(--color-base-300);
 }
 .p-popover::before,
 .p-popover::after {

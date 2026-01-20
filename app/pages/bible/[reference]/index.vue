@@ -1,45 +1,40 @@
 <script setup lang="ts">
 import { useChapterService } from '~/composables/services/useChapterService'
 import { useBookService } from '~/composables/services/useBookService'
-import { getBookAbbreviation, BookAbbreviation } from '~/utils/book'
+import { useBibleReference } from '~/composables/bible/useBibleReference'
 
 const route = useRoute()
-
 const versionStore = useVersionStore()
+const lastChapterStore = useLastChapterStore()
+
+const reference = route.params.reference?.toString() ?? ''
+const { book, chapter, version } = useBibleReference(reference)
+
 const chapterService = useChapterService()
 const bookService = useBookService()
 
-const reference = route.params.reference
+const { data: books, execute: executeBookIndex } = bookService.useIndex(version.id, false)
 
-const [
-  bookParam,
-  chapterParam,
-  versionNameParam
-] = reference?.toString().split('.') ?? []
-
-const book = getBookAbbreviation(bookParam ?? '') ?? BookAbbreviation.jhn
-const chapter = parseInt(chapterParam ?? '1')
-const version = versionNameParam
-  ? versionStore.getVersionByAbbreviation(versionNameParam)
-  : versionStore.currentVersion
-
-if (!version) {
-  throw createAppError('A versão não foi encontrada')
-}
-
+// Load books if the version is different from the current version
 if (version.id !== versionStore.currentVersion?.id) {
-  versionStore.setCurrentVersion(version)
-  // Load books for the new version
-  const books = await bookService.index(version.id)
-  versionStore.setCurrentVersionBooks(books)
+  await executeBookIndex()
+
+  if(!books.value) {
+    throw createAppError('Os livros não foram encontrados')
+  }
+
+  versionStore.setCurrentVersionWithBooks(version, books.value)
 }
 
+// Load chapter data
 const { data: chapterData } = await chapterService.useShow(book, chapter, version.id)
 
 if (!chapterData.value) {
+  lastChapterStore.clearLastChapter()
   throw createAppError('O capítulo não foi encontrado')
 }
 
+lastChapterStore.setLastChapter(book, chapter)
 </script>
 
 <template>
