@@ -63,7 +63,7 @@ const setFontFamily = (fontValue: string) => {
     </div>
     <ul
       tabindex="0"
-      class="dropdown-content menu bg-base-100 rounded-box z-1 w-56 p-4 shadow-lg text-base-content"
+      class="dropdown-content menu bg-base-300 rounded-box z-1 w-56 p-4 shadow-lg text-base-content top-10"
     >
       <h3 class="font-bold text-lg mb-4">
         Configurações de Texto

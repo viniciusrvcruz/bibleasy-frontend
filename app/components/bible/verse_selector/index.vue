@@ -28,7 +28,7 @@ const selectionContainerRef = ref<HTMLElement | null>(null)
 const selectedBookData = computed(() => {
   if (!selectedBook.value) return null
 
-  return versionStore.getBookByAbbreviation(selectedBook.value) ?? null
+  return versionStore.getBookByAbbreviation(selectedBook.value)
 })
 
 const selectedChapterData = computed(() => {

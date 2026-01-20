@@ -108,9 +108,12 @@ const handleVersionSelect = async (version: Version) => {
   const books = await bookService.index(version.id)
   versionStore.setCurrentVersionBooks(books)
 
-  await goToChapter(props.chapter.book.abbreviation, props.chapter.number)
+  await goToChapter(
+    props.chapter.book.abbreviation,
+    props.chapter.number,
+    verseNumber.value ?? undefined
+  )
 }
-
 
 </script>
 
@@ -148,7 +151,7 @@ const handleVersionSelect = async (version: Version) => {
 
         <div 
           :class="[
-            'max-w-2xl mx-auto text-justify',
+            'max-w-lg mx-auto px-2',
             fontSize,
             fontFamily
           ]"
@@ -159,18 +162,17 @@ const handleVersionSelect = async (version: Version) => {
             :id="`v${verse.number}`"
             :verse="verse"
             :is-focused="verse.number === focusedVerseNumber"
-            :is-focus-active="!!focusedVerseNumber"
           />
         </div>
 
         <!-- Version Copyright -->
         <div 
           v-if="versionStore.currentVersion?.copyright"
-          class="mt-12 mb-6 text-center text-sm text-base-content/60 max-w-4xl mx-auto"
           v-html="versionStore.currentVersion.copyright"
+          class="mt-8 mb-6 text-center text-sm text-base-content/60 max-w-lg mx-auto"
         />
 
-        <div class="divider my-8" />
+        <div class="divider my-8 mx-96" />
 
         <BibleChapterFooter />
       </div>
@@ -180,14 +182,14 @@ const handleVersionSelect = async (version: Version) => {
         <RouterLink
           v-if="previousChapterLink"
           :to="previousChapterLink"
-          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-40"
+          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
         >
           <Icon icon="chevron_left" />
         </RouterLink>
   
         <label
           for="select_verse_modal"
-          class="btn text-sm flex-1 mx-2 sm:mx-5 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:text-lg lg:hidden"
+          class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
         >
           {{ bookName }} {{ chapter.number }}
         </label>
@@ -195,7 +197,7 @@ const handleVersionSelect = async (version: Version) => {
         <RouterLink
           v-if="nextChapterLink"
           :to="nextChapterLink"
-          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-40"
+          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
         >
           <Icon icon="chevron_right" />
         </RouterLink>

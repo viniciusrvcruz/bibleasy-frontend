@@ -24,6 +24,7 @@ export default defineNuxtConfig({
 
     public: {
       apiBaseUrl: env.NUXT_PUBLIC_API_BASE_URL,
+      defaultVersionAbbreviation: env.NUXT_PUBLIC_DEFAULT_VERSION_ABBREVIATION,
     },
   },
 

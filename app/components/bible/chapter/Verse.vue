@@ -1,36 +1,89 @@
 <script setup lang="ts">
 import type { Verse } from '~/types/verse/Verse.type'
+import type { VerseReference } from '~/types/verseReference/VerseReference.type'
 
 const props = defineProps<{
   verse: Verse
   isFocused: boolean
-  isFocusActive: boolean
 }>()
 
-const textLines = computed(() => {
-  return props.verse.text.split('\\n')
+type TextPart = { type: 'text'; content: string }
+type ReferencePart = { type: 'reference'; reference: VerseReference }
+type ProcessedPart = TextPart | ReferencePart
+
+// Processes verse text and replaces {{slug}} with reference components
+const processedText = computed<ProcessedPart[]>(() => {
+  const { text, references } = props.verse
+
+  if (!references?.length) {
+    return [createTextPart(text)]
+  }
+
+  const referenceMap = buildReferenceMap(references)
+  const pattern = /\{\{(\w+)\}\}/g
+  const parts: ProcessedPart[] = []
+  let lastIndex = 0
+
+  for (const match of text.matchAll(pattern)) {
+    const [fullMatch, slug] = match
+    const matchIndex = match.index
+
+    // Text before the match
+    if (matchIndex > lastIndex) {
+      parts.push(createTextPart(text.slice(lastIndex, matchIndex)))
+    }
+
+    // Add reference only if found
+    const reference = slug ? referenceMap.get(slug) : undefined
+    if (reference) {
+      parts.push(createReferencePart(reference))
+    }
+
+    lastIndex = matchIndex + fullMatch.length
+  }
+
+  // Remaining text after the last match
+  if (lastIndex < text.length) {
+    parts.push(createTextPart(text.slice(lastIndex)))
+  }
+
+  return parts
 })
+
+const buildReferenceMap = (references: VerseReference[]) => {
+  return new Map(references.map(ref => [ref.slug, ref]))
+}
+
+const createTextPart = (content: string): TextPart => {
+  return { type: 'text', content }
+}
+
+const createReferencePart = (reference: VerseReference): ReferencePart => {
+  return { type: 'reference', reference }
+}
+
 </script>
 
 <template>
-  <p
-    class="px-2 py-1 block leading-[1.9] indent-0 cursor-pointer transition-all duration-200 ease-in-out mb-[0.4em]"
+  <div
+    class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line"
     :class="{
       'relative bg-base-100 rounded shadow-lg z-2': isFocused,
-      'hover:bg-base-200/50 rounded': !isFocusActive
     }"
   >
     <span class="text-[0.8em] align-super leading-0 font-bold text-base-content/50 me-2">
       {{ verse.number }}
     </span>
-    <span class="leading-[1.9]">
-      <template
-        v-for="(line, index) in textLines"
-        :key="index"
-      >
-        {{ line }}
-        <br v-if="index < textLines.length - 1">
+    <div class="inline leading-[1.9]">
+      <template v-for="(part, index) in processedText" :key="index">
+        <template v-if="part.type === 'text'">
+          {{ part.content }}
+        </template>
+        <BibleChapterVerseReference
+          v-else
+          :reference="part.reference"
+        />
       </template>
-    </span>
-  </p>
+    </div>
+  </div>
 </template>

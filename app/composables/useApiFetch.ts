@@ -1,4 +1,6 @@
-export function useApiFetch<T>(url: string) {
+type UseApiFetchOptions<T> = Partial<Parameters<typeof useFetch<T>>[1]>
+
+export function useApiFetch<T>(url: string, options: UseApiFetchOptions<T> = {}) {
   const config = useRuntimeConfig()
 
   const baseURL = import.meta.server
@@ -13,5 +15,6 @@ export function useApiFetch<T>(url: string) {
     },
     key: url,
     retry: 0,
+    ...options,
   })
 }
