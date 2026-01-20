@@ -1,4 +1,26 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Bibleasy - Leia a Bíblia Online de Forma Moderna e Intuitiva',
+  description: 'Leia a Bíblia online gratuitamente com interface moderna. Acesse diferentes versões, personalize temas, busque versículos e leia em qualquer dispositivo.',
+  ogTitle: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+  ogDescription: 'Explore as Escrituras com uma interface bonita e fácil de usar. Diferentes versões da Bíblia, personalização de temas e busca rápida de versículos.',
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+  twitterTitle: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+  twitterDescription: 'Leia a Bíblia online gratuitamente. Interface moderna, múltiplas versões e personalização completa.',
+})
+
+useSchemaOrg([
+  defineWebSite({
+    name: 'Bibleasy',
+    description: 'Leia a Bíblia online de forma moderna e intuitiva',
+  }),
+  defineWebPage({
+    '@type': 'WebPage',
+    name: 'Página Inicial',
+    description: 'Leia a Bíblia online gratuitamente com interface moderna e intuitiva.',
+  }),
+])
 </script>
 
 <template>

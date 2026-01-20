@@ -1,5 +1,4 @@
-// Fallback data - usado apenas para validação de tipos
-const BOOKS = [
+export const BOOKS = [
   ['gen', 'Gênesis', 50],
   ['exo', 'Êxodo', 40],
   ['lev', 'Levítico', 27],

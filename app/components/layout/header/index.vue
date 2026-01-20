@@ -45,7 +45,7 @@ const closeDrawer = () => {
 
         <ul class="menu menu-horizontal gap-2 items-center">
           <li>
-            <RouterLink to="/help" v-tooltip.bottom="'Ajuda'" class="p-2">
+            <RouterLink to="/help" v-tooltip.bottom="'Central de Ajuda'" class="p-2">
               <Icon icon="circle_question" :size="22" />
             </RouterLink>
           </li>
