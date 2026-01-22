@@ -35,6 +35,39 @@ if (!chapterData.value) {
 }
 
 lastChapterStore.setLastChapter(book, chapter)
+
+// SEO - Dynamic meta tags based on chapter data
+const bookName = chapterData.value.book.name
+const chapterNumber = chapterData.value.number
+
+const pageTitle = `${bookName} ${chapterNumber} | ${versionStore.currentVersion?.name ?? ''}`
+const pageDescription = `Leia ${bookName} capítulo ${chapterNumber} na versão ${version.name}. Acesse a Bíblia online gratuitamente com interface moderna e intuitiva.`
+
+useSeoMeta({
+  title: pageTitle,
+  description: pageDescription,
+  ogTitle: pageTitle,
+  ogDescription: pageDescription,
+  ogType: 'article',
+  twitterCard: 'summary',
+  twitterTitle: pageTitle,
+  twitterDescription: pageDescription,
+})
+
+useSchemaOrg([
+  defineWebPage({
+    '@type': 'WebPage',
+    name: pageTitle,
+    description: pageDescription,
+  }),
+  defineArticle({
+    '@type': 'Article',
+    headline: pageTitle,
+    description: pageDescription,
+    articleSection: ['Bíblia'],
+    inLanguage: 'pt-BR',
+  }),
+])
 </script>
 
 <template>

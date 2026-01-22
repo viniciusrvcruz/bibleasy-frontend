@@ -24,8 +24,8 @@ const closeDrawer = () => {
         </div>
 
         <div class="hidden flex-none justify-between items-center lg:flex">
-          <RouterLink to="/" class="flex items-center">
-            <Icon icon="book_marked" :size="30" />
+          <RouterLink to="/" class="flex items-center text-xl font-bold pb-1">
+            Bibleasy
           </RouterLink>
 
           <ul class="menu menu-horizontal gap-2 ms-5">
@@ -45,7 +45,7 @@ const closeDrawer = () => {
 
         <ul class="menu menu-horizontal gap-2 items-center">
           <li>
-            <RouterLink to="/help" v-tooltip.bottom="'Ajuda'" class="p-2">
+            <RouterLink to="/help" v-tooltip.bottom="'Central de Ajuda'" class="p-2">
               <Icon icon="circle_question" :size="22" />
             </RouterLink>
           </li>
@@ -67,8 +67,8 @@ const closeDrawer = () => {
       <label for="drawer" aria-label="close sidebar" class="drawer-overlay" />
       <aside class="menu bg-base-200 min-h-full w-60 md:w-80 flex flex-col">
         <div class="flex justify-between items-center p-4 pb-2">
-          <RouterLink to="/" @click="closeDrawer">
-            <Icon icon="book_marked" :size="34" />
+          <RouterLink to="/" class="text-xl font-bold" @click="closeDrawer">
+            Bibleasy
           </RouterLink>
           <label 
             for="drawer" 
