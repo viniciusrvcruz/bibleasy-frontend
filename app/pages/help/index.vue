@@ -1,4 +1,22 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Central de Ajuda | Bibleasy',
+  description: 'Encontre respostas para suas dúvidas sobre como usar o Bibleasy. Aprenda a personalizar temas, usar a busca de versículos e muito mais.',
+  ogTitle: 'Central de Ajuda | Bibleasy',
+  ogDescription: 'Guia completo de como usar o Bibleasy. Personalização, busca de versículos, perguntas frequentes e funcionalidades futuras.',
+  ogType: 'website',
+  twitterCard: 'summary',
+  twitterTitle: 'Central de Ajuda | Bibleasy',
+  twitterDescription: 'Encontre respostas para suas dúvidas sobre como usar o Bibleasy.',
+})
+
+useSchemaOrg([
+  defineWebPage({
+    '@type': 'FAQPage',
+    name: 'Central de Ajuda',
+    description: 'Encontre respostas para suas dúvidas sobre como usar o Bibleasy.',
+  }),
+])
 
 const navigationItems = [
   {
