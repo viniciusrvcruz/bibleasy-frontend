@@ -37,7 +37,6 @@ defineProps<{ error: NuxtError }>()
           to="/"
           class="btn btn-outline btn-lg gap-2"
         >
-          <Icon icon="book_marked" :size="20" />
           Página inicial
         </NuxtLink>
       </div>

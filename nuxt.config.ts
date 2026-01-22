@@ -64,7 +64,11 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    enabled: false,
+    enabled: true,
+    defaults: {
+      url: 'https://bibleasy.com/logo.png',
+      alt: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+    },
   },
 
   sitemap: {
@@ -93,6 +97,10 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
+      meta: [
+        { name: 'twitter:image', content: 'https://bibleasy.com/logo.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
       ],
     },
   },

@@ -29,13 +29,7 @@ useSchemaOrg([
     <section class="hero">
       <div class="hero-content text-center">
         <div class="max-w-4xl">
-          <div class="mb-6 flex justify-center">
-            <div class="rounded-full bg-primary/20 p-6">
-              <Icon icon="book_marked" :size="64" class="text-primary" />
-            </div>
-          </div>
-          
-          <h1 class="mb-6 text-5xl font-bold lg:text-7xl">
+          <h1 class="my-6 text-5xl font-bold lg:text-7xl">
             Leia a Bíblia de forma
             <span class="text-primary">moderna</span> e
             <span class="text-primary">intuitiva</span>
