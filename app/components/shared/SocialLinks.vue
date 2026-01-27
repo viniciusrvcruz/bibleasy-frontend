@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <div class="flex items-center justify-center gap-4 flex-wrap">
     <a
-      href="https://github.com/viniciusrvcruz/bible-frontend"
+      href="https://github.com/viniciusrvcruz/bibleasy-frontend"
       target="_blank"
       rel="noopener noreferrer"
       class="inline-flex items-center gap-2 text-inherit underline hover:text-primary hover:opacity-80 transition-colors"

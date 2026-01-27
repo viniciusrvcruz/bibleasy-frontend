@@ -6,7 +6,10 @@ defineProps<{ error: NuxtError }>()
 </script>
 
 <template>
-  <NuxtLayout>
+  <div class="min-h-screen flex flex-col">
+    <LayoutHeader />
+
+    <!-- Error content -->
     <main class="flex-1 container flex flex-col items-center mx-auto px-4 mt-16 text-center">
       <!-- Error icon -->
       <div class="rounded-full bg-error/10 w-32 h-32 flex items-center justify-center mx-auto mb-8">
@@ -41,5 +44,5 @@ defineProps<{ error: NuxtError }>()
         </NuxtLink>
       </div>
     </main>
-  </NuxtLayout>
+  </div>
 </template>
