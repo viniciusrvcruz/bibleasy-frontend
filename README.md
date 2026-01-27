@@ -43,8 +43,8 @@ Antes de começar, certifique-se de ter instalado:
 1. **Clone o repositório**
 
 ```bash
-git clone https://github.com/seu-usuario/bible-frontend.git
-cd bible-frontend
+git clone https://github.com/seu-usuario/bibleasy-frontend.git
+cd bibleasy-frontend
 ```
 
 2. **Instale as dependências**
@@ -129,7 +129,7 @@ npm run preview
 ## 📁 Estrutura do Projeto
 
 ```
-bible-frontend/
+bibleasy-frontend/
 ├── app/
 │   ├── assets/              # Arquivos estáticos (CSS, imagens)
 │   ├── components/          # Componentes Vue reutilizáveis
@@ -179,8 +179,8 @@ Clique no botão "Fork" no topo da página do repositório.
 ### 2. Clone seu Fork
 
 ```bash
-git clone https://github.com/seu-usuario/bible-frontend.git
-cd bible-frontend
+git clone https://github.com/seu-usuario/bibleasy-frontend.git
+cd bibleasy-frontend
 ```
 
 ### 3. Crie uma Branch
@@ -237,7 +237,7 @@ Vá até o repositório original e clique em "New Pull Request". Descreva suas m
 
 ### 🐛 Reportando Bugs
 
-Encontrou um bug? Por favor, abra uma [issue](https://github.com/seu-usuario/bible-frontend/issues) com:
+Encontrou um bug? Por favor, abra uma [issue](https://github.com/seu-usuario/bibleasy-frontend/issues) com:
 
 - Descrição clara do problema
 - Passos para reproduzir
@@ -247,7 +247,7 @@ Encontrou um bug? Por favor, abra uma [issue](https://github.com/seu-usuario/bib
 
 ### 💡 Sugestões de Funcionalidades
 
-Tem uma ideia? Abra uma [issue](https://github.com/seu-usuario/bible-frontend/issues) com a tag `enhancement` e descreva:
+Tem uma ideia? Abra uma [issue](https://github.com/seu-usuario/bibleasy-frontend/issues) com a tag `enhancement` e descreva:
 
 - O problema que sua sugestão resolve
 - Como você imagina a funcionalidade
