@@ -33,9 +33,11 @@ const handleVersionSelect = (version: Version) => {
       <button
         v-tooltip.bottom="'Histórico de versículos'"
         class="btn btn-sm"
+        aria-label="Abrir histórico de versículos"
         @click="historyModalRef?.open()"
       >
         <Icon icon="history" :size="20" />
+        <span class="sr-only">Histórico de versículos</span>
       </button>
 
       <!-- Font configuration button -->
@@ -48,11 +50,15 @@ const handleVersionSelect = (version: Version) => {
       <button
         v-tooltip.bottom="'Selecionar versão'"
         class="btn btn-sm"
+        aria-label="Selecionar versão da Bíblia"
         @click="versionModalRef?.open()"
       >
         <Icon icon="globe" :size="20" />
         <span class="font-bold">
           {{ versionStore.currentVersion?.abbreviation ?? '-' }}
+        </span>
+        <span class="sr-only">
+          Versão atual: {{ versionStore.currentVersion?.abbreviation ?? '-' }}
         </span>
       </button>
     </div>

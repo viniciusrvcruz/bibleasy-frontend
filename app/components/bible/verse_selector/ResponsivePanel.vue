@@ -49,20 +49,24 @@ const handleSelectVerse = (verse: VerseSelection) => {
     class="lg:w-3/12 lg:sticky lg:top-header lg:h-screen-header xl:w-1/5"
     :class="{'modal': isOpen}"
     role="dialog"
+    :aria-labelledby="isOpen ? 'verse-selector-title' : undefined"
+    :aria-modal="isOpen"
   >
     <div
       class="hidden p-0 h-full sm:h-4/5 overflow-hidden lg:block lg:w-full lg:h-full lg:rounded-none lg:border-e-2 lg:border-base-300"
       :class="{'block! modal-box w-full max-w-full rounded-none pb-10 sm:w-2/3 sm:rounded-2xl': isOpen}"
     >
       <div class="flex justify-between items-end ps-8 pt-2 pb-0 pe-2 lg:hidden">
-        <span class="text-xl font-bold">
+        <span id="verse-selector-title" class="text-xl font-bold">
           Seleção de versículo
         </span>
         <label
           for="select_verse_modal"
           class="btn btn-ghost p-2"
+          aria-label="Fechar seleção de versículo"
         >
           <Icon icon="close" :size="25" />
+          <span class="sr-only">Fechar</span>
         </label>
       </div>
 

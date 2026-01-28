@@ -43,29 +43,37 @@ const getChapterByIndex = (index: number) => {
   return versionStore.allChapters[index] ?? null
 }
 
+// Returns the previous chapter data
+const previousChapter = computed(() => {
+  if (currentChapterIndex.value === -1) return null
+
+  return getChapterByIndex(currentChapterIndex.value - 1)
+})
+
+// Returns the next chapter data
+const nextChapter = computed(() => {
+  if (currentChapterIndex.value === -1) return null
+
+  return getChapterByIndex(currentChapterIndex.value + 1)
+})
+
 // Returns the link for the previous chapter
 const previousChapterLink = computed(() => {
-  if (currentChapterIndex.value === -1) return null
-  
-  const previousChapter = getChapterByIndex(currentChapterIndex.value - 1)
-  if (!previousChapter) return null
-  
+  if (!previousChapter.value) return null
+
   return getChapterUrl(
-    previousChapter.book.abbreviation,
-    previousChapter.number
+    previousChapter.value.book.abbreviation,
+    previousChapter.value.number
   )
 })
 
 // Returns the link for the next chapter
 const nextChapterLink = computed(() => {
-  if (currentChapterIndex.value === -1) return null
-  
-  const nextChapter = getChapterByIndex(currentChapterIndex.value + 1)
-  if (!nextChapter) return null
-  
+  if (!nextChapter.value) return null
+
   return getChapterUrl(
-    nextChapter.book.abbreviation,
-    nextChapter.number
+    nextChapter.value.book.abbreviation,
+    nextChapter.value.number
   )
 })
 
@@ -183,13 +191,18 @@ const handleVersionSelect = async (version: Version) => {
           v-if="previousChapterLink"
           :to="previousChapterLink"
           class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
+          :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
         >
           <Icon icon="chevron_left" />
+          <span class="sr-only">
+            {{ previousChapter ? `${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior' }}
+          </span>
         </RouterLink>
   
         <label
           for="select_verse_modal"
           class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
+          aria-label="Selecionar versículo"
         >
           {{ bookName }} {{ chapter.number }}
         </label>
@@ -198,8 +211,12 @@ const handleVersionSelect = async (version: Version) => {
           v-if="nextChapterLink"
           :to="nextChapterLink"
           class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
+          :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
         >
           <Icon icon="chevron_right" />
+          <span class="sr-only">
+            {{ nextChapter ? `${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo' }}
+          </span>
         </RouterLink>
       </div>
     </div>
