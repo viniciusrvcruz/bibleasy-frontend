@@ -53,14 +53,17 @@ const setFontFamily = (fontValue: string) => {
 
 <template>
   <div class="dropdown dropdown-center">
-    <div
+    <button
       v-tooltip.bottom="'Configurações de texto'"
-      tabindex="0"
-      role="button"
+      type="button"
       class="btn btn-sm"
+      aria-label="Configurações de texto"
+      aria-haspopup="true"
+      aria-expanded="false"
     >
       <Icon icon="letter_case" :size="20" />
-    </div>
+      <span class="sr-only">Configurações de texto</span>
+    </button>
     <ul
       tabindex="0"
       class="dropdown-content menu bg-base-300 rounded-box z-1 w-56 p-4 shadow-lg text-base-content top-10"
@@ -80,6 +83,8 @@ const setFontFamily = (fontValue: string) => {
           <button
             class="btn btn-sm join-item flex-1 text-sm"
             :class="{'opacity-45 hover:bg-base-200': currentSizeIndex === 0}"
+            aria-label="Diminuir tamanho da fonte"
+            :aria-disabled="currentSizeIndex === 0"
             @click="decreaseFontSize"
           >
             A-
@@ -87,6 +92,8 @@ const setFontFamily = (fontValue: string) => {
           <button
             class="btn btn-sm join-item flex-1 text-lg font-semibold"
             :class="{'opacity-45 hover:bg-base-200': currentSizeIndex === fontSizes.length - 1}"
+            aria-label="Aumentar tamanho da fonte"
+            :aria-disabled="currentSizeIndex === fontSizes.length - 1"
             @click="increaseFontSize"
           >
             A+

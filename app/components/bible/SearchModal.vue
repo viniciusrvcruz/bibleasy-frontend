@@ -317,19 +317,22 @@ defineExpose({
   <dialog
     ref="dialogRef"
     class="modal modal-bottom sm:modal-middle"
+    aria-labelledby="search-modal-title"
     @click.self="close"
   >
     <div class="modal-box max-w-2xl sm:rounded-lg max-sm:max-w-full max-sm:h-[calc(100vh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none">
       <!-- Header -->
       <div class="flex items-center justify-between mb-4">
-        <h3 class="font-bold text-lg">
+        <h3 id="search-modal-title" class="font-bold text-lg">
           Pesquisar Referência Bíblica
         </h3>
         <button
           class="btn btn-sm btn-ghost btn-circle"
+          aria-label="Fechar modal de pesquisa"
           @click="close"
         >
           <Icon icon="close" :size="20" />
+          <span class="sr-only">Fechar</span>
         </button>
       </div>
 
