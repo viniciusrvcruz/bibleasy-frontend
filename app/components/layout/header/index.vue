@@ -45,18 +45,26 @@ const closeDrawer = () => {
 
         <ul class="menu menu-horizontal gap-2 items-center">
           <li>
-            <RouterLink to="/help" v-tooltip.bottom="'Central de Ajuda'" class="p-2">
+            <RouterLink to="/help" v-tooltip.bottom="'Central de Ajuda'" class="p-2" aria-label="Central de Ajuda">
               <Icon icon="circle_question" :size="22" />
+              <span class="sr-only">Central de Ajuda</span>
             </RouterLink>
           </li>
           <li>
-            <button v-tooltip.bottom="'Temas'" class="p-2" @click="themeSelectorPopoverRef?.toggle">
+            <button
+              v-tooltip.bottom="'Temas'"
+              class="p-2"
+              aria-label="Selecionar tema"
+              @click="themeSelectorPopoverRef?.toggle"
+            >
               <Icon icon="palette" :size="22" />
+              <span class="sr-only">Selecionar tema</span>
             </button>
           </li>
           <li class="ms-2">
-            <button class="rounded-full p-3 bg-base-100" @click="userDropdownRef?.toggle">
+            <button class="rounded-full p-3 bg-base-100" aria-label="Menu do usuário" @click="userDropdownRef?.toggle">
               <Icon icon="user" :size="22" />
+              <span class="sr-only">Menu do usuário</span>
             </button>
           </li>
         </ul>

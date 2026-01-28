@@ -48,19 +48,22 @@ defineExpose({
   <dialog
     ref="dialogRef"
     class="modal modal-bottom sm:modal-middle"
+    aria-labelledby="version-modal-title"
     @click.self="close"
   >
     <div class="modal-box max-w-2xl sm:rounded-lg max-sm:max-w-full max-sm:w-full max-sm:h-[calc(100vh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none max-sm:flex max-sm:flex-col">
       <!-- Header with close button -->
       <div class="flex items-center justify-between mb-4 shrink-0">
-        <h3 class="font-bold text-lg">
+        <h3 id="version-modal-title" class="font-bold text-lg">
           Selecionar Versão
         </h3>
         <button 
           class="btn btn-sm btn-ghost btn-circle"
+          aria-label="Fechar modal de seleção de versão"
           @click="close"
         >
           <Icon icon="close" :size="20" />
+          <span class="sr-only">Fechar</span>
         </button>
       </div>
 
