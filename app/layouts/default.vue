@@ -8,7 +8,7 @@ const bookService = useBookService()
 
 const { data: versions } = await versionService.useIndex()
 
-if (!versions.value) {
+if (!versions.value?.length) {
   throw createAppError('As versões não foram encontradas')
 }
 
@@ -17,7 +17,7 @@ versionStore.setVersions(versions.value)
 // Load books for current version
 const { data: books } = await bookService.useIndex(versionStore.currentVersion!.id)
 
-if (!books.value) {
+if (!books.value?.length) {
   throw createAppError('Os livros não foram encontrados')
 }
 
