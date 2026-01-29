@@ -55,7 +55,7 @@ defineExpose({
     aria-labelledby="history-modal-title"
     @click.self="close"
   >
-    <div class="modal-box max-w-2xl sm:rounded-lg max-sm:max-w-full max-sm:w-full max-sm:h-[calc(100vh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none max-sm:flex max-sm:flex-col">
+    <div class="modal-box max-w-2xl sm:rounded-lg max-sm:max-w-full max-sm:w-full max-sm:h-[calc(100dvh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none max-sm:flex max-sm:flex-col">
       <!-- Header with close button -->
       <div class="flex items-center justify-between mb-4 shrink-0">
         <h3 id="history-modal-title" class="font-bold text-lg">
