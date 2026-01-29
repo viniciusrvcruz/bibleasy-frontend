@@ -140,16 +140,16 @@ const handleVersionSelect = async (version: Version) => {
         @version-select="handleVersionSelect"
       />
 
-      <!-- Main content -->
-      <div class="px-5 flex-1 sm:px-10 lg:px-20 relative">
-        <!-- Focus overlay (only in chapter section) -->
-        <div 
-          v-if="focusedVerseNumber"
-          class="absolute top-0 left-0 right-0 bg-black/20 z-1 cursor-pointer transition-opacity duration-300 ease-in-out"
-          :style="{ height: `${overlayHeight}px` }"
-          @click="clearFocus"
-        />
+      <!-- Focus overlay (only in chapter section) -->
+      <div 
+        v-if="focusedVerseNumber"
+        class="absolute top-0 left-0 right-0 bg-black/20 z-1 cursor-pointer transition-opacity duration-300 ease-in-out"
+        :style="{ height: `${overlayHeight}px` }"
+        @click="clearFocus"
+      />
 
+      <!-- Main content -->
+      <div class="px-5 flex-1 sm:px-10 lg:px-20">
         <h1 class="text-xl font-bold text-center text-base-content/60 mt-6 mb-2">
           {{ bookName }}
         </h1>
