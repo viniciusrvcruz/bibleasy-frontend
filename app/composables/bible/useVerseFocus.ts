@@ -6,6 +6,12 @@ export const useVerseFocus = (
   const focusedVerseNumber = ref<number | null>(null)
   let scrollTimeout: ReturnType<typeof setTimeout> | null = null
 
+  const overlayHeight = computed(() => {
+    if (!focusedVerseNumber.value || !containerRef.value) return 0
+
+    return containerRef.value.scrollHeight
+  })
+
   const resetScrollTimeout = () => {
     if (scrollTimeout) clearTimeout(scrollTimeout)
 
@@ -50,6 +56,7 @@ export const useVerseFocus = (
 
   return {
     focusedVerseNumber,
+    overlayHeight,
     handleScroll,
     handleVerseFocus,
     clearFocus
