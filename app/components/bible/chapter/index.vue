@@ -83,7 +83,6 @@ const clearHash = () => {
 
 const {
   focusedVerseNumber,
-  overlayHeight,
   handleScroll,
   handleVerseFocus,
   clearFocus
@@ -129,7 +128,7 @@ const handleVersionSelect = async (version: Version) => {
   <section class="flex-1 flex flex-col justify-between h-screen-header overflow-hidden">
     <div
       ref="chapterContainerRef"
-      class="flex flex-col overflow-y-auto h-full scroll-smooth relative"
+      class="flex flex-col overflow-y-auto h-full scroll-smooth relative isolate"
       @scroll="handleScroll"
     >
       <BibleChapterHeader
@@ -143,8 +142,7 @@ const handleVersionSelect = async (version: Version) => {
       <!-- Focus overlay (only in chapter section) -->
       <div 
         v-if="focusedVerseNumber"
-        class="absolute top-0 left-0 right-0 bg-black/20 z-1 cursor-pointer transition-opacity duration-300 ease-in-out"
-        :style="{ height: `${overlayHeight}px` }"
+        class="fixed inset-0 top-header bg-black/20 z-1 cursor-pointer transition-opacity duration-300 ease-in-out"
         @click="clearFocus"
       />
 
