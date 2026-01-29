@@ -126,7 +126,7 @@ const handleVersionSelect = async (version: Version) => {
 </script>
 
 <template>
-  <section class="flex-1 flex flex-col justify-between h-screen-header overflow-hidden">
+  <section class="flex-1 flex flex-col justify-between h-screen-header overflow-hidden sticky top-header">
     <div
       ref="chapterContainerRef"
       class="flex flex-col overflow-y-auto h-full scroll-smooth relative"
@@ -180,7 +180,7 @@ const handleVersionSelect = async (version: Version) => {
           class="mt-8 mb-6 text-center text-sm text-base-content/60 max-w-lg mx-auto"
         />
 
-        <div class="divider my-8 mx-96" />
+        <div class="divider w-1/2 mx-auto" />
 
         <BibleChapterFooter />
       </div>

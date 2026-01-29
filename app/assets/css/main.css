@@ -31,9 +31,9 @@ html {
 }
 
 .p-popover {
-  border: var(--border);
-  border-radius: var(--radius-box);
-  background-color: var(--color-base-300);
+  border: var(--border) !important;
+  border-radius: var(--radius-box) !important;
+  background-color: var(--color-base-300) !important;
 }
 .p-popover::before,
 .p-popover::after {
