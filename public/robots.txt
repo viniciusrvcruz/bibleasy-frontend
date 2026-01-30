@@ -1,6 +1,0 @@
-# START nuxt-robots (indexable)
-User-agent: *
-Disallow: 
-
-Sitemap: https://bibleasy.com/sitemap.xml
-# END nuxt-robots
