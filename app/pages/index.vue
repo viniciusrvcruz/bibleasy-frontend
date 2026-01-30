@@ -5,7 +5,6 @@ useSeoMeta({
   ogTitle: 'Bibleasy - Bíblia Online Moderna e Gratuita',
   ogDescription: 'Explore as Escrituras com uma interface bonita e fácil de usar. Diferentes versões da Bíblia, personalização de temas e busca rápida de versículos.',
   ogType: 'website',
-  twitterCard: 'summary_large_image',
   twitterTitle: 'Bibleasy - Bíblia Online Moderna e Gratuita',
   twitterDescription: 'Leia a Bíblia online gratuitamente. Interface moderna, múltiplas versões e personalização completa.',
 })

@@ -99,8 +99,13 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ],
       meta: [
+        { property: 'og:image', content: 'https://bibleasy.com/logo.png' },
+        { property: 'og:image:width', content: '215' },
+        { property: 'og:image:height', content: '215' },
+        { property: 'og:image:alt', content: 'Bibleasy - Bíblia Online Moderna e Gratuita' },
         { name: 'twitter:image', content: 'https://bibleasy.com/logo.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:site', content: '@Bibleasy' },
       ],
     },
   },

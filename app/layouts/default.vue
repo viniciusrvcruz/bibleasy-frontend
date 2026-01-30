@@ -2,6 +2,24 @@
 import { useVersionService } from '~/composables/services/useVersionService'
 import { useBookService } from '~/composables/services/useBookService'
 
+const route = useRoute()
+const requestURL = useRequestURL()
+const canonicalUrl = `${requestURL.origin}${route.fullPath}`
+
+useSeoMeta({
+  ogImage: 'https://bibleasy.com/logo.png',
+  ogImageAlt: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+  ogImageWidth: 215,
+  ogImageHeight: 215,
+  ogUrl: canonicalUrl,
+  twitterCard: 'summary_large_image',
+  twitterImage: 'https://bibleasy.com/logo.png',
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+})
+
 const versionStore = useVersionStore()
 const versionService = useVersionService()
 const bookService = useBookService()
