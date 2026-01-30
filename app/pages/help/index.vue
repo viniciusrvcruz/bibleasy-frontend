@@ -5,7 +5,6 @@ useSeoMeta({
   ogTitle: 'Central de Ajuda | Bibleasy',
   ogDescription: 'Guia completo de como usar o Bibleasy. Personalização, busca de versículos, perguntas frequentes e funcionalidades futuras.',
   ogType: 'website',
-  twitterCard: 'summary',
   twitterTitle: 'Central de Ajuda | Bibleasy',
   twitterDescription: 'Encontre respostas para suas dúvidas sobre como usar o Bibleasy.',
 })

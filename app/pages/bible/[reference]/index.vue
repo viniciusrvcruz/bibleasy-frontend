@@ -49,7 +49,6 @@ useSeoMeta({
   ogTitle: pageTitle,
   ogDescription: pageDescription,
   ogType: 'article',
-  twitterCard: 'summary',
   twitterTitle: pageTitle,
   twitterDescription: pageDescription,
 })
