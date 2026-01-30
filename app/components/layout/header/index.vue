@@ -4,6 +4,7 @@ import UserDropdown from './UserDropdown.vue'
 
 const themeSelectorPopoverRef = useTemplateRef('themeSelectorPopoverRef')
 const userDropdownRef = useTemplateRef('userDropdownRef')
+const { lastChapterUrl } = useNavigateToBible()
 
 const closeDrawer = () => {
   document.getElementById('drawer')?.click()
@@ -30,7 +31,7 @@ const closeDrawer = () => {
 
           <ul class="menu menu-horizontal gap-2 ms-5">
             <li>
-              <RouterLink to="/bible">
+              <RouterLink :to="lastChapterUrl">
                 <Icon icon="book_open" :size="20" />
                 Bíblia
               </RouterLink>
@@ -88,7 +89,7 @@ const closeDrawer = () => {
         </div>
         <div class="flex-1 flex flex-col gap-2 overflow-y-auto px-4 py-4 border-t border-base-300">
           <RouterLink 
-            to="/bible" 
+            :to="lastChapterUrl" 
             @click="closeDrawer" 
             class="btn btn-ghost justify-start w-full text-base"
           >
