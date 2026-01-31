@@ -37,12 +37,13 @@ useSchemaOrg([
 <template>
   <main class="flex-1">
     <!-- Hero Section -->
-    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-base-100 -z-10">
-      <!-- Decorative background -->
-      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 -z-10" />
-      <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10" />
-      <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -z-10" />
-      
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <!-- Background layers (separate from content so decorative elements are visible and clicks work) -->
+      <div class="absolute inset-0 bg-base-100" aria-hidden="true" />
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5" aria-hidden="true" />
+      <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
+
       <div class="relative z-10 text-center px-4 py-16 max-w-5xl mx-auto">
         <!-- Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
@@ -117,7 +118,7 @@ useSchemaOrg([
     </section>
 
     <!-- Features Section -->
-    <section class="py-14 sm:py-24 bg-base-100">
+    <section class="py-14 bg-base-100">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
           <span class="text-primary font-semibold text-sm uppercase tracking-wider">Recursos</span>
@@ -297,7 +298,7 @@ useSchemaOrg([
           <SharedSocialLinks :icon-size="22" />
         </div>
 
-        <div class="border-t border-base-content/10 mt-8 pt-8 text-center text-sm text-base-content/50">
+        <div class="border-t border-base-content/10 mt-8 pt-8 text-center text-sm text-base-content/80">
           <p>Feito com ❤️ por Vinicius Cruz</p>
         </div>
       </div>
