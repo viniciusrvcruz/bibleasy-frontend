@@ -13,7 +13,7 @@ const closeDrawer = () => {
 </script>
 
 <template>
-  <div class="drawer sticky top-0 z-10">
+  <div class="drawer sticky top-0 z-20">
     <input id="drawer" type="checkbox" class="drawer-toggle" />
 
     <div class="drawer-content flex flex-col">
