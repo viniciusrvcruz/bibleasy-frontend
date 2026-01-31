@@ -1,10 +1,9 @@
-import { defineSitemapEventHandler, asSitemapUrl } from '#imports'
 import { BOOKS } from '~/utils/book'
 
 // Static pages
 const staticPages = [
-  { loc: '/', changefreq: 'weekly', priority: 1.0 },
-  { loc: '/help', changefreq: 'monthly', priority: 0.7 },
+  asSitemapUrl({ loc: '/', changefreq: 'weekly', priority: 1.0 }),
+  asSitemapUrl({ loc: '/help', changefreq: 'monthly', priority: 0.7 }),
 ]
 
 export default defineSitemapEventHandler(() => {
