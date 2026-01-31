@@ -9,6 +9,10 @@ useSeoMeta({
   twitterDescription: 'Leia a Bíblia online gratuitamente. Interface moderna, múltiplas versões e personalização completa.',
 })
 
+const { lastChapterUrl } = useNavigateToBible()
+
+const siteUrl = useSiteConfig().url ?? 'https://bibleasy.com'
+
 useSchemaOrg([
   defineWebSite({
     name: 'Bibleasy',
@@ -19,166 +23,284 @@ useSchemaOrg([
     name: 'Página Inicial',
     description: 'Leia a Bíblia online gratuitamente com interface moderna e intuitiva.',
   }),
+  defineItemList({
+    name: 'Navegação principal',
+    itemListElement: [
+      defineListItem({ position: 1, name: 'Início', item: siteUrl }),
+      defineListItem({ position: 2, name: 'Bíblia', item: `${siteUrl}/${lastChapterUrl}` }),
+      defineListItem({ position: 3, name: 'Central de Ajuda', item: `${siteUrl}/help` }),
+    ],
+  }),
 ])
 </script>
 
 <template>
   <main class="flex-1">
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content text-center">
-        <div class="max-w-4xl">
-          <h1 class="my-6 text-5xl font-bold lg:text-7xl">
-            Leia a Bíblia de forma
-            <span class="text-primary">moderna</span> e
-            <span class="text-primary">intuitiva</span>
-          </h1>
-          
-          <p class="mb-8 text-lg text-base-content/70 lg:text-xl">
-            Explore as Escrituras com uma interface bonita e fácil de usar.
-            Leia diferentes versões da Bíblia e personalize sua experiência de leitura.
-          </p>
-          
-          <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <RouterLink to="/bible" class="btn btn-primary btn-lg">
-              <Icon icon="book_open" :size="24" />
-              Começar a Ler
-            </RouterLink>
-            <RouterLink to="/help" class="btn btn-outline btn-lg">
-              <Icon icon="circle_question" :size="24" />
-              Saiba Mais
-            </RouterLink>
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-base-100 -z-10">
+      <!-- Decorative background -->
+      <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 -z-10" />
+      <div class="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl -z-10" />
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl -z-10" />
+      
+      <div class="relative z-10 text-center px-4 py-16 max-w-5xl mx-auto">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8">
+          <Icon icon="rocket" :size="16" />
+          <span>100% Gratuito e Open Source</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+          Leia a Bíblia de forma
+          <span class="relative">
+            <span class="text-primary">moderna</span>
+          </span>
+          e
+          <span class="text-primary">intuitiva</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-base-content/70 max-w-2xl mx-auto mb-10">
+          Explore as Escrituras Sagradas com uma interface bonita, personalizável e fácil de usar.
+          Múltiplas versões, busca instantânea e leitura em qualquer dispositivo.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <RouterLink
+            :to="lastChapterUrl"
+            class="btn btn-primary btn-lg shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-shadow"
+          >
+            <Icon icon="book_open" :size="22" />
+            Começar a Ler
+          </RouterLink>
+          <RouterLink to="/help" class="btn btn-outline btn-lg">
+            <Icon icon="circle_question" :size="22" />
+            Central de Ajuda
+          </RouterLink>
+        </div>
+        
+        <!-- Highlights -->
+        <div class="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm text-base-content/60">
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-primary" />
+            <span>Sem cadastro necessário</span>
           </div>
-          
-          <div class="mt-12 flex flex-wrap justify-center gap-6 text-sm text-base-content/60">
-            <div class="flex items-center gap-2">
-              <Icon icon="palette" :size="18" />
-              <span>Personalize as cores</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <Icon icon="globe" :size="18" />
-              <span>Funciona em qualquer dispositivo</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <Icon icon="book_open" :size="18" />
-              <span>100% gratuito</span>
-            </div>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-primary" />
+            <span>Funciona em qualquer dispositivo</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-primary" />
+            <span>Múltiplas versões da Bíblia</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="hidden sm:block py-10 sm:py-14 bg-base-200">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-0 text-center divide-y sm:divide-y-0 sm:divide-x divide-base-content/10">
+          <div class="rounded-xl bg-base-200 p-4 sm:py-4">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">Múltiplas</div>
+            <div class="text-base-content/60 text-xs sm:text-sm font-medium">Versões da Bíblia</div>
+          </div>
+          <div class="rounded-xl bg-base-200 p-4 sm:py-4">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">Dezenas</div>
+            <div class="text-base-content/60 text-xs sm:text-sm font-medium">de Temas</div>
+          </div>
+          <div class="rounded-xl bg-base-200 p-4 sm:py-4">
+            <div class="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary">100%</div>
+            <div class="text-base-content/60 text-xs sm:text-sm font-medium">Gratuito</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 bg-base-100">
+    <section class="py-14 sm:py-24 bg-base-100">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
-          <h2 class="text-4xl font-bold mb-4">Por que escolher nossa plataforma?</h2>
-          <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
-            Tudo que você precisa para uma leitura bíblica completa e agradável
+          <span class="text-primary font-semibold text-sm uppercase tracking-wider">Recursos</span>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Tudo que você precisa</h2>
+          <p class="text-lg text-base-content/60 max-w-2xl mx-auto">
+            Uma plataforma completa para sua leitura bíblica diária
           </p>
         </div>
         
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
           <!-- Feature 1 -->
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <div class="mb-4 text-primary">
-                <Icon icon="book_open" :size="40" />
-              </div>
-              <h3 class="card-title text-2xl">Fácil de Navegar</h3>
-              <p class="text-base-content/70">
-                Encontre qualquer livro, capítulo ou versículo rapidamente.
-                Interface simples e organizada para você focar apenas na leitura.
-              </p>
+          <div class="p-6 rounded-2xl bg-base-200">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+              <Icon icon="book_open" :size="28" />
             </div>
+            <h3 class="text-xl font-bold mb-2">Navegação Intuitiva</h3>
+            <p class="text-base-content/60">
+              Encontre qualquer livro, capítulo ou versículo em segundos.
+              Interface limpa e organizada para você focar na leitura.
+            </p>
           </div>
 
           <!-- Feature 2 -->
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <div class="mb-4 text-primary">
-                <Icon icon="compare" :size="40" />
-              </div>
-              <h3 class="card-title text-2xl">Diferentes Versões</h3>
-              <p class="text-base-content/70">
-                Leia a Bíblia em várias versões diferentes.
-                Troque entre elas facilmente e encontre a que mais gosta.
-              </p>
+          <div class="p-6 rounded-2xl bg-base-200">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+              <Icon icon="compare" :size="28" />
             </div>
+            <h3 class="text-xl font-bold mb-2">Múltiplas Versões</h3>
+            <p class="text-base-content/60">
+              Acesse diferentes traduções da Bíblia e compare versículos.
+              Troque entre versões com apenas um clique.
+            </p>
           </div>
 
           <!-- Feature 3 -->
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <div class="mb-4 text-primary">
-                <Icon icon="palette" :size="40" />
-              </div>
-              <h3 class="card-title text-2xl">Personalize sua Leitura</h3>
-              <p class="text-base-content/70">
-                Escolha entre diversos temas e cores para tornar sua leitura
-                mais confortável e agradável aos seus olhos.
-              </p>
+          <div class="p-6 rounded-2xl bg-base-200">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+              <Icon icon="palette" :size="28" />
             </div>
+            <h3 class="text-xl font-bold mb-2">Personalização Total</h3>
+            <p class="text-base-content/60">
+              Escolha entre dezenas de temas e cores.
+              Ajuste fonte, tamanho e espaçamento ao seu gosto.
+            </p>
           </div>
 
           <!-- Feature 4 -->
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <div class="mb-4 text-primary">
-                <Icon icon="search" :size="40" />
-              </div>
-              <h3 class="card-title text-2xl">Encontre Rapidamente</h3>
-              <p class="text-base-content/70">
-                Busque qualquer versículo ou passagem bíblica em segundos.
-                Digite uma letra e comece a pesquisar imediatamente.
-              </p>
+          <div class="p-6 rounded-2xl bg-base-200">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+              <Icon icon="search" :size="28" />
             </div>
+            <h3 class="text-xl font-bold mb-2">Busca Instantânea</h3>
+            <p class="text-base-content/60">
+              Digite qualquer letra e encontre versículos imediatamente.
+              Pesquisa inteligente por livro, capítulo ou palavra-chave.
+            </p>
           </div>
 
           <!-- Feature 5 -->
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <div class="mb-4 text-primary">
-                <Icon icon="globe" :size="40" />
-              </div>
-              <h3 class="card-title text-2xl">Leia em Qualquer Lugar</h3>
-              <p class="text-base-content/70">
-                Acesse de qualquer dispositivo: celular, tablet ou computador.
-                Sua leitura sempre sincronizada e acessível.
-              </p>
+          <div class="p-6 rounded-2xl bg-base-200">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+              <Icon icon="globe" :size="28" />
             </div>
+            <h3 class="text-xl font-bold mb-2">Leia em Qualquer Lugar</h3>
+            <p class="text-base-content/60">
+              Funciona perfeitamente em celular, tablet ou computador.
+              Leia a qualquer hora, em qualquer lugar.
+            </p>
           </div>
 
           <!-- Feature 6 -->
-          <div class="card bg-base-200 shadow-xl">
-            <div class="card-body">
-              <div class="mb-4 text-primary">
-                <Icon icon="rocket" :size="40" />
-              </div>
-              <h3 class="card-title text-2xl">Rápido e Suave</h3>
-              <p class="text-base-content/70">
-                Carregamento instantâneo e navegação fluida.
-                Sem esperas ou travamentos durante sua leitura.
-              </p>
+          <div class="p-6 rounded-2xl bg-base-200">
+            <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+              <Icon icon="history" :size="28" />
             </div>
+            <h3 class="text-xl font-bold mb-2">Histórico de Leitura</h3>
+            <p class="text-base-content/60">
+              Continue de onde parou automaticamente.
+              Acesse seu histórico de capítulos lidos recentemente.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="py-24 bg-base-200">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <span class="text-primary font-semibold text-sm uppercase tracking-wider">Como funciona</span>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Simples e direto ao ponto</h2>
+          <p class="text-lg text-base-content/60 max-w-2xl mx-auto">
+            Comece sua leitura em apenas 3 passos
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <!-- Step 1 -->
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-primary text-primary-content flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              1
+            </div>
+            <h3 class="text-xl font-bold mb-2">Acesse o site</h3>
+            <p class="text-base-content/60">
+              Não precisa criar conta nem baixar nada. É só acessar e começar.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-primary text-primary-content flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              2
+            </div>
+            <h3 class="text-xl font-bold mb-2">Escolha o livro</h3>
+            <p class="text-base-content/60">
+              Navegue pelos livros da Bíblia ou use a busca rápida.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="text-center">
+            <div class="w-16 h-16 rounded-full bg-primary text-primary-content flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              3
+            </div>
+            <h3 class="text-xl font-bold mb-2">Leia e personalize</h3>
+            <p class="text-base-content/60">
+              Ajuste tema, fonte e versão. Sua configuração fica salva.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-br from-primary/10 to-secondary/10">
+    <!-- CTA Section -->
+    <section class="py-24 bg-base-100">
       <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-bold mb-4">Pronto para começar?</h2>
-        <p class="text-lg text-base-content/70 mb-8 max-w-2xl mx-auto">
-          Comece sua jornada de leitura bíblica agora mesmo. 
-          É gratuito, rápido e fácil de usar.
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-4">
+          Pronto para começar sua jornada?
+        </h2>
+        <p class="text-xl text-base-content/70 mb-10 max-w-2xl mx-auto">
+          Descubra uma nova forma de ler e explorar as Escrituras Sagradas.
         </p>
-        <RouterLink to="/bible" class="btn btn-primary btn-lg">
-          <Icon icon="book_open" :size="24" />
+        <RouterLink
+          :to="lastChapterUrl"
+          class="btn btn-primary btn-lg"
+        >
+          <Icon icon="book_open" :size="22" />
           Começar a Ler Agora
         </RouterLink>
       </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-base-300">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+          <!-- Logo and description -->
+          <div class="text-center md:text-left">
+            <div class="text-2xl font-bold mb-2">Bibleasy</div>
+            <p class="text-base-content/60 text-sm max-w-md">
+              Projeto open source dedicado a tornar a leitura da Bíblia mais acessível e moderna para todos.
+            </p>
+          </div>
+
+          <!-- Links -->
+          <div class="flex flex-wrap justify-center gap-6 text-sm">
+            <RouterLink :to="lastChapterUrl" class="hover:text-primary transition-colors">
+              Bíblia
+            </RouterLink>
+            <RouterLink to="/help" class="hover:text-primary transition-colors">
+              Central de Ajuda
+            </RouterLink>
+          </div>
+
+          <!-- Social -->
+          <SharedSocialLinks :icon-size="22" />
+        </div>
+
+        <div class="border-t border-base-content/10 mt-8 pt-8 text-center text-sm text-base-content/50">
+          <p>Feito com ❤️ por Vinicius Cruz</p>
+        </div>
+      </div>
+    </footer>
   </main>
 </template>

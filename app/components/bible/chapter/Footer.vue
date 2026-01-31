@@ -5,7 +5,7 @@
     </p>
     <div class="mb-4 py-2 px-4 rounded-md inline-block">
       <p class="text-sm text-base-content/60 text-center">
-        <Icon icon="info" :size="16" class="text-base-content/40 inline-block align-text-bottom mr-1" style="vertical-align: -0.125em;" />
+        <Icon icon="info" :size="16" class="text-base-content/40 inline-block align-text-bottom mr-1 icon-info" />
         Encontrou algum problema de tradução ou erro no texto?
         <RouterLink
           to="/help#suggestions-bugs"
@@ -19,3 +19,8 @@
   </footer>
 </template>
 
+<style scoped>
+.icon-info {
+  vertical-align: -0.180em;
+}
+</style>
