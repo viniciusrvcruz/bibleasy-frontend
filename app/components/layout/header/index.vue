@@ -14,7 +14,12 @@ const closeDrawer = () => {
 
 <template>
   <div class="drawer sticky top-0 z-20">
-    <input id="drawer" type="checkbox" class="drawer-toggle" />
+    <input
+      id="drawer"
+      type="checkbox"
+      class="drawer-toggle"
+      aria-label="Abrir ou fechar menu de navegação"
+    />
 
     <div class="drawer-content flex flex-col">
       <div class="navbar h-header bg-base-300 w-full justify-between items-center py-0 lg:px-10">

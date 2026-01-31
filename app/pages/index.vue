@@ -298,7 +298,7 @@ useSchemaOrg([
           <SharedSocialLinks :icon-size="22" />
         </div>
 
-        <div class="border-t border-base-content/10 mt-8 pt-8 text-center text-sm text-base-content/80">
+        <div class="border-t border-base-content/10 mt-8 pt-8 text-center text-sm text-base-content">
           <p>Feito com ❤️ por Vinicius Cruz</p>
         </div>
       </div>
