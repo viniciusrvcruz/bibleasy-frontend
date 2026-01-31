@@ -279,7 +279,7 @@ useSchemaOrg([
           <!-- Logo and description -->
           <div class="text-center md:text-left">
             <div class="text-2xl font-bold mb-2">Bibleasy</div>
-            <p class="text-base-content/60 text-sm max-w-md">
+            <p class="text-base-content text-sm max-w-md">
               Projeto open source dedicado a tornar a leitura da Bíblia mais acessível e moderna para todos.
             </p>
           </div>
