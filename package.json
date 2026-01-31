@@ -26,6 +26,8 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
-    "@primevue/nuxt-module": "^4.5.4"
+    "@primevue/nuxt-module": "^4.5.4",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.4"
   }
 }
