@@ -1,261 +1,250 @@
-# 📖 Bible
+# 📖 Bibleasy Frontend
 
-Uma aplicação web moderna e responsiva para leitura da Bíblia, desenvolvida com Nuxt 4 e Vue 3. O projeto oferece uma interface intuitiva e elegante para navegar entre livros, capítulos e versículos, com suporte a múltiplas versões bíblicas e temas claro/escuro.
+<p align="center">
+  <img src="public/logo.png" alt="Bibleasy Logo" width="70" style="border-radius: 10px" />
+</p>
+
+<p align="center">
+  <strong>
+    🌐 <a href="https://bibleasy.com">Ver aplicação no ar</a> &nbsp;•&nbsp;
+    🔧 <a href="https://github.com/viniciusrvcruz/bibleasy-backend">Repositório do Backend</a>
+  </strong>
+</p>
+
+**Aplicação web moderna e responsiva para leitura da Bíblia**, desenvolvida com Nuxt 4 e Vue 3. Interface intuitiva para navegar entre livros, capítulos e versículos, com suporte a múltiplas versões bíblicas e temas claro/escuro.
+
+<p align="center">
+  <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/Nuxt-4.2-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt" /></a>
+  <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3.5-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue" /></a>
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind" /></a>
+  <a href="https://daisyui.com/"><img src="https://img.shields.io/badge/DaisyUI-5.x-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white" alt="DaisyUI" /></a>
+  <a href="https://primevue.org/"><img src="https://img.shields.io/badge/PrimeVue-4.x-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="PrimeVue" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge" alt="License" /></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-20+-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker" />
+</p>
+
+---
+
+## 📋 Índice
+
+- [Visão Geral](#-visão-geral)
+- [Funcionalidades](#-funcionalidades)
+- [Tech Stack](#-tech-stack)
+- [Pré-requisitos](#-pré-requisitos)
+- [Como Executar](#-como-executar)
+- [Build para Produção](#-build-para-produção)
+- [Estrutura do Projeto](#-estrutura-do-projeto)
+- [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Como Contribuir](#-como-contribuir)
+- [Licença](#-licença)
+- [Contribuidores](#-contribuidores)
+
+---
+
+## 🎯 Visão Geral
+
+O **Bibleasy Frontend** é o cliente web do projeto Bibleasy, que oferece uma experiência de leitura da Bíblia focada em simplicidade e personalização. O frontend consome a API do [bibleasy-backend](https://github.com/viniciusrvcruz/bibleasy-backend) para exibir livros, capítulos e versículos em múltiplas versões.
+
+**Acesse em produção:** [https://bibleasy.com](https://bibleasy.com)
+
+---
 
 ## ✨ Funcionalidades
 
-- 📚 **Navegação intuitiva**: Explore livros, capítulos e versículos de forma simples
-- 🔄 **Múltiplas versões**: Suporte para diferentes versões da Bíblia
-- 🎨 **Temas variados**: Acesso a todos os temas do DaisyUI para personalização completa
-- 📱 **Design responsivo**: Interface otimizada para desktop, tablet e mobile
-- ⚡ **Performance**: Carregamento rápido com SSR (Server-Side Rendering)
-- 🖌️ **UI Moderna**: Interface clean com TailwindCSS, DaisyUI e componentes PrimeVue
-- 🔍 **Seletor de versículos**: Painel interativo para navegação rápida
-- 🔐 **Type-safe**: Validação de dados com Zod e TypeScript
+| Recurso | Descrição |
+| -------- | --------- |
+| 📚 **Navegação intuitiva** | Explore livros, capítulos e versículos de forma simples |
+| 🔄 **Múltiplas versões** | Suporte para diferentes versões da Bíblia |
+| 🎨 **Temas variados** | Acesso a todos os temas do DaisyUI para personalização completa |
+| 📱 **Design responsivo** | Interface otimizada para desktop, tablet e mobile |
+| ⚡ **Performance** | Carregamento rápido com SSR (Server-Side Rendering) |
+| 🖌️ **UI moderna** | Interface clean com TailwindCSS, DaisyUI e componentes PrimeVue |
+| 🔍 **Seletor de versículos** | Painel interativo para navegação rápida |
+| 🔐 **Type-safe** | Validação de dados com Zod e TypeScript |
 
-## 🛠️ Tecnologias
+---
 
-Este projeto foi construído com as seguintes tecnologias:
+## 🛠️ Tech Stack
 
-- **[Nuxt 4](https://nuxt.com/)** - Framework Vue.js full-stack
-- **[Vue 3](https://vuejs.org/)** - Framework JavaScript progressivo
-- **[TypeScript](https://www.typescriptlang.org/)** - JavaScript com tipagem estática
-- **[TailwindCSS 4](https://tailwindcss.com/)** - Framework CSS utility-first
-- **[DaisyUI](https://daisyui.com/)** - Biblioteca de componentes para Tailwind
-- **[PrimeVue](https://primevue.org/)** - Biblioteca de componentes Vue
-- **[Pinia](https://pinia.vuejs.org/)** - Gerenciamento de estado para Vue
-- **[Zod](https://zod.dev/)** - Validação de schemas TypeScript-first
-- **[Nuxt Icon](https://nuxt.com/modules/icon)** - Sistema de ícones
-- **[Docker](https://www.docker.com/)** - Containerização da aplicação
+| Tecnologia | Descrição |
+| --------- | --------- |
+| [Nuxt 4](https://nuxt.com/) | Framework Vue.js full-stack |
+| [Vue 3](https://vuejs.org/) | Framework JavaScript progressivo |
+| [TypeScript](https://www.typescriptlang.org/) | JavaScript com tipagem estática |
+| [TailwindCSS 4](https://tailwindcss.com/) | Framework CSS utility-first |
+| [DaisyUI](https://daisyui.com/) | Biblioteca de componentes para Tailwind |
+| [PrimeVue](https://primevue.org/) | Biblioteca de componentes Vue |
+| [Pinia](https://pinia.vuejs.org/) | Gerenciamento de estado para Vue |
+| [Zod](https://zod.dev/) | Validação de schemas TypeScript-first |
+| [Nuxt Icon](https://nuxt.com/modules/icon) | Sistema de ícones |
+| [Docker](https://www.docker.com/) | Containerização da aplicação |
+
+---
 
 ## 📋 Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
-- **Node.js** (versão 20 ou superior - recomenda-se a versão LTS)
+- **Node.js** (versão 20 ou superior — recomenda-se a versão LTS)
 - **npm**, **pnpm**, **yarn** ou **bun**
 - **Docker** e **Docker Compose** (opcional, para execução com containers)
 
+---
+
 ## 🚀 Como Executar
 
-### Instalação Local
-
-1. **Clone o repositório**
+### Instalação local
 
 ```bash
-git clone https://github.com/seu-usuario/bibleasy-frontend.git
-cd bibleasy-frontend
-```
+# 1. Clone o repositório
+git clone https://github.com/viniciusrvcruz/bible-frontend.git
+cd bible-frontend
 
-2. **Instale as dependências**
-
-```bash
+# 2. Instale as dependências
 npm install
-# ou
-pnpm install
-# ou
-yarn install
-# ou
-bun install
-```
+# ou: pnpm install | yarn install | bun install
 
-3. **Configure as variáveis de ambiente**
-
-Copie o arquivo `.env.example` para `.env` e ajuste as variáveis conforme necessário:
-
-```bash
+# 3. Configure as variáveis de ambiente
 cp .env.example .env
-```
+# Edite o .env com a URL da API (ex.: backend em execução local)
 
-Exemplo de variáveis:
-
-```env
-# URL da API backend
-NUXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
-NUXT_API_BASE_URL=http://localhost:8000/api
-```
-
-4. **Inicie o servidor de desenvolvimento**
-
-```bash
+# 4. Inicie o servidor de desenvolvimento
 npm run dev
-# ou
-pnpm dev
-# ou
-yarn dev
-# ou
-bun run dev
+# ou: pnpm dev | yarn dev | bun run dev
 ```
 
-A aplicação estará disponível em `http://localhost:3000`
+A aplicação estará disponível em **http://localhost:3000**.
+
+> **Nota:** Para dados reais, é necessário ter o [bibleasy-backend](https://github.com/viniciusrvcruz/bibleasy-backend) em execução e configurar `NUXT_PUBLIC_API_BASE_URL` e `NUXT_API_BASE_URL` no `.env`.
 
 ### Executando com Docker
 
-1. **Suba o container**
-
 ```bash
+# 1. Suba o container
 docker-compose up -d
-```
 
-2. **Acesse o container**
-
-```bash
+# 2. Acesse o container
 docker exec -it bible_frontend bash
-```
 
-3. **Instale as dependências e inicie o servidor**
-
-```bash
+# 3. Instale as dependências e inicie o servidor
 npm install
 npm run dev
 ```
 
-A aplicação estará disponível em `http://localhost:3000`
+A aplicação estará disponível em **http://localhost:3000**.
+
+---
 
 ## 📦 Build para Produção
 
-Para criar uma versão otimizada para produção:
-
 ```bash
+# Criar build otimizado
 npm run build
-```
 
-Para visualizar a build de produção localmente:
-
-```bash
+# Visualizar a build de produção localmente
 npm run preview
 ```
+
+---
 
 ## 📁 Estrutura do Projeto
 
 ```
-bibleasy-frontend/
+bible-frontend/
 ├── app/
-│   ├── assets/              # Arquivos estáticos (CSS, imagens)
-│   ├── components/          # Componentes Vue reutilizáveis
-│   │   ├── bible/          # Componentes específicos da Bíblia
-│   │   │   ├── chapter/    # Componente de capítulo
-│   │   │   └── verse_selector/ # Seletor de versículos
-│   │   ├── Header.vue      # Cabeçalho da aplicação
-│   │   ├── Icon.vue        # Componente de ícones
-│   │   └── ThemeSelectorPopover.vue # Seletor de tema
-│   ├── composables/         # Composables Vue (lógica reutilizável)
-│   │   ├── services/       # Serviços de API
-│   │   └── useApi.ts       # Configuração da API
-│   ├── layouts/            # Layouts da aplicação
-│   ├── pages/              # Páginas e rotas
-│   │   ├── bible/          # Páginas relacionadas à Bíblia
-│   │   └── index.vue       # Página inicial
-│   ├── stores/             # Stores do Pinia
-│   ├── types/              # Tipos TypeScript e schemas Zod
-│   └── utils/              # Funções utilitárias
-├── public/                  # Arquivos públicos estáticos
-├── docker-compose.yml       # Configuração do Docker
-├── nuxt.config.ts          # Configuração do Nuxt
-├── package.json            # Dependências do projeto
-├── tsconfig.json           # Configuração do TypeScript
-└── README.md               # Este arquivo
+│   ├── assets/                 # Arquivos estáticos (CSS, imagens)
+│   ├── components/              # Componentes Vue reutilizáveis
+│   │   ├── bible/               # Componentes específicos da Bíblia
+│   │   │   ├── chapter/         # Capítulo, versos, cabeçalho, modais
+│   │   │   ├── verse_selector/  # Seletor de versículos
+│   │   │   └── SearchModal.vue
+│   │   ├── help/                # Componentes da página de ajuda
+│   │   ├── layout/              # Header, tema, usuário
+│   │   ├── shared/              # Componentes compartilhados
+│   │   └── Icon.vue
+│   ├── composables/             # Composables Vue (lógica reutilizável)
+│   │   ├── bible/               # useBibleReference, useChapterHistory, etc.
+│   │   ├── services/            # Serviços de API (book, chapter, version)
+│   │   ├── useApi.ts
+│   │   └── useNavigateToBible.ts
+│   ├── layouts/
+│   ├── pages/                   # Rotas (bible, help, index)
+│   ├── stores/                  # Pinia (lastChapter, version)
+│   ├── types/                   # Tipos TypeScript e schemas Zod
+│   └── utils/                   # Funções utilitárias
+├── public/
+├── server/api/                  # API routes (ex.: sitemap)
+├── docker-compose.yml
+├── nuxt.config.ts
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## 🎯 Funcionalidades em Desenvolvimento
+---
 
-- [ ] Sistema de busca de versículos
-- [ ] Histórico de leitura
-- [ ] Sistema de anotações
-- [ ] Compartilhamento de versículos
-- [ ] Modo de leitura (maior tamanho de fonte)
-- [ ] Comparação entre versões
-- [ ] Copiar versículos selecionados
-- [ ] Suporte a mais idiomas
+## 🔐 Variáveis de Ambiente
+
+| Variável | Descrição |
+| -------- | --------- |
+| `NUXT_PUBLIC_API_BASE_URL` | URL pública da API backend (browser) |
+| `NUXT_API_BASE_URL` | URL da API backend (server-side) |
+
+Exemplo (`.env`):
+
+```env
+NUXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
+NUXT_API_BASE_URL=http://localhost:8000/api
+```
+
+---
 
 ## 🤝 Como Contribuir
 
-Contribuições são sempre bem-vindas! Aqui está como você pode ajudar:
+Contribuições são bem-vindas.
 
-### 1. Fork o Projeto
+### Passos rápidos
 
-Clique no botão "Fork" no topo da página do repositório.
+1. **Fork** o projeto e **clone** seu fork
+2. Crie uma **branch** (`git checkout -b feature/minha-feature` ou `fix/correcao`)
+3. Faça suas alterações (código limpo, comentários em **inglês**)
+4. **Commit** com Conventional Commits em inglês (`feat: add X`, `fix: resolve Y`)
+5. **Push** para a branch e abra um **Pull Request**
 
-### 2. Clone seu Fork
+### Convenção de commits
 
-```bash
-git clone https://github.com/seu-usuario/bibleasy-frontend.git
-cd bibleasy-frontend
-```
+| Tipo | Uso |
+| ---- | --- |
+| `feat` | Nova funcionalidade |
+| `fix` | Correção de bug |
+| `docs` | Documentação |
+| `style` | Formatação (sem mudança de lógica) |
+| `refactor` | Refatoração |
+| `chore` | Tarefas de manutenção |
 
-### 3. Crie uma Branch
+### Diretrizes
 
-**⚠️ Importante: Branches, commits e comentários no código devem ser sempre em inglês**
+- **Code style:** Vue 3 Composition API com `<script setup>`, TypeScript, TailwindCSS/DaisyUI
+- **Validação:** Zod para dados da API
+- **Idioma:** Branches, commits e comentários no código em **inglês**
 
-```bash
-git checkout -b feature/my-new-feature
-# ou
-git checkout -b fix/bug-fix
-```
+### Reportar bugs ou sugerir melhorias
 
-### 4. Faça suas Alterações
+- **Bugs:** Abra uma [issue](https://github.com/viniciusrvcruz/bible-frontend/issues) com descrição, passos para reproduzir e ambiente
+- **Sugestões:** Abra uma issue com a tag `enhancement`
 
-- Escreva código limpo e bem documentado
-- Siga os padrões de código do projeto
-- Mantenha commits atômicos e com mensagens claras
-- **Todos os comentários no código devem ser em inglês**
-
-### 5. Commit suas Mudanças
-
-```bash
-git add .
-git commit -m "feat: add new feature X"
-```
-
-**Padrão de commits (Conventional Commits - em inglês):**
-- `feat:` Nova funcionalidade
-- `fix:` Correção de bug
-- `docs:` Documentação
-- `style:` Formatação (sem mudança de código)
-- `refactor:` Refatoração de código
-- `chore:` Tarefas de manutenção
-
-### 6. Push para seu Fork
-
-```bash
-git push origin feature/my-new-feature
-```
-
-### 7. Abra um Pull Request
-
-Vá até o repositório original e clique em "New Pull Request". Descreva suas mudanças detalhadamente.
-
-### 📝 Diretrizes de Contribuição
-
-- **Code Style**: Siga as convenções do Vue 3 e TypeScript
-- **Componentes**: Use Composition API com `<script setup>`
-- **Tipagem**: Sempre defina tipos TypeScript
-- **CSS**: Utilize classes do TailwindCSS e componentes do DaisyUI
-- **Validação**: Use Zod para validação de dados
-- **Documentação**: Documente código complexo e novas funcionalidades
-- **Idioma**: Branches, commits e comentários no código devem ser em inglês
-
-### 🐛 Reportando Bugs
-
-Encontrou um bug? Por favor, abra uma [issue](https://github.com/seu-usuario/bibleasy-frontend/issues) com:
-
-- Descrição clara do problema
-- Passos para reproduzir
-- Comportamento esperado vs. atual
-- Screenshots (se aplicável)
-- Informações do ambiente (OS, navegador, versão do Node, etc.)
-
-### 💡 Sugestões de Funcionalidades
-
-Tem uma ideia? Abra uma [issue](https://github.com/seu-usuario/bibleasy-frontend/issues) com a tag `enhancement` e descreva:
-
-- O problema que sua sugestão resolve
-- Como você imagina a funcionalidade
-- Possíveis alternativas consideradas
+---
 
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
 
 ## 🤝 Contribuidores
 
@@ -263,10 +252,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
   <tr>
     <td align="center">
       <a href="https://github.com/viniciusrvcruz">
-        <img src="https://github.com/viniciusrvcruz.png" width="80px;" alt="Vinicius Cruz Profile Picture"/><br>
-        <sub>
-          <b>Vinicius Cruz (autor)</b>
-        </sub>
+        <img src="https://github.com/viniciusrvcruz.png" width="80px;" alt="Vinicius Cruz"/><br>
+        <sub><b>Vinicius Cruz (autor)</b></sub>
       </a><br>
       <a href="https://github.com/viniciusrvcruz" title="GitHub">
         <img src="https://skillicons.dev/icons?i=github" width="25px" />
@@ -278,10 +265,13 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
   </tr>
 </table>
 
-
 ---
 
 <div align="center">
-  <p>Desenvolvido com ❤️ por Vinicius Cruz</p>
+  <p><strong>Desenvolvido com ❤️ por Vinicius Cruz</strong></p>
   <p>⭐ Deixe uma estrela se este projeto te ajudou!</p>
+  <p>
+    <a href="https://bibleasy.com">🌐 Bibleasy no ar</a> •
+    <a href="https://github.com/viniciusrvcruz/bibleasy-backend">🔧 Backend (bibleasy-backend)</a>
+  </p>
 </div>

@@ -16,7 +16,7 @@ export const useApi = () => {
     url: string,
     data?: Record<string, any>,
     options?: RequestOptions
-  ): Promise<TResponse> => {
+  ) => {
     return $fetch<TResponse>(url, {
       baseURL,
       method,
