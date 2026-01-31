@@ -20,6 +20,8 @@ useSchemaOrg([
     description: 'Leia a Bíblia online gratuitamente com interface moderna e intuitiva.',
   }),
 ])
+
+const { lastChapterUrl } = useNavigateToBible()
 </script>
 
 <template>
@@ -40,7 +42,10 @@ useSchemaOrg([
           </p>
           
           <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <RouterLink to="/bible" class="btn btn-primary btn-lg">
+            <RouterLink
+              :to="lastChapterUrl"
+              class="btn btn-primary btn-lg"
+            >
               <Icon icon="book_open" :size="24" />
               Começar a Ler
             </RouterLink>
@@ -174,7 +179,10 @@ useSchemaOrg([
           Comece sua jornada de leitura bíblica agora mesmo. 
           É gratuito, rápido e fácil de usar.
         </p>
-        <RouterLink to="/bible" class="btn btn-primary btn-lg">
+        <RouterLink
+          :to="lastChapterUrl"
+          class="btn btn-primary btn-lg"
+        >
           <Icon icon="book_open" :size="24" />
           Começar a Ler Agora
         </RouterLink>
