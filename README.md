@@ -102,8 +102,8 @@ Antes de começar, certifique-se de ter instalado:
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/viniciusrvcruz/bible-frontend.git
-cd bible-frontend
+git clone https://github.com/viniciusrvcruz/bibleasy-frontend.git
+cd bibleasy-frontend
 
 # 2. Instale as dependências
 npm install
@@ -155,7 +155,7 @@ npm run preview
 ## 📁 Estrutura do Projeto
 
 ```
-bible-frontend/
+bibleasy-frontend/
 ├── app/
 │   ├── assets/                 # Arquivos estáticos (CSS, imagens)
 │   ├── components/              # Componentes Vue reutilizáveis
@@ -235,7 +235,7 @@ Contribuições são bem-vindas.
 
 ### Reportar bugs ou sugerir melhorias
 
-- **Bugs:** Abra uma [issue](https://github.com/viniciusrvcruz/bible-frontend/issues) com descrição, passos para reproduzir e ambiente
+- **Bugs:** Abra uma [issue](https://github.com/viniciusrvcruz/bibleasy-frontend/issues) com descrição, passos para reproduzir e ambiente
 - **Sugestões:** Abra uma issue com a tag `enhancement`
 
 ---
