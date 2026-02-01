@@ -50,6 +50,10 @@ const filteredBooks = computed(() => {
     .filter(book => normalizeString(book.name).includes(normalizedSearch))
 })
 
+const handleSearchInput = (e: Event) => {
+  search.value = (e.target as HTMLInputElement).value
+}
+
 const scrollToTop = (top = 0) => {
   selectionContainerRef.value?.scrollTo({ top })
 }
@@ -133,10 +137,10 @@ defineExpose({
         <label class="input mb-2 w-full">
           <Icon icon="search" :size="25" />
           <input
-            v-model="search"
             type="search"
-            class="grow text-base-content"
+            class="search-input text-base-content"
             placeholder="Pesquise um livro"
+            @input="handleSearchInput"
           />
         </label>
       </div>
