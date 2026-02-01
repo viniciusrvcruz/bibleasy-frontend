@@ -41,8 +41,8 @@
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [Como Contribuir](#-como-contribuir)
-- [Licença](#-licença)
 - [Contribuidores](#-contribuidores)
+- [Licença](#-licença)
 
 ---
 
@@ -240,12 +240,6 @@ Contribuições são bem-vindas.
 
 ---
 
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
 ## 🤝 Contribuidores
 
 <table>
@@ -264,6 +258,12 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
     </td>
   </tr>
 </table>
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
