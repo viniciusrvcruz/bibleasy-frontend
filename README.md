@@ -6,21 +6,21 @@
 
 <p align="center">
   <strong>
-    🌐 <a href="https://bibleasy.com">Ver aplicação no ar</a> &nbsp;•&nbsp;
-    🔧 <a href="https://github.com/viniciusrvcruz/bibleasy-backend">Repositório do Backend</a>
+    🌐 <a href="https://bibleasy.com" target="_blank" rel="noopener noreferrer">Ver aplicação no ar</a> &nbsp;•&nbsp;
+    🔧 <a href="https://github.com/viniciusrvcruz/bibleasy-backend" target="_blank" rel="noopener noreferrer">Repositório do Backend</a>
   </strong>
 </p>
 
 **Aplicação web moderna e responsiva para leitura da Bíblia**, desenvolvida com Nuxt 4 e Vue 3. Interface intuitiva para navegar entre livros, capítulos e versículos, com suporte a múltiplas versões bíblicas e temas claro/escuro.
 
 <p align="center">
-  <a href="https://nuxt.com/"><img src="https://img.shields.io/badge/Nuxt-4.2-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt" /></a>
-  <a href="https://vuejs.org/"><img src="https://img.shields.io/badge/Vue-3.5-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue" /></a>
-  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
-  <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind" /></a>
-  <a href="https://daisyui.com/"><img src="https://img.shields.io/badge/DaisyUI-5.x-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white" alt="DaisyUI" /></a>
-  <a href="https://primevue.org/"><img src="https://img.shields.io/badge/PrimeVue-4.x-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="PrimeVue" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge" alt="License" /></a>
+  <a href="https://nuxt.com/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Nuxt-4.2-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt" /></a>
+  <a href="https://vuejs.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Vue-3.5-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue" /></a>
+  <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Tailwind_CSS-4.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind" /></a>
+  <a href="https://daisyui.com/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/DaisyUI-5.x-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white" alt="DaisyUI" /></a>
+  <a href="https://primevue.org/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/PrimeVue-4.x-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="PrimeVue" /></a>
+  <a href="LICENSE" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge" alt="License" /></a>
 </p>
 
 <p align="center">
@@ -41,8 +41,8 @@
 - [Estrutura do Projeto](#-estrutura-do-projeto)
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [Como Contribuir](#-como-contribuir)
-- [Licença](#-licença)
 - [Contribuidores](#-contribuidores)
+- [Licença](#-licença)
 
 ---
 
@@ -102,8 +102,8 @@ Antes de começar, certifique-se de ter instalado:
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/viniciusrvcruz/bible-frontend.git
-cd bible-frontend
+git clone https://github.com/viniciusrvcruz/bibleasy-frontend.git
+cd bibleasy-frontend
 
 # 2. Instale as dependências
 npm install
@@ -155,7 +155,7 @@ npm run preview
 ## 📁 Estrutura do Projeto
 
 ```
-bible-frontend/
+bibleasy-frontend/
 ├── app/
 │   ├── assets/                 # Arquivos estáticos (CSS, imagens)
 │   ├── components/              # Componentes Vue reutilizáveis
@@ -235,8 +235,29 @@ Contribuições são bem-vindas.
 
 ### Reportar bugs ou sugerir melhorias
 
-- **Bugs:** Abra uma [issue](https://github.com/viniciusrvcruz/bible-frontend/issues) com descrição, passos para reproduzir e ambiente
+- **Bugs:** Abra uma [issue](https://github.com/viniciusrvcruz/bibleasy-frontend/issues) com descrição, passos para reproduzir e ambiente
 - **Sugestões:** Abra uma issue com a tag `enhancement`
+
+---
+
+## 🤝 Contribuidores
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/viniciusrvcruz" target="_blank" rel="noopener noreferrer">
+        <img src="https://github.com/viniciusrvcruz.png" width="80px;" alt="Vinicius Cruz"/><br>
+        <sub><b>Vinicius Cruz (autor)</b></sub>
+      </a><br>
+      <a href="https://github.com/viniciusrvcruz" title="GitHub" target="_blank" rel="noopener noreferrer">
+        <img src="https://skillicons.dev/icons?i=github" width="25px" />
+      </a>
+      <a href="https://www.linkedin.com/in/viniciuscruz7" title="LinkedIn" target="_blank" rel="noopener noreferrer">
+        <img src="https://skillicons.dev/icons?i=linkedin" width="25px" />
+      </a>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -246,32 +267,11 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ---
 
-## 🤝 Contribuidores
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/viniciusrvcruz">
-        <img src="https://github.com/viniciusrvcruz.png" width="80px;" alt="Vinicius Cruz"/><br>
-        <sub><b>Vinicius Cruz (autor)</b></sub>
-      </a><br>
-      <a href="https://github.com/viniciusrvcruz" title="GitHub">
-        <img src="https://skillicons.dev/icons?i=github" width="25px" />
-      </a>
-      <a href="https://www.linkedin.com/in/viniciuscruz7" title="LinkedIn">
-        <img src="https://skillicons.dev/icons?i=linkedin" width="25px" />
-      </a>
-    </td>
-  </tr>
-</table>
-
----
-
 <div align="center">
   <p><strong>Desenvolvido com ❤️ por Vinicius Cruz</strong></p>
   <p>⭐ Deixe uma estrela se este projeto te ajudou!</p>
   <p>
-    <a href="https://bibleasy.com">🌐 Bibleasy no ar</a> •
-    <a href="https://github.com/viniciusrvcruz/bibleasy-backend">🔧 Backend (bibleasy-backend)</a>
+    <a href="https://bibleasy.com" target="_blank" rel="noopener noreferrer">🌐 Bibleasy no ar</a> •
+    <a href="https://github.com/viniciusrvcruz/bibleasy-backend" target="_blank" rel="noopener noreferrer">🔧 Backend (bibleasy-backend)</a>
   </p>
 </div>
