@@ -30,6 +30,52 @@ html {
   height: calc(100dvh - var(--h-header));
 }
 
+/* color-scheme dynamically based on the theme (data-theme) */
+[data-theme="light"],
+[data-theme="retro"],
+[data-theme="cupcake"],
+[data-theme="bumblebee"],
+[data-theme="emerald"],
+[data-theme="corporate"],
+[data-theme="valentine"],
+[data-theme="garden"],
+[data-theme="aqua"],
+[data-theme="lofi"],
+[data-theme="pastel"],
+[data-theme="fantasy"],
+[data-theme="wireframe"],
+[data-theme="cmyk"],
+[data-theme="autumn"],
+[data-theme="acid"],
+[data-theme="lemonade"],
+[data-theme="winter"],
+[data-theme="nord"],
+[data-theme="cyberpunk"] {
+  color-scheme: light;
+}
+
+[data-theme="dark"],
+[data-theme="synthwave"],
+[data-theme="halloween"],
+[data-theme="forest"],
+[data-theme="black"],
+[data-theme="luxury"],
+[data-theme="dracula"],
+[data-theme="business"],
+[data-theme="night"],
+[data-theme="coffee"],
+[data-theme="dim"],
+[data-theme="sunset"] {
+  color-scheme: dark;
+}
+
+/* Custom fonts */
+@theme {
+  --font-arial: "Arial", sans-serif;
+  --font-courier: 'Courier New', Courier, monospace;
+}
+
+/* Primevue components */
 .p-popover {
   border: var(--border) !important;
   border-radius: var(--radius-box) !important;
@@ -38,25 +84,4 @@ html {
 .p-popover::before,
 .p-popover::after {
   display: none !important;
-}
-
-/* Fontes personalizadas */
-.font-arial {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.font-times {
-  font-family: 'Times New Roman', Times, serif;
-}
-
-.font-verdana {
-  font-family: Verdana, Geneva, sans-serif;
-}
-
-.font-georgia {
-  font-family: Georgia, 'Times New Roman', serif;
-}
-
-.font-courier {
-  font-family: 'Courier New', Courier, monospace;
 }

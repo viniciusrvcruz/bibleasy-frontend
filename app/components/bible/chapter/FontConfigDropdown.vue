@@ -13,10 +13,6 @@ const fontFamilies = [
   { label: 'Serif', value: 'font-serif' },
   { label: 'Mono', value: 'font-mono' },
   { label: 'Arial', value: 'font-arial' },
-  { label: 'Times', value: 'font-times' },
-  { label: 'Verdana', value: 'font-verdana' },
-  { label: 'Georgia', value: 'font-georgia' },
-  { label: 'Courier', value: 'font-courier' },
 ]
 
 const selectedFontSize = defineModel<string | null>('fontSize', { required: true })
