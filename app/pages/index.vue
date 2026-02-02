@@ -53,9 +53,8 @@ useSchemaOrg([
 
         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
           Leia a Bíblia de forma
-          <span class="relative">
-            <span class="text-primary">fácil</span>
-          </span>
+          <br>
+          <span class="text-primary">fácil</span>
           e
           <span class="text-primary">intuitiva</span>
         </h1>
