@@ -41,7 +41,7 @@ const bookName = chapterData.value.book.name
 const chapterNumber = chapterData.value.number
 
 const pageTitle = `${bookName} ${chapterNumber} | ${versionStore.currentVersion?.name ?? ''}`
-const pageDescription = `Leia ${bookName} capítulo ${chapterNumber} na versão ${version.name}. Acesse a Bíblia online gratuitamente com interface moderna e intuitiva.`
+const pageDescription = `Leia ${bookName} capítulo ${chapterNumber} na versão ${version.name}. Acesse a Bíblia online gratuitamente com interface fácil e intuitiva.`
 
 useSeoMeta({
   title: pageTitle,

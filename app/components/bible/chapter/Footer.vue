@@ -1,7 +1,7 @@
 <template>
   <footer class="pb-8 text-center text-sm text-base-content/80 max-w-4xl mx-auto">
     <p class="mb-3">
-      Este é um projeto open source dedicado a tornar a leitura da Bíblia mais acessível e moderna.
+      Este é um projeto open source dedicado a tornar a leitura da Bíblia mais acessível e fácil.
     </p>
     <div class="mb-4 py-2 px-4 rounded-md inline-block">
       <p class="text-sm text-base-content/80 text-center">

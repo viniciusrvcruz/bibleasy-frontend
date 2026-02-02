@@ -1,12 +1,12 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Bibleasy - Leia a Bíblia Online de Forma Moderna e Intuitiva',
-  description: 'Leia a Bíblia online gratuitamente com interface moderna. Acesse diferentes versões, personalize temas, busque versículos e leia em qualquer dispositivo.',
-  ogTitle: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+  title: 'Bibleasy - Leia a Bíblia Online de Forma Fácil e Intuitiva',
+  description: 'Leia a Bíblia online gratuitamente com interface fácil. Acesse diferentes versões, personalize temas, busque versículos e leia em qualquer dispositivo.',
+  ogTitle: 'Bibleasy - Bíblia Online Fácil e Gratuita',
   ogDescription: 'Explore as Escrituras com uma interface bonita e fácil de usar. Diferentes versões da Bíblia, personalização de temas e busca rápida de versículos.',
   ogType: 'website',
-  twitterTitle: 'Bibleasy - Bíblia Online Moderna e Gratuita',
-  twitterDescription: 'Leia a Bíblia online gratuitamente. Interface moderna, múltiplas versões e personalização completa.',
+  twitterTitle: 'Bibleasy - Bíblia Online Fácil e Gratuita',
+  twitterDescription: 'Leia a Bíblia online gratuitamente. Interface fácil, múltiplas versões e personalização completa.',
 })
 
 const { lastChapterUrl } = useNavigateToBible()
@@ -16,12 +16,12 @@ const siteUrl = useSiteConfig().url ?? 'https://bibleasy.com'
 useSchemaOrg([
   defineWebSite({
     name: 'Bibleasy',
-    description: 'Leia a Bíblia online de forma moderna e intuitiva',
+    description: 'Leia a Bíblia online de forma fácil e intuitiva',
   }),
   defineWebPage({
     '@type': 'WebPage',
     name: 'Página Inicial',
-    description: 'Leia a Bíblia online gratuitamente com interface moderna e intuitiva.',
+    description: 'Leia a Bíblia online gratuitamente com interface fácil e intuitiva.',
   }),
   defineItemList({
     name: 'Navegação principal',
@@ -54,7 +54,7 @@ useSchemaOrg([
         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
           Leia a Bíblia de forma
           <span class="relative">
-            <span class="text-primary">moderna</span>
+            <span class="text-primary">fácil</span>
           </span>
           e
           <span class="text-primary">intuitiva</span>
@@ -280,7 +280,7 @@ useSchemaOrg([
           <div class="text-center md:text-left">
             <div class="text-2xl font-bold mb-2">Bibleasy</div>
             <p class="text-base-content text-sm max-w-md">
-              Projeto open source dedicado a tornar a leitura da Bíblia mais acessível e moderna para todos.
+              Projeto open source dedicado a tornar a leitura da Bíblia mais acessível e fácil para todos.
             </p>
           </div>
 
