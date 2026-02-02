@@ -52,7 +52,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://bibleasy.com',
     name: 'Bibleasy',
-    description: 'Leia a Bíblia online de forma moderna e intuitiva. Acesse diferentes versões, personalize sua experiência e encontre qualquer versículo rapidamente.',
+    description: 'Leia a Bíblia online de forma fácil e intuitiva. Acesse diferentes versões, personalize sua experiência e encontre qualquer versículo rapidamente.',
     defaultLocale: 'pt-BR',
   },
 
@@ -67,7 +67,7 @@ export default defineNuxtConfig({
     enabled: true,
     defaults: {
       url: 'https://bibleasy.com/logo.png',
-      alt: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+      alt: 'Bibleasy - Bíblia Online Fácil e Gratuita',
     },
   },
 
@@ -102,7 +102,7 @@ export default defineNuxtConfig({
         { property: 'og:image', content: 'https://bibleasy.com/logo.png' },
         { property: 'og:image:width', content: '215' },
         { property: 'og:image:height', content: '215' },
-        { property: 'og:image:alt', content: 'Bibleasy - Bíblia Online Moderna e Gratuita' },
+        { property: 'og:image:alt', content: 'Bibleasy - Bíblia Online Fácil e Gratuita' },
         { name: 'twitter:image', content: 'https://bibleasy.com/logo.png' },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:site', content: '@Bibleasy' },

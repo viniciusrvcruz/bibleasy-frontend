@@ -8,7 +8,7 @@ const canonicalUrl = `${requestURL.origin}${route.fullPath}`
 
 useSeoMeta({
   ogImage: 'https://bibleasy.com/logo.png',
-  ogImageAlt: 'Bibleasy - Bíblia Online Moderna e Gratuita',
+  ogImageAlt: 'Bibleasy - Bíblia Online Fácil e Gratuita',
   ogImageWidth: 215,
   ogImageHeight: 215,
   ogUrl: canonicalUrl,

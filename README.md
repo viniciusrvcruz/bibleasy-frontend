@@ -11,7 +11,7 @@
   </strong>
 </p>
 
-**Aplicação web moderna e responsiva para leitura da Bíblia**, desenvolvida com Nuxt 4 e Vue 3. Interface intuitiva para navegar entre livros, capítulos e versículos, com suporte a múltiplas versões bíblicas e temas claro/escuro.
+**Aplicação web fácil e responsiva para leitura da Bíblia**, desenvolvida com Nuxt 4 e Vue 3. Interface intuitiva para navegar entre livros, capítulos e versículos, com suporte a múltiplas versões bíblicas e temas claro/escuro.
 
 <p align="center">
   <a href="https://nuxt.com/" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/Nuxt-4.2-00DC82?style=for-the-badge&logo=nuxt.js&logoColor=white" alt="Nuxt" /></a>
