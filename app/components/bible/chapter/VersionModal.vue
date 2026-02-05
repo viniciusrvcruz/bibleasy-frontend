@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Version } from '~/types/version/Version.type'
+import { normalizeString } from '~/utils/helpers'
 
 const emit = defineEmits<{
   select: [version: Version]
@@ -18,11 +19,11 @@ const languageNames: Record<string, string> = {
 const filteredVersions = computed(() => {
   if (!versionSearch.value) return versionStore.versions
 
-  const searchValue = versionSearch.value.toLowerCase()
+  const searchValue = normalizeString(versionSearch.value)
 
   return versionStore.versions.filter(v => 
-    v.abbreviation.toLowerCase().includes(searchValue) || 
-    v.name.toLowerCase().includes(searchValue)
+    normalizeString(v.abbreviation).includes(searchValue) || 
+    normalizeString(v.name).includes(searchValue)
   )
 })
 
@@ -81,14 +82,15 @@ defineExpose({
       
       <!-- Search input -->
       <div class="mb-4 shrink-0">
-        <div class="form-control">
+        <label class="input w-full">
+          <Icon icon="search" :size="25" />
           <input
             v-model="versionSearch"
-            type="text"
+            type="search"
+            class="search-input text-base-content"
             placeholder="Buscar versão..."
-            class="input input-bordered w-full"
           />
-        </div>
+        </label>
       </div>
       
       <!-- List of Versions -->

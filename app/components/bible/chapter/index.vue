@@ -108,19 +108,20 @@ const addCurrentChapterToHistory = () => {
   })
 }
 
-const handleVersionSelect = async (version: Version) => {
+const handleVersionSelect = (version: Version) => {
   const bookService = useBookService()
 
   versionStore.setCurrentVersion(version)
   // Load books for the new version
-  const books = await bookService.index(version.id)
-  versionStore.setCurrentVersionBooks(books)
+  bookService.index(version.id).then((books) => {
+    versionStore.setCurrentVersionBooks(books)
 
-  await goToChapter(
-    props.chapter.book.abbreviation,
-    props.chapter.number,
-    verseNumber.value ?? undefined
-  )
+    goToChapter(
+      props.chapter.book.abbreviation,
+      props.chapter.number,
+      verseNumber.value ?? undefined
+    )
+  })
 }
 
 </script>
