@@ -72,10 +72,15 @@ useSchemaOrg([
             <Icon icon="book_open" :size="22" />
             Começar a Ler
           </RouterLink>
-          <RouterLink to="/help" class="btn btn-outline btn-lg">
-            <Icon icon="circle_question" :size="22" />
-            Central de Ajuda
-          </RouterLink>
+          <a
+            href="https://github.com/viniciusrvcruz/bibleasy-frontend"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline btn-lg"
+          >
+            <Icon icon="github" :size="22" />
+            Repositório
+          </a>
         </div>
         
         <!-- Highlights -->
