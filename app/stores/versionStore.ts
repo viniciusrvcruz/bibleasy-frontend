@@ -3,7 +3,10 @@ import type { BookWithChapters } from '~/types/book/Book.type'
 
 export const useVersionStore = defineStore('version', () => {
   const config = useRuntimeConfig()
-  const currentVersionName = useCookie<string | null>('current-version-name')
+  // 1 year in seconds
+  const currentVersionName = useCookie<string | null>('current-version-name', {
+    maxAge: 60 * 60 * 24 * 365,
+  })
 
   const versions = ref<Version[]>([])
   const currentVersion = ref<Version | null>(null)

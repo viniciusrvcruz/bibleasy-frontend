@@ -16,8 +16,16 @@ const { addToHistory } = useChapterHistory()
 
 const chapterContainerRef = ref<HTMLElement | null>(null)
 
-const fontSize = useCookie<string>('bible-font-size', { default: () => 'text-lg' })
-const fontFamily = useCookie<string>('bible-font-family', { default: () => 'font-sans' })
+// 1 year in seconds
+const cookieMaxAge = 60 * 60 * 24 * 365
+const fontSize = useCookie<string>('bible-font-size', {
+  default: () => 'text-lg',
+  maxAge: cookieMaxAge,
+})
+const fontFamily = useCookie<string>('bible-font-family', {
+  default: () => 'font-sans',
+  maxAge: cookieMaxAge,
+})
 
 const bookName = computed(() => {
   return props.chapter.book.name
