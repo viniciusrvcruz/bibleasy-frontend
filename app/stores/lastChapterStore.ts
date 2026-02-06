@@ -6,7 +6,10 @@ interface LastChapterReference {
 }
 
 export const useLastChapterStore = defineStore('lastChapter', () => {
-  const lastChapterReference = useCookie<string | null>('last-chapter-reference')
+  // 1 year in seconds
+  const lastChapterReference = useCookie<string | null>('last-chapter-reference', {
+    maxAge: 60 * 60 * 24 * 365,
+  })
 
   const parsedReference = computed<LastChapterReference | null>(() => {
     if (!lastChapterReference.value) return null
