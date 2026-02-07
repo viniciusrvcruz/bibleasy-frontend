@@ -68,7 +68,7 @@ const createReferencePart = (reference: VerseReference): ReferencePart => {
   <div
     class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line"
     :class="{
-      'relative bg-base-100 rounded shadow-lg z-2': isFocused,
+      'relative bg-base-100 rounded shadow-lg z-1': isFocused,
     }"
   >
     <span class="text-[0.8em] align-super leading-0 font-bold text-base-content/50 me-2">
