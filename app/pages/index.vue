@@ -152,8 +152,8 @@ useSchemaOrg([
             </div>
             <h3 class="text-xl font-bold mb-2">Múltiplas Versões</h3>
             <p class="text-base-content/60">
-              Acesse diferentes traduções da Bíblia e compare versículos.
-              Troque entre versões com apenas um clique.
+              Acesse diferentes traduções da Bíblia.
+              Troque entre versões a qualquer momento.
             </p>
           </div>
 
@@ -165,7 +165,7 @@ useSchemaOrg([
             <h3 class="text-xl font-bold mb-2">Personalização Total</h3>
             <p class="text-base-content/60">
               Escolha entre dezenas de temas e cores.
-              Ajuste fonte, tamanho e espaçamento ao seu gosto.
+              Ajuste fonte e tamanho do texto ao seu gosto.
             </p>
           </div>
 
@@ -176,8 +176,8 @@ useSchemaOrg([
             </div>
             <h3 class="text-xl font-bold mb-2">Busca Instantânea</h3>
             <p class="text-base-content/60">
-              Digite qualquer letra e encontre versículos imediatamente.
-              Pesquisa inteligente por livro, capítulo ou palavra-chave.
+              Encontre qualquer passagem pelo livro, capítulo e versículo.
+              Digite o nome do livro e navegue em segundos.
             </p>
           </div>
 
