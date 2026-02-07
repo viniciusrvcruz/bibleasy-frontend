@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ChapterHistory } from '~/types/chapterHistory/ChapterHistory.type'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
+import { getDefaultBookName } from '~/utils/book'
 
 const versionStore = useVersionStore()
 const { goToChapter } = useNavigateToBible()
@@ -35,7 +36,7 @@ const navigateToChapter = (item: ChapterHistory) => {
 const formatChapter = (item: ChapterHistory) => {
   const versionStore = useVersionStore()
   const bookData = versionStore.getBookByAbbreviation(item.book)
-  const bookName = bookData?.name ?? ''
+  const bookName = bookData?.name ?? getDefaultBookName(item.book)
 
   if (!item.verse) return `${bookName} ${item.chapter}`
 

@@ -83,3 +83,8 @@ export function getBookAbbreviation(key: string): BookAbbreviationType | undefin
   const lowerKey = key.toLowerCase()
   return isValidBookAbbreviation(lowerKey) ? lowerKey : undefined
 }
+
+export function getDefaultBookName(abbreviation: string): string {
+  const book = BOOKS.find(([key]) => key === abbreviation.toLowerCase())
+  return book?.[1] ?? ''
+}
