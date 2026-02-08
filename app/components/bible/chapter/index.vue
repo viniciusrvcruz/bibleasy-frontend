@@ -135,10 +135,10 @@ const handleVersionSelect = (version: Version) => {
 </script>
 
 <template>
-  <section class="flex-1 flex flex-col justify-between h-screen-header overflow-hidden sticky top-header">
+  <section class="flex-1 flex flex-col h-screen-header overflow-hidden sticky top-header">
     <div
       ref="chapterContainerRef"
-      class="flex flex-col overflow-y-auto h-full scroll-smooth relative"
+      class="flex flex-col overflow-y-auto flex-1 scroll-smooth relative"
       @scroll="handleScroll"
     >
       <BibleChapterHeader
@@ -158,7 +158,7 @@ const handleVersionSelect = (version: Version) => {
       />
 
       <!-- Main content -->
-      <div class="px-5 flex-1 sm:px-10 lg:px-20">
+      <div class="flex-1 px-5 pb-52 sm:px-10 lg:px-20 lg:pb-52">
         <h1 class="text-xl font-bold text-center text-base-content/60 mt-6 mb-2">
           {{ bookName }}
         </h1>
@@ -193,41 +193,41 @@ const handleVersionSelect = (version: Version) => {
 
         <BibleChapterFooter />
       </div>
+    </div>
 
-      <!-- Navigation buttons -->
-      <div class="flex justify-between sticky bottom-0 w-full pointer-events-none z-2">
-        <RouterLink
-          v-if="previousChapterLink"
-          :to="previousChapterLink"
-          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
-          :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
-        >
-          <Icon icon="chevron_left" />
-          <span class="sr-only">
-            {{ previousChapter ? `${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior' }}
-          </span>
-        </RouterLink>
-  
-        <label
-          for="select_verse_modal"
-          class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
-          aria-label="Selecionar versículo"
-        >
-          {{ bookName }} {{ chapter.number }}
-        </label>
+    <!-- Navigation buttons -->
+    <div class="flex justify-between w-full pointer-events-none z-2 absolute bottom-0 left-0 right-0">
+      <RouterLink
+        v-if="previousChapterLink"
+        :to="previousChapterLink"
+        class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
+        :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
+      >
+        <Icon icon="chevron_left" />
+        <span class="sr-only">
+          {{ previousChapter ? `${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior' }}
+        </span>
+      </RouterLink>
 
-        <RouterLink
-          v-if="nextChapterLink"
-          :to="nextChapterLink"
-          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
-          :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
-        >
-          <Icon icon="chevron_right" />
-          <span class="sr-only">
-            {{ nextChapter ? `${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo' }}
-          </span>
-        </RouterLink>
-      </div>
+      <label
+        for="select_verse_modal"
+        class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
+        aria-label="Selecionar versículo"
+      >
+        {{ bookName }} {{ chapter.number }}
+      </label>
+
+      <RouterLink
+        v-if="nextChapterLink"
+        :to="nextChapterLink"
+        class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
+        :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
+      >
+        <Icon icon="chevron_right" />
+        <span class="sr-only">
+          {{ nextChapter ? `${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo' }}
+        </span>
+      </RouterLink>
     </div>
   </section>
 </template>
