@@ -66,7 +66,7 @@ const createReferencePart = (reference: VerseReference): ReferencePart => {
 
 <template>
   <div
-    class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line"
+    class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line wrap-break-word"
     :class="{
       'relative bg-base-100 rounded shadow-lg z-1': isFocused,
     }"
