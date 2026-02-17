@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@pinia/nuxt',
     '@nuxtjs/seo',
+    'nuxt-clarity-analytics',
   ],
 
   runtimeConfig: {
