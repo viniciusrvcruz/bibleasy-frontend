@@ -4,7 +4,6 @@ import type { Version } from '~/types/version/Version.type'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
-
 const props = defineProps<{
   chapter: Chapter
 }>()
@@ -173,13 +172,20 @@ const handleVersionSelect = (version: Version) => {
             fontFamily
           ]"
         >
-          <BibleChapterVerse
-            v-for="verse in chapter.verses"
-            :key="verse.id"
-            :id="`v${verse.number}`"
-            :verse="verse"
-            :is-focused="verse.number === focusedVerseNumber"
-          />
+          <template v-for="verse in chapter.verses" :key="verse.id">
+            <BibleChapterTitle
+              v-for="(title, index) in verse.titles ?? []"
+              :key="index"
+              :title="title"
+              :references="verse.references"
+            />
+
+            <BibleChapterVerse
+              :id="`v${verse.number}`"
+              :verse="verse"
+              :is-focused="verse.number === focusedVerseNumber"
+            />
+          </template>
         </div>
 
         <!-- Version Copyright -->
