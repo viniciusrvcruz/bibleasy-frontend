@@ -4,8 +4,11 @@ import { useBookService } from '~/composables/services/useBookService'
 import { useBibleReference } from '~/composables/bible/useBibleReference'
 
 const route = useRoute()
+const router = useRouter()
 const versionStore = useVersionStore()
 const lastChapterStore = useLastChapterStore()
+
+const isLoading = ref(true)
 
 const reference = route.params.reference?.toString() ?? ''
 const { book, chapter, version } = useBibleReference(reference)
@@ -36,12 +39,18 @@ if (!chapterData.value) {
 
 lastChapterStore.setLastChapter(book, chapter)
 
+isLoading.value = false
+
 // SEO - Dynamic meta tags based on chapter data
 const bookName = chapterData.value.book.name
 const chapterNumber = chapterData.value.number
 
 const pageTitle = `${bookName} ${chapterNumber} | ${versionStore.currentVersion?.name ?? ''}`
 const pageDescription = `Leia ${bookName} capítulo ${chapterNumber} na versão ${version.name}. Acesse a Bíblia online gratuitamente com interface fácil e intuitiva.`
+
+watch(() => router.currentRoute.value.params?.reference, () => {
+  isLoading.value = true
+})
 
 useSeoMeta({
   title: pageTitle,
@@ -73,7 +82,11 @@ useSchemaOrg([
   <main class="flex-1 flex justify-between">
     <BibleVerseSelectorResponsivePanel :current-book="book" />
 
-    <BibleChapter v-if="chapterData" :chapter="chapterData" />
+    <BibleChapter
+      v-if="chapterData"
+      :chapter="chapterData"
+      :is-loading="isLoading"
+    />
 
     <!-- TODO: Add selected verses section -->
   </main>
