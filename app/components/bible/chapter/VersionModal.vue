@@ -11,11 +11,6 @@ const versionStore = useVersionStore()
 const versionSearch = ref('')
 const dialogRef = useTemplateRef<HTMLDialogElement>('dialogRef')
 
-const languageNames: Record<string, string> = {
-  pt_br: 'Português',
-  en: 'English'
-}
-
 const filteredVersions = computed(() => {
   if (!versionSearch.value) return versionStore.versions
 
@@ -67,18 +62,6 @@ defineExpose({
           <span class="sr-only">Fechar</span>
         </button>
       </div>
-
-      <!-- Current Version -->
-      <div v-if="versionStore.currentVersion" class="alert mb-4 shrink-0">
-        <div>
-          <div class="font-semibold">
-            Versão Atual
-          </div>
-          <div class="text-sm">
-            {{ versionStore.currentVersion.abbreviation }} - {{ versionStore.currentVersion.name }}
-          </div>
-        </div>
-      </div>
       
       <!-- Search input -->
       <div class="mb-4 shrink-0">
@@ -107,9 +90,6 @@ defineExpose({
           <div class="flex-1">
             <div class="font-semibold">{{ version.abbreviation }}</div>
             <div class="text-sm text-base-content/70">{{ version.name }}</div>
-            <div class="text-xs text-base-content/50 mt-1">
-              {{ languageNames[version.language] || version.language }}
-            </div>
           </div>
           <Icon icon="chevron_right" :size="20" class="text-base-content/40 self-center" />
         </button>
