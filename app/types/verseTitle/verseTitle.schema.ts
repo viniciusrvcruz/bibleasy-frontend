@@ -5,7 +5,13 @@ export enum VerseTitleTypeEnum {
   REFERENCE = 'reference',
 }
 
+export enum VerseTitlePositionEnum {
+  START = 'start',
+  END = 'end',
+}
+
 export const verseTitleSchema = z.object({
   text: z.string(),
   type: z.enum(VerseTitleTypeEnum),
+  position: z.enum(VerseTitlePositionEnum).optional(),
 })

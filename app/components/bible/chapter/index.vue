@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Chapter } from '~/types/chapter/Chapter.type'
+import type { VerseTitle } from '~/types/verseTitle/verseTitle.type'
 import type { Version } from '~/types/version/Version.type'
+import { VerseTitlePositionEnum } from '~/types/verseTitle/verseTitle.schema'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
@@ -88,6 +90,19 @@ const nextChapterLink = computed(() => {
 
 const clearHash = () => {
   history.replaceState(history.state, '', route.path)
+}
+
+const getTitlesByPosition = (
+  titles: VerseTitle[] | undefined,
+  position: VerseTitlePositionEnum
+): VerseTitle[] => {
+  const list = titles ?? []
+
+  if (position === VerseTitlePositionEnum.END) {
+    return list.filter(t => t.position === VerseTitlePositionEnum.END)
+  }
+
+  return list.filter(t => t.position !== VerseTitlePositionEnum.END)
 }
 
 const {
@@ -180,9 +195,10 @@ const handleVersionSelect = (version: Version) => {
           ]"
         >
           <template v-for="verse in chapter.verses" :key="verse.id">
+            <!-- Titles with position "start" (or without position) appear before the verse -->
             <BibleChapterTitle
-              v-for="(title, index) in verse.titles ?? []"
-              :key="index"
+              v-for="(title, index) in getTitlesByPosition(verse.titles, VerseTitlePositionEnum.START)"
+              :key="`${verse.id}-start-${index}`"
               :title="title"
               :references="verse.references"
             />
@@ -191,6 +207,14 @@ const handleVersionSelect = (version: Version) => {
               :id="`v${verse.number}`"
               :verse="verse"
               :is-focused="verse.number === focusedVerseNumber"
+            />
+
+            <!-- Titles with position "end" appear after the verse -->
+            <BibleChapterTitle
+              v-for="(title, index) in getTitlesByPosition(verse.titles, VerseTitlePositionEnum.END)"
+              :key="`${verse.id}-end-${index}`"
+              :title="title"
+              :references="verse.references"
             />
           </template>
         </div>
