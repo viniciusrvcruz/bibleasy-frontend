@@ -18,8 +18,8 @@ const { processedText } = useTextWithReferences(
 <template>
   <h2
     :class="{
-      'text-[1.18em] font-bold mb-8': title.type === VerseTitleTypeEnum.SECTION,
-      'text-[0.850em] font-bold mb-8 italic': title.type === VerseTitleTypeEnum.REFERENCE,
+      'text-[1.15em] font-bold mb-[1em]': title.type === VerseTitleTypeEnum.SECTION,
+      'text-[0.850em] font-bold mb-[1em] italic': title.type === VerseTitleTypeEnum.REFERENCE,
     }"
   >
     <template v-for="(part, index) in processedText" :key="index">
