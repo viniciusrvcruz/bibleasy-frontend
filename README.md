@@ -60,11 +60,13 @@ O **Bibleasy Frontend** é o cliente web do projeto Bibleasy, que oferece uma ex
 | -------- | --------- |
 | 📚 **Navegação intuitiva** | Explore livros, capítulos e versículos de forma simples |
 | 🔄 **Múltiplas versões** | Suporte para diferentes versões da Bíblia |
+| 📖 **Títulos de versículos** | Exibição de títulos (referências) nos versículos para melhor leitura do capítulo |
 | 🎨 **Temas variados** | Acesso a todos os temas do DaisyUI para personalização completa |
 | 📱 **Design responsivo** | Interface otimizada para desktop, tablet e mobile |
-| ⚡ **Performance** | Carregamento rápido com SSR (Server-Side Rendering) |
+| ⚡ **Performance** | Carregamento rápido com SSR (Server-Side Rendering) e estado de carregamento na navegação |
 | 🖌️ **UI moderna** | Interface clean com TailwindCSS, DaisyUI e componentes PrimeVue |
 | 🔍 **Seletor de versículos** | Painel interativo para navegação rápida |
+| 🚫 **Capítulo não encontrado** | Página dedicada quando o capítulo solicitado não existe, com suporte à troca de versão |
 | 🔐 **Type-safe** | Validação de dados com Zod e TypeScript |
 
 ---
@@ -192,14 +194,17 @@ bibleasy-frontend/
 
 | Variável | Descrição |
 | -------- | --------- |
-| `NUXT_PUBLIC_API_BASE_URL` | URL pública da API backend (browser) |
-| `NUXT_API_BASE_URL` | URL da API backend (server-side) |
+| `NUXT_PUBLIC_API_BASE_URL` | URL pública da API backend (browser). Em desenvolvimento local pode incluir porta (ex.: `http://localhost:8080`) |
+| `NUXT_API_BASE_URL` | URL da API backend (server-side). Com Docker, use o host do serviço (ex.: `http://bible_api:8080`) |
+| `NUXT_PUBLIC_DEFAULT_VERSION_ABBREVIATION` | (Opcional) Abreviação da versão padrão (ex.: `DEV`) |
+| `COMPOSE_PROJECT_NAME` | Nome do projeto no Docker Compose |
 
-Exemplo (`.env`):
+Exemplo (`.env` para desenvolvimento local):
 
 ```env
-NUXT_PUBLIC_API_BASE_URL=http://localhost:8000/api
-NUXT_API_BASE_URL=http://localhost:8000/api
+NUXT_PUBLIC_API_BASE_URL=http://localhost:8080
+NUXT_API_BASE_URL=http://localhost:8080
+COMPOSE_PROJECT_NAME=bible
 ```
 
 ---
