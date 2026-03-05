@@ -8,18 +8,24 @@ export const useNavigateToBible = () => {
     const lastChapter = lastChapterStore.parsedReference
 
     if (lastChapter) {
-      return getChapterUrl(lastChapter.book, lastChapter.chapter)
+      return getChapterUrl(lastChapter.book, lastChapter.chapter, lastChapter.version)
     }
 
     return getChapterUrl(BookAbbreviation.jhn, 1)
   })
 
-  const getChapterUrl = (book: string, chapter: number) => {
-    const version = versionStore.currentVersion
-      ? `.${versionStore.currentVersion.abbreviation}`
-      : ''
+  const getChapterUrl = (
+    book: string,
+    chapter: number,
+    versionAbbreviation?: string,
+  ) => {
+    const version =
+      versionAbbreviation ??
+      versionStore.currentVersion?.abbreviation ??
+      ''
+    const versionSuffix = version ? `.${version}` : ''
 
-    return `/bible/${book}.${chapter}${version}`
+    return `/bible/${book}.${chapter}${versionSuffix}`
   }
 
   const goToChapter = async (
@@ -43,7 +49,12 @@ export const useNavigateToBible = () => {
     const lastChapter = lastChapterStore.parsedReference
 
     if (lastChapter) {
-      await goToChapter(lastChapter.book, lastChapter.chapter, 1, replace)
+      const url = getChapterUrl(
+        lastChapter.book,
+        lastChapter.chapter,
+        lastChapter.version,
+      )
+      await navigateTo({ path: url, replace })
     } else {
       await goToChapter(BookAbbreviation.jhn, 1, 1, replace)
     }

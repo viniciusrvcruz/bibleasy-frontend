@@ -4,8 +4,11 @@ import { useBookService } from '~/composables/services/useBookService'
 import { useBibleReference } from '~/composables/bible/useBibleReference'
 
 const route = useRoute()
+const router = useRouter()
 const versionStore = useVersionStore()
 const lastChapterStore = useLastChapterStore()
+
+const isLoading = ref(true)
 
 const reference = route.params.reference?.toString() ?? ''
 const { book, chapter, version } = useBibleReference(reference)
@@ -29,19 +32,30 @@ if (version.id !== versionStore.currentVersion?.id) {
 // Load chapter data
 const { data: chapterData } = await chapterService.useShow(book, chapter, version.id)
 
-if (!chapterData.value) {
-  lastChapterStore.clearLastChapter()
-  throw createAppError('O capítulo não foi encontrado')
+if (chapterData.value) {
+  lastChapterStore.setLastChapter(book, chapter, version.abbreviation)
 }
 
-lastChapterStore.setLastChapter(book, chapter)
+isLoading.value = false
 
 // SEO - Dynamic meta tags based on chapter data
-const bookName = chapterData.value.book.name
-const chapterNumber = chapterData.value.number
+const bookName = computed(() => chapterData.value?.book.name ?? '')
+const chapterNumber = computed(() => chapterData.value?.number ?? chapter)
 
-const pageTitle = `${bookName} ${chapterNumber} | ${versionStore.currentVersion?.name ?? ''}`
-const pageDescription = `Leia ${bookName} capítulo ${chapterNumber} na versão ${version.name}. Acesse a Bíblia online gratuitamente com interface fácil e intuitiva.`
+const pageTitle = computed(() =>
+  chapterData.value
+    ? `${bookName.value} ${chapterNumber.value} | ${versionStore.currentVersion?.name ?? ''}`
+    : `Capítulo não encontrado | ${versionStore.currentVersion?.name ?? ''}`
+)
+const pageDescription = computed(() =>
+  chapterData.value
+    ? `Leia ${bookName.value} capítulo ${chapterNumber.value} na versão ${version.name}. Acesse a Bíblia online gratuitamente com interface fácil e intuitiva.`
+    : `O capítulo solicitado não está disponível nesta versão. Selecione outra versão da Bíblia.`
+)
+
+watch(() => router.currentRoute.value.params?.reference, () => {
+  isLoading.value = true
+})
 
 useSeoMeta({
   title: pageTitle,
@@ -73,7 +87,18 @@ useSchemaOrg([
   <main class="flex-1 flex justify-between">
     <BibleVerseSelectorResponsivePanel :current-book="book" />
 
-    <BibleChapter v-if="chapterData" :chapter="chapterData" />
+    <BibleChapter
+      v-if="chapterData"
+      :chapter="chapterData"
+      :is-loading="isLoading"
+    />
+
+    <BibleChapterNotFound
+      v-else
+      :book="book"
+      :chapter="chapter"
+      :version-name="version.name"
+    />
 
     <!-- TODO: Add selected verses section -->
   </main>

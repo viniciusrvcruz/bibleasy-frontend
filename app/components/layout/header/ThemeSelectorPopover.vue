@@ -55,7 +55,7 @@ defineExpose({
               v-for="theme in group.themes"
               :key="theme"
               :data-theme="theme"
-              class="btn btn-sm justify-between gap-2 bg-base-100 border-base-300 text-base-content capitalize hover:bg-base-200"
+              class="btn btn-sm justify-between gap-2 bg-base-100 border-base-300 text-base-content capitalize hover:bg-base-200 border-r-4 border-r-primary"
               @click="setTheme(theme)"
             >
               <Icon

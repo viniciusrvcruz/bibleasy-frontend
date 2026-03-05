@@ -1,0 +1,17 @@
+import { z } from 'zod'
+
+export enum VerseTitleTypeEnum {
+  SECTION = 'section',
+  REFERENCE = 'reference',
+}
+
+export enum VerseTitlePositionEnum {
+  START = 'start',
+  END = 'end',
+}
+
+export const verseTitleSchema = z.object({
+  text: z.string(),
+  type: z.enum(VerseTitleTypeEnum),
+  position: z.enum(VerseTitlePositionEnum).optional(),
+})
