@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import type { Chapter } from '~/types/chapter/Chapter.type'
+import type { VerseTitle } from '~/types/verseTitle/verseTitle.type'
 import type { Version } from '~/types/version/Version.type'
+import { VerseTitlePositionEnum } from '~/types/verseTitle/verseTitle.schema'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
 
 const props = defineProps<{
-  chapter: Chapter
+  chapter: Chapter,
+  isLoading: boolean,
 }>()
 
 const route = useRoute()
@@ -89,6 +92,19 @@ const clearHash = () => {
   history.replaceState(history.state, '', route.path)
 }
 
+const getTitlesByPosition = (
+  titles: VerseTitle[] | undefined,
+  position: VerseTitlePositionEnum
+): VerseTitle[] => {
+  const list = titles ?? []
+
+  if (position === VerseTitlePositionEnum.END) {
+    return list.filter(t => t.position === VerseTitlePositionEnum.END)
+  }
+
+  return list.filter(t => t.position !== VerseTitlePositionEnum.END)
+}
+
 const {
   focusedVerseNumber,
   overlayHeight,
@@ -158,7 +174,12 @@ const handleVersionSelect = (version: Version) => {
       />
 
       <!-- Main content -->
-      <div class="flex-1 px-5 pb-52 sm:px-10 lg:px-20 lg:pb-52">
+      <div
+        class="flex-1 px-5 pb-52 sm:px-10 lg:px-20 lg:pb-52"
+        :class="{
+          'loading-shimmer blur-xs': isLoading,
+        }"
+      >
         <h1 class="text-xl font-bold text-center text-base-content/60 mt-6 mb-2">
           {{ bookName }}
         </h1>
@@ -173,13 +194,29 @@ const handleVersionSelect = (version: Version) => {
             fontFamily
           ]"
         >
-          <BibleChapterVerse
-            v-for="verse in chapter.verses"
-            :key="verse.id"
-            :id="`v${verse.number}`"
-            :verse="verse"
-            :is-focused="verse.number === focusedVerseNumber"
-          />
+          <template v-for="verse in chapter.verses" :key="verse.id">
+            <!-- Titles with position "start" (or without position) appear before the verse -->
+            <BibleChapterTitle
+              v-for="(title, index) in getTitlesByPosition(verse.titles, VerseTitlePositionEnum.START)"
+              :key="`${verse.id}-start-${index}`"
+              :title="title"
+              :references="verse.references"
+            />
+
+            <BibleChapterVerse
+              :id="`v${verse.number}`"
+              :verse="verse"
+              :is-focused="verse.number === focusedVerseNumber"
+            />
+
+            <!-- Titles with position "end" appear after the verse -->
+            <BibleChapterTitle
+              v-for="(title, index) in getTitlesByPosition(verse.titles, VerseTitlePositionEnum.END)"
+              :key="`${verse.id}-end-${index}`"
+              :title="title"
+              :references="verse.references"
+            />
+          </template>
         </div>
 
         <!-- Version Copyright -->
@@ -231,3 +268,28 @@ const handleVersionSelect = (version: Version) => {
     </div>
   </section>
 </template>
+
+<style scoped>
+.loading-shimmer * {
+  color: transparent !important;
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--color-base-content) 20%, transparent) 25%,
+    color-mix(in oklab, var(--color-base-content) 80%, transparent) 50%,
+    color-mix(in oklab, var(--color-base-content) 20%, transparent) 75%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 4s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+</style>

@@ -14,6 +14,7 @@ const ICON_MAP = {
   help: 'mdi:help-circle-outline',
   palette: 'mdi:palette-outline',
   menu: 'lucide:menu',
+  home: 'lucide:home',
   user: 'lucide:user',
   book_marked: 'lucide:book-marked',
   check: 'lucide:check',

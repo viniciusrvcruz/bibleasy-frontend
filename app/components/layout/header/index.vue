@@ -94,6 +94,14 @@ const closeDrawer = () => {
         </div>
         <div class="flex-1 flex flex-col gap-2 overflow-y-auto px-4 py-4 border-t border-base-300">
           <RouterLink 
+            to="/" 
+            @click="closeDrawer" 
+            class="btn btn-ghost justify-start w-full text-base"
+          >
+            <Icon icon="home" :size="20" />
+            Início
+          </RouterLink>
+          <RouterLink 
             :to="lastChapterUrl" 
             @click="closeDrawer" 
             class="btn btn-ghost justify-start w-full text-base"

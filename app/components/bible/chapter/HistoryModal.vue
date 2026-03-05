@@ -2,8 +2,10 @@
 import type { ChapterHistory } from '~/types/chapterHistory/ChapterHistory.type'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { getDefaultBookName } from '~/utils/book'
+import { useBookService } from '~/composables/services/useBookService'
 
 const versionStore = useVersionStore()
+const bookService = useBookService()
 const { goToChapter } = useNavigateToBible()
 const {
   chapterHistory,
@@ -23,10 +25,17 @@ const close = () => {
   dialogRef.value?.close()
 }
 
-const navigateToChapter = (item: ChapterHistory) => {
+const navigateToChapter = async (item: ChapterHistory) => {
   const version = versionStore.getVersionByAbbreviation(item.versionName)
 
-  if (version) versionStore.setCurrentVersion(version)
+  if(version?.id !== versionStore.currentVersion?.id) {
+    if(!version) return
+
+    await bookService.index(version.id).then((books) => {
+      versionStore.setCurrentVersionBooks(books)
+      versionStore.setCurrentVersion(version)
+    })
+  }
 
   goToChapter(item.book, item.chapter, item.verse)
   close()

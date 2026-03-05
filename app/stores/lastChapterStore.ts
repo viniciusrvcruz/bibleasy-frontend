@@ -3,6 +3,7 @@ import { BookAbbreviation, getBookAbbreviation, type BookAbbreviationType } from
 interface LastChapterReference {
   book: BookAbbreviationType
   chapter: number
+  version?: string
 }
 
 export const useLastChapterStore = defineStore('lastChapter', () => {
@@ -14,16 +15,24 @@ export const useLastChapterStore = defineStore('lastChapter', () => {
   const parsedReference = computed<LastChapterReference | null>(() => {
     if (!lastChapterReference.value) return null
 
-    const [bookParam, chapterParam] = lastChapterReference.value.split('.')
+    const parts = lastChapterReference.value.split('.')
+    const [bookParam, chapterParam, versionParam] = parts
 
     const book = getBookAbbreviation(bookParam ?? '') ?? BookAbbreviation.jhn
     const chapter = Number(chapterParam) || 1
+    const version = versionParam && versionParam.length > 0 ? versionParam : undefined
 
-    return { book, chapter }
+    return { book, chapter, version }
   })
 
-  const setLastChapter = (book: BookAbbreviationType, chapter: number) => {
-    lastChapterReference.value = `${book}.${chapter}`
+  const setLastChapter = (
+    book: BookAbbreviationType,
+    chapter: number,
+    version?: string,
+  ) => {
+    lastChapterReference.value = version && version?.length > 0
+      ? `${book}.${chapter}.${version}`
+      : `${book}.${chapter}`
   }
 
   const clearLastChapter = () => {
