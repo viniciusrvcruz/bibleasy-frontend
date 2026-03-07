@@ -1,20 +1,9 @@
-type UseApiFetchOptions<T> = Partial<Parameters<typeof useFetch<T>>[1]>
+import type { UseFetchOptions } from 'nuxt/app'
 
-export function useApiFetch<T>(url: string, options: UseApiFetchOptions<T> = {}) {
-  const config = useRuntimeConfig()
-
-  const baseURL = import.meta.server
-    ? config.apiBaseUrl
-    : config.public.apiBaseUrl
-
-  return useFetch<T>(`/api/${url}`, {
-    baseURL,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
+export function useApiFetch<T>(url: string, options: UseFetchOptions<T> = {}) {
+  return useFetch(url, {
     key: url,
-    retry: 0,
+    $fetch: useNuxtApp().$api as typeof $fetch,
     ...options,
   })
 }
