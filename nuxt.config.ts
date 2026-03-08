@@ -23,6 +23,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     apiBaseUrl: env.NUXT_API_BASE_URL || env.NUXT_PUBLIC_API_BASE_URL,
+    apiKey: env.NUXT_API_KEY,
 
     public: {
       apiBaseUrl: env.NUXT_PUBLIC_API_BASE_URL,

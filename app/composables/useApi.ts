@@ -1,29 +1,20 @@
-import type { FetchOptions } from 'ofetch'
+import type { $Fetch, FetchOptions } from 'ofetch'
 
-type RequestOptions = Omit<FetchOptions, 'method' | 'body' | 'query'>
+type RequestOptions = Omit<FetchOptions<'json'>, 'method' | 'body' | 'query'>
+
+type HttpMethod = 'get' | 'post' | 'put' | 'delete'
 
 export const useApi = () => {
-  const config = useRuntimeConfig()
-
-  const apiBaseURL = import.meta.server
-    ? config.apiBaseUrl
-    : config.public.apiBaseUrl
-
-  const baseURL = `${apiBaseURL}/api/`
+  const api = useNuxtApp().$api as $Fetch
 
   const request = async <TResponse>(
-    method: 'get' | 'post' | 'put' | 'delete',
+    method: HttpMethod,
     url: string,
-    data?: Record<string, any>,
+    data?: Record<string, unknown>,
     options?: RequestOptions
   ) => {
-    return $fetch<TResponse>(url, {
-      baseURL,
+    const fetchOptions = {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
       ...(method === 'get'
         ? data
           ? { query: data }
@@ -31,9 +22,10 @@ export const useApi = () => {
         : data
           ? { body: data }
           : {}),
-      retry: 0,
       ...options,
-    })
+    }
+
+    return api<TResponse>(url, fetchOptions)
   }
 
   const get = <TResponse>(

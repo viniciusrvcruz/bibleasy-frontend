@@ -91,6 +91,7 @@ useSchemaOrg([
       v-if="chapterData"
       :chapter="chapterData"
       :is-loading="isLoading"
+      @start-loading="isLoading = true"
     />
 
     <BibleChapterNotFound
