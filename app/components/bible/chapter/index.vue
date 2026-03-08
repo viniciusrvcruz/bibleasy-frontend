@@ -7,6 +7,10 @@ import { useVerseFocus } from '~/composables/bible/useVerseFocus'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
 
+const emit = defineEmits<{
+  (e: 'startLoading'): void
+}>()
+
 const props = defineProps<{
   chapter: Chapter,
   isLoading: boolean,
@@ -239,6 +243,7 @@ const handleVersionSelect = (version: Version) => {
         :to="previousChapterLink"
         class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
         :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
+        @click="emit('startLoading')"
       >
         <Icon icon="chevron_left" />
         <span class="sr-only">
@@ -259,6 +264,7 @@ const handleVersionSelect = (version: Version) => {
         :to="nextChapterLink"
         class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
         :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
+        @click="emit('startLoading')"
       >
         <Icon icon="chevron_right" />
         <span class="sr-only">
