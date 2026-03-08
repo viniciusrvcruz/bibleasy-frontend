@@ -1,6 +1,5 @@
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig()
-  const requestHeaders = useRequestHeaders(['x-forwarded-for', 'x-real-ip'])
 
   const baseURL = import.meta.server
     ? config.apiBaseUrl
@@ -14,17 +13,12 @@ export default defineNuxtPlugin(() => {
     },
     retry: 0,
     onRequest({ options }) {
-      if(import.meta.client) return
+      if (import.meta.client) return
 
-      const ip = requestHeaders['x-forwarded-for'] ?? requestHeaders['x-real-ip']
+      const apiKey = config.apiKey
 
-      if (!ip) return
-      
-      const ipStr = Array.isArray(ip) ? ip[0] : ip
       const headers = new Headers(options.headers)
-
-      headers.set('X-Forwarded-For', ipStr)
-
+      headers.set('X-Api-Key', apiKey)
       options.headers = headers
     },
   })
