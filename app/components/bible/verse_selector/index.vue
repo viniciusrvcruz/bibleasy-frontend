@@ -103,6 +103,7 @@ const goBack = () => {
     return
   }
 
+  search.value = ''
   selectedBook.value = null
 }
 
