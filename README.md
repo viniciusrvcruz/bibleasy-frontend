@@ -122,7 +122,7 @@ npm run dev
 
 A aplicação estará disponível em **http://localhost:3000**.
 
-> **Nota:** Para dados reais, é necessário ter o [bibleasy-backend](https://github.com/viniciusrvcruz/bibleasy-backend) em execução e configurar `NUXT_PUBLIC_API_BASE_URL` e `NUXT_API_BASE_URL` no `.env`.
+> **Nota:** Para dados reais, é necessário ter o [bibleasy-backend](https://github.com/viniciusrvcruz/bibleasy-backend) em execução e configurar `NUXT_PUBLIC_API_BASE_URL`, `NUXT_API_BASE_URL` e `NUXT_API_KEY` no `.env`.
 
 ### Executando com Docker
 
@@ -196,6 +196,7 @@ bibleasy-frontend/
 | -------- | --------- |
 | `NUXT_PUBLIC_API_BASE_URL` | URL pública da API backend (browser). Em desenvolvimento local pode incluir porta (ex.: `http://localhost:8080`) |
 | `NUXT_API_BASE_URL` | URL da API backend (server-side). Com Docker, use o host do serviço (ex.: `http://bible_api:8080`) |
+| `NUXT_API_KEY` | Chave de API para autenticação nas requisições server-side (header `X-Api-Key`) |
 | `NUXT_PUBLIC_DEFAULT_VERSION_ABBREVIATION` | (Opcional) Abreviação da versão padrão (ex.: `DEV`) |
 | `COMPOSE_PROJECT_NAME` | Nome do projeto no Docker Compose |
 
@@ -204,6 +205,7 @@ Exemplo (`.env` para desenvolvimento local):
 ```env
 NUXT_PUBLIC_API_BASE_URL=http://localhost:8080
 NUXT_API_BASE_URL=http://localhost:8080
+NUXT_API_KEY=ApiKey123
 COMPOSE_PROJECT_NAME=bible
 ```
 

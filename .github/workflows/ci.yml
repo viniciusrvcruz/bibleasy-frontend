@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NUXT_PUBLIC_API_BASE_URL: ${{ secrets.NUXT_PUBLIC_API_BASE_URL }}
+      NUXT_API_KEY: ${{ secrets.NUXT_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
