@@ -8,10 +8,12 @@ export enum VerseTitleTypeEnum {
 export enum VerseTitlePositionEnum {
   START = 'start',
   END = 'end',
+  CUSTOM = 'custom',
 }
 
 export const verseTitleSchema = z.object({
   text: z.string(),
   type: z.enum(VerseTitleTypeEnum),
   position: z.enum(VerseTitlePositionEnum).optional(),
+  slug: z.string().nullable(),
 })

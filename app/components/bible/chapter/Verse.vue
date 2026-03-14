@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import type { Verse } from '~/types/verse/Verse.type'
-import { useTextWithReferences } from '~/composables/bible/useTextWithReferences'
+import { useProcessedVerseParts } from '~/composables/bible/useProcessedVerseParts'
 
 const props = defineProps<{
   verse: Verse
   isFocused: boolean
 }>()
 
-// Processes verse text and replaces {{slug}} with reference components
-const { processedText } = useTextWithReferences(
+// Processes verse text: {{slug}} → reference, [[slug]] → title
+const { processedText } = useProcessedVerseParts(
   () => props.verse.text,
-  () => props.verse.references
+  () => props.verse.references,
+  () => props.verse.titles
 )
 </script>
 
@@ -29,8 +30,13 @@ const { processedText } = useTextWithReferences(
         <template v-if="part.type === 'text'">
           {{ part.content }}
         </template>
+        <BibleChapterTitle
+          v-else-if="part.type === 'title'"
+          :title="part.title"
+          :references="verse.references"
+        />
         <BibleChapterVerseReference
-          v-else
+          v-else-if="part.type === 'reference'"
           :reference="part.reference"
         />
       </template>
