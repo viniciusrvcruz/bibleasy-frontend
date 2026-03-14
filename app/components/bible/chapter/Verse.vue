@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Verse } from '~/types/verse/Verse.type'
-import { useTextWithReferences } from '~/composables/bible/useTextWithReferences'
+import { useProcessedVerseParts } from '~/composables/bible/useProcessedVerseParts'
 
 const props = defineProps<{
   verse: Verse
@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 // Processes verse text: {{slug}} → reference, [[slug]] → title
-const { processedText } = useTextWithReferences(
+const { processedText } = useProcessedVerseParts(
   () => props.verse.text,
   () => props.verse.references,
   () => props.verse.titles

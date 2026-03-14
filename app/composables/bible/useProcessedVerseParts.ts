@@ -6,10 +6,10 @@ export type ReferencePart = { type: 'reference'; reference: VerseReference }
 export type TitlePart = { type: 'title'; title: VerseTitle }
 export type ProcessedPart = TextPart | ReferencePart | TitlePart
 
-// Pattern for {{slug}} placeholders (references)
-const REFERENCE_PATTERN = /\{\{(\w+)\}\}/g
-// Pattern for [[slug]] placeholders (title position)
-const TITLE_PATTERN = /\[\[(\w+)\]\]/g
+const PLACEHOLDER_PATTERNS = [
+  { pattern: /\{\{(\w+)\}\}/g, type: 'reference' },
+  { pattern: /\[\[(\w+)\]\]/g, type: 'title' },
+] as const
 
 function buildReferenceMap(references: VerseReference[]): Map<string, VerseReference> {
   return new Map(references.map(ref => [ref.slug, ref]))
@@ -32,14 +32,22 @@ type Match = { index: number; length: number; type: 'reference'; slug: string }
 
 function collectMatches(text: string): Match[] {
   const matches: Match[] = []
-  for (const m of text.matchAll(REFERENCE_PATTERN)) {
-    const slug = m[1]
-    if (slug) matches.push({ index: m.index ?? 0, length: m[0].length, type: 'reference', slug })
+
+  for (const { pattern, type } of PLACEHOLDER_PATTERNS) {
+    for (const m of text.matchAll(pattern)) {
+      const slug = m[1]
+
+      if (!slug) continue
+
+      matches.push({
+        index: m.index,
+        length: m[0].length,
+        type,
+        slug,
+      })
+    }
   }
-  for (const m of text.matchAll(TITLE_PATTERN)) {
-    const slug = m[1]
-    if (slug) matches.push({ index: m.index ?? 0, length: m[0].length, type: 'title', slug })
-  }
+
   return matches.sort((a, b) => a.index - b.index)
 }
 
@@ -51,7 +59,7 @@ function buildTitleMap(titles: VerseTitle[]): Map<string, VerseTitle> {
  * Processes text: {{slug}} → reference, [[slug]] → title (when titles provided).
  * Used by verses (text + refs + titles) and by title components (text + refs only).
  */
-export function useTextWithReferences(
+export function useProcessedVerseParts(
   text: MaybeRefOrGetter<string>,
   references: MaybeRefOrGetter<VerseReference[] | undefined>,
   titles?: MaybeRefOrGetter<VerseTitle[] | undefined>

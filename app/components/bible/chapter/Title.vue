@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { VerseTitle } from '~/types/verseTitle/verseTitle.type'
 import type { VerseReference } from '~/types/verseReference/VerseReference.type'
-import { useTextWithReferences } from '~/composables/bible/useTextWithReferences'
-import { VerseTitleTypeEnum } from '~/types/verseTitle/verseTitle.schema'
+import { useProcessedVerseParts } from '~/composables/bible/useProcessedVerseParts'
+import { VerseTitlePositionEnum, VerseTitleTypeEnum } from '~/types/verseTitle/verseTitle.schema'
 
 const props = defineProps<{
   title: VerseTitle
   references?: VerseReference[]
 }>()
 
-const { processedText } = useTextWithReferences(
+const { processedText } = useProcessedVerseParts(
   () => props.title.text,
   () => props.references,
 )
@@ -17,10 +17,11 @@ const { processedText } = useTextWithReferences(
 
 <template>
   <h2
-    :class="{
-      'text-[1.15em] font-bold mb-[1em]': title.type === VerseTitleTypeEnum.SECTION,
-      'text-[0.850em] font-bold mb-[1em] italic': title.type === VerseTitleTypeEnum.REFERENCE,
-    }"
+    :class="[
+      `${title.position !== VerseTitlePositionEnum.CUSTOM ? 'mb-[1em]' : 'mb-0'}`,
+      {'text-[1.15em] font-bold': title.type === VerseTitleTypeEnum.SECTION},
+      {'text-[0.850em] font-bold italic': title.type === VerseTitleTypeEnum.REFERENCE},
+    ]"
   >
     <template v-for="(part, index) in processedText" :key="index">
       <template v-if="part.type === 'text'">
