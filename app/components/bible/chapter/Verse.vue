@@ -7,10 +7,11 @@ const props = defineProps<{
   isFocused: boolean
 }>()
 
-// Processes verse text and replaces {{slug}} with reference components
+// Processes verse text: {{slug}} → reference, [[slug]] → title
 const { processedText } = useTextWithReferences(
   () => props.verse.text,
-  () => props.verse.references
+  () => props.verse.references,
+  () => props.verse.titles
 )
 </script>
 
@@ -29,8 +30,13 @@ const { processedText } = useTextWithReferences(
         <template v-if="part.type === 'text'">
           {{ part.content }}
         </template>
+        <BibleChapterTitle
+          v-else-if="part.type === 'title'"
+          :title="part.title"
+          :references="verse.references"
+        />
         <BibleChapterVerseReference
-          v-else
+          v-else-if="part.type === 'reference'"
           :reference="part.reference"
         />
       </template>

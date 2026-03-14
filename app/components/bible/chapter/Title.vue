@@ -11,7 +11,7 @@ const props = defineProps<{
 
 const { processedText } = useTextWithReferences(
   () => props.title.text,
-  () => props.references
+  () => props.references,
 )
 </script>
 
@@ -27,7 +27,7 @@ const { processedText } = useTextWithReferences(
         {{ part.content }}
       </template>
       <BibleChapterVerseReference
-        v-else
+        v-else-if="part.type === 'reference'"
         :reference="part.reference"
       />
     </template>

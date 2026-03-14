@@ -1,11 +1,15 @@
 import type { VerseReference } from '~/types/verseReference/VerseReference.type'
+import type { VerseTitle } from '~/types/verseTitle/verseTitle.type'
 
 export type TextPart = { type: 'text'; content: string }
 export type ReferencePart = { type: 'reference'; reference: VerseReference }
-export type ProcessedPart = TextPart | ReferencePart
+export type TitlePart = { type: 'title'; title: VerseTitle }
+export type ProcessedPart = TextPart | ReferencePart | TitlePart
 
-// Pattern for {{slug}} placeholders in text
+// Pattern for {{slug}} placeholders (references)
 const REFERENCE_PATTERN = /\{\{(\w+)\}\}/g
+// Pattern for [[slug]] placeholders (title position)
+const TITLE_PATTERN = /\[\[(\w+)\]\]/g
 
 function buildReferenceMap(references: VerseReference[]): Map<string, VerseReference> {
   return new Map(references.map(ref => [ref.slug, ref]))
@@ -19,42 +23,65 @@ function createReferencePart(reference: VerseReference): ReferencePart {
   return { type: 'reference', reference }
 }
 
+function createTitlePart(title: VerseTitle): TitlePart {
+  return { type: 'title', title }
+}
+
+type Match = { index: number; length: number; type: 'reference'; slug: string }
+  | { index: number; length: number; type: 'title'; slug: string }
+
+function collectMatches(text: string): Match[] {
+  const matches: Match[] = []
+  for (const m of text.matchAll(REFERENCE_PATTERN)) {
+    const slug = m[1]
+    if (slug) matches.push({ index: m.index ?? 0, length: m[0].length, type: 'reference', slug })
+  }
+  for (const m of text.matchAll(TITLE_PATTERN)) {
+    const slug = m[1]
+    if (slug) matches.push({ index: m.index ?? 0, length: m[0].length, type: 'title', slug })
+  }
+  return matches.sort((a, b) => a.index - b.index)
+}
+
+function buildTitleMap(titles: VerseTitle[]): Map<string, VerseTitle> {
+  return new Map(titles.filter(t => t.slug).map(t => [t.slug!, t]))
+}
+
 /**
- * Processes text by replacing {{slug}} placeholders with reference parts.
- * Used by both verses and titles that share the same references array.
+ * Processes text: {{slug}} → reference, [[slug]] → title (when titles provided).
+ * Used by verses (text + refs + titles) and by title components (text + refs only).
  */
 export function useTextWithReferences(
   text: MaybeRefOrGetter<string>,
-  references: MaybeRefOrGetter<VerseReference[] | undefined>
+  references: MaybeRefOrGetter<VerseReference[] | undefined>,
+  titles?: MaybeRefOrGetter<VerseTitle[] | undefined>
 ) {
   const processedText = computed<ProcessedPart[]>(() => {
     const textValue = toValue(text)
     const refs = toValue(references)
+    const titlesList = toValue(titles)
 
-    if (!refs?.length) {
-      return [createTextPart(textValue)]
-    }
-
-    const referenceMap = buildReferenceMap(refs)
+    const referenceMap = buildReferenceMap(refs ?? [])
+    const titleMap = buildTitleMap(titlesList ?? [])
     const parts: ProcessedPart[] = []
     let lastIndex = 0
+    const matches = collectMatches(textValue)
 
-    for (const match of textValue.matchAll(REFERENCE_PATTERN)) {
-      const [fullMatch, slug] = match
-      const matchIndex = match.index ?? 0
-
+    for (const match of matches) {
       // Text before the match
-      if (matchIndex > lastIndex) {
-        parts.push(createTextPart(textValue.slice(lastIndex, matchIndex)))
+      if (match.index > lastIndex) {
+        parts.push(createTextPart(textValue.slice(lastIndex, match.index)))
       }
 
-      // Add reference only if found by slug
-      const reference = slug ? referenceMap.get(slug) : undefined
-      if (reference) {
-        parts.push(createReferencePart(reference))
+      if (match.type === 'reference') {
+        const reference = referenceMap.get(match.slug)
+        if (reference) parts.push(createReferencePart(reference))
+      } else {
+        const title = titleMap.get(match.slug)
+        if (title) parts.push(createTitlePart(title))
       }
 
-      lastIndex = matchIndex + fullMatch.length
+      lastIndex = match.index + match.length
     }
 
     // Remaining text after the last match
