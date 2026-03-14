@@ -98,11 +98,11 @@ const getTitlesByPosition = (
 ): VerseTitle[] => {
   const list = titles ?? []
 
-  if (position === VerseTitlePositionEnum.END) {
-    return list.filter(t => t.position === VerseTitlePositionEnum.END)
+  if (position === VerseTitlePositionEnum.START) {
+    return list.filter(t => t.position === VerseTitlePositionEnum.START)
   }
 
-  return list.filter(t => t.position !== VerseTitlePositionEnum.END)
+  return list.filter(t => t.position === VerseTitlePositionEnum.END)
 }
 
 const {
