@@ -18,7 +18,7 @@ const toggle = (event: Event) => {
       type="button"
       class="inline-flex items-center justify-center align-middle mx-3 text-base-content/60 hover:text-base-content/90 transition-colors cursor-pointer"
       :aria-label="`Ver referência bíblica: ${reference.text}`"
-      @click="toggle"
+      @click.stop="toggle"
     >
       <Icon icon="file_text" :size="16" />
       <span class="sr-only">Ver referência bíblica</span>

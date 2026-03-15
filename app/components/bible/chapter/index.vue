@@ -4,6 +4,7 @@ import type { VerseTitle } from '~/types/verseTitle/verseTitle.type'
 import type { Version } from '~/types/version/Version.type'
 import { VerseTitlePositionEnum } from '~/types/verseTitle/verseTitle.schema'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
+import { useSelectedVerses } from '~/composables/bible/useSelectedVerses'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
 
@@ -113,6 +114,29 @@ const {
   clearFocus
 } = useVerseFocus(chapterContainerRef, verseNumber, clearHash)
 
+const {
+  selectedVerses,
+  hasSelection,
+  toggleVerse,
+  clearSelection,
+  formattedReference,
+  copySelectedVerses,
+} = useSelectedVerses()
+
+const handleCopySelectedVerses = () =>
+  copySelectedVerses({
+    verses: props.chapter.verses,
+    bookName: props.chapter.book.name,
+    chapter: props.chapter.number,
+    bookAbbreviation: props.chapter.book.abbreviation,
+    versionId: versionStore.currentVersion?.id ?? 0,
+    versionAbbreviation: versionStore.currentVersion?.abbreviation ?? '',
+  })
+
+watch(() => props.chapter.id, () => {
+  clearSelection()
+}, { immediate: false })
+
 onMounted(() => {
   if(!import.meta.client) return
 
@@ -151,7 +175,7 @@ const handleVersionSelect = (version: Version) => {
 </script>
 
 <template>
-  <section class="flex-1 flex flex-col h-screen-header overflow-hidden sticky top-header">
+  <section class="flex-1 flex flex-col lg:flex-row h-screen-header overflow-hidden sticky top-header">
     <div
       ref="chapterContainerRef"
       class="flex flex-col overflow-y-auto flex-1 scroll-smooth relative"
@@ -207,6 +231,8 @@ const handleVersionSelect = (version: Version) => {
               :id="`v${verse.number}`"
               :verse="verse"
               :is-focused="verse.number === focusedVerseNumber"
+              :is-selected="selectedVerses.includes(verse.number)"
+              @toggle-select="toggleVerse(verse.number)"
             />
 
             <!-- Titles with position "end" appear after the verse -->
@@ -230,42 +256,53 @@ const handleVersionSelect = (version: Version) => {
 
         <BibleChapterFooter />
       </div>
+
+      <!-- Navigation buttons -->
+      <div class="flex justify-between w-full pointer-events-none z-2 sticky bottom-0 shrink-0 py-4 lg:py-12">
+        <RouterLink
+          v-if="previousChapterLink"
+          :to="previousChapterLink"
+          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52 nav-btn-prev"
+          :class="{ 'lg:ms-4! xl:ms-6! 2xl:ms-8!': hasSelection }"
+          :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
+        >
+          <Icon icon="chevron_left" />
+          <span class="sr-only">
+            {{ previousChapter ? `${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior' }}
+          </span>
+        </RouterLink>
+
+        <label
+          for="select_verse_modal"
+          class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
+          aria-label="Selecionar versículo"
+        >
+          {{ bookName }} {{ chapter.number }}
+        </label>
+
+        <RouterLink
+          v-if="nextChapterLink"
+          :to="nextChapterLink"
+          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52 nav-btn-next"
+          :class="{ 'lg:me-4! xl:me-6! 2xl:me-8!': hasSelection }"
+          :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
+        >
+          <Icon icon="chevron_right" />
+          <span class="sr-only">
+            {{ nextChapter ? `${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo' }}
+          </span>
+        </RouterLink>
+      </div>
     </div>
 
-    <!-- Navigation buttons -->
-    <div class="flex justify-between w-full pointer-events-none z-2 absolute bottom-0 left-0 right-0">
-      <RouterLink
-        v-if="previousChapterLink"
-        :to="previousChapterLink"
-        class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52"
-        :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
-      >
-        <Icon icon="chevron_left" />
-        <span class="sr-only">
-          {{ previousChapter ? `${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior' }}
-        </span>
-      </RouterLink>
-
-      <label
-        for="select_verse_modal"
-        class="btn text-sm flex-1 mx-2 px-0 py-7 border-2 border-base-300 pointer-events-auto sm:mx-5 sm:text-lg lg:hidden"
-        aria-label="Selecionar versículo"
-      >
-        {{ bookName }} {{ chapter.number }}
-      </label>
-
-      <RouterLink
-        v-if="nextChapterLink"
-        :to="nextChapterLink"
-        class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52"
-        :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
-      >
-        <Icon icon="chevron_right" />
-        <span class="sr-only">
-          {{ nextChapter ? `${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo' }}
-        </span>
-      </RouterLink>
-    </div>
+    <Transition name="selected-verses">
+      <BibleSelectedVerses
+        v-if="hasSelection"
+        :reference-label="formattedReference(bookName, chapter.number)"
+        @clear="clearSelection"
+        :copy-fn="handleCopySelectedVerses"
+      />
+    </Transition>
   </section>
 </template>
 
@@ -290,6 +327,50 @@ const handleVersionSelect = (version: Version) => {
   }
   100% {
     background-position: 200% 0;
+  }
+}
+
+/* Panel: smooth transition when opening/closing */
+:deep(.selected-verses-enter-active) {
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+:deep(.selected-verses-leave-active) {
+  transition: opacity 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53),
+    transform 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53);
+}
+
+:deep(.selected-verses-enter-from),
+:deep(.selected-verses-leave-to) {
+  opacity: 0;
+}
+
+:deep(.selected-verses-enter-from) {
+  transform: translateX(1.5rem);
+}
+
+:deep(.selected-verses-leave-to) {
+  transform: translateX(1.5rem);
+}
+
+@media (max-width: 1023px) {
+  :deep(.selected-verses-enter-from),
+  :deep(.selected-verses-leave-to) {
+    transform: translateY(1.25rem);
+  }
+}
+
+/* Navigation buttons: smooth transition when the panel opens/closes */
+@media (min-width: 1024px) {
+  .nav-btn-prev {
+    transition: margin-left .8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      margin-right .8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .nav-btn-next {
+    transition: margin-left .8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      margin-right .8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 }
 </style>
