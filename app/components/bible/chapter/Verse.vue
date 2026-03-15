@@ -5,6 +5,11 @@ import { useProcessedVerseParts } from '~/composables/bible/useProcessedVersePar
 const props = defineProps<{
   verse: Verse
   isFocused: boolean
+  isSelected?: boolean
+}>()
+
+const emit = defineEmits<{
+  toggleSelect: []
 }>()
 
 // Processes verse text: {{slug}} → reference, [[slug]] → title
@@ -17,10 +22,12 @@ const { processedText } = useProcessedVerseParts(
 
 <template>
   <div
-    class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line wrap-break-word"
+    class="p-1 inline leading-[1.9] indent-0 whitespace-pre-line wrap-break-word cursor-pointer"
     :class="{
       'relative bg-base-100 rounded shadow-lg z-1': isFocused,
+      'border-b-2 border-dotted border-base-content/40': isSelected,
     }"
+    @click="emit('toggleSelect')"
   >
     <span class="text-[0.8em] align-super leading-0 font-bold text-base-content/50 me-2">
       {{ verse.number }}
