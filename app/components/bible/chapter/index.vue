@@ -262,7 +262,7 @@ const handleVersionSelect = (version: Version) => {
         <RouterLink
           v-if="previousChapterLink"
           :to="previousChapterLink"
-          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52 nav-btn-prev"
+          class="btn btn-xl btn-circle mb-15 ms-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:ms-10 lg:mb-48 xl:ms-48 2xl:ms-52 nav-btn"
           :class="{ 'lg:ms-4! xl:ms-6! 2xl:ms-8!': hasSelection }"
           :aria-label="previousChapter ? `Ir para ${previousChapter.book.name} ${previousChapter.number}` : 'Capítulo anterior'"
         >
@@ -283,7 +283,7 @@ const handleVersionSelect = (version: Version) => {
         <RouterLink
           v-if="nextChapterLink"
           :to="nextChapterLink"
-          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52 nav-btn-next"
+          class="btn btn-xl btn-circle mb-15 me-5 border-2 border-base-300 shadow-sm pointer-events-auto lg:me-10 lg:ms-auto lg:mb-48 xl:me-48 2xl:me-52 nav-btn"
           :class="{ 'lg:me-4! xl:me-6! 2xl:me-8!': hasSelection }"
           :aria-label="nextChapter ? `Ir para ${nextChapter.book.name} ${nextChapter.number}` : 'Próximo capítulo'"
         >
@@ -299,8 +299,8 @@ const handleVersionSelect = (version: Version) => {
       <BibleSelectedVerses
         v-if="hasSelection"
         :reference-label="formattedReference(bookName, chapter.number)"
-        @clear="clearSelection"
         :copy-fn="handleCopySelectedVerses"
+        @clear="clearSelection"
       />
     </Transition>
   </section>
@@ -332,13 +332,15 @@ const handleVersionSelect = (version: Version) => {
 
 /* Panel: smooth transition when opening/closing */
 :deep(.selected-verses-enter-active) {
-  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :deep(.selected-verses-leave-active) {
-  transition: opacity 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53),
-    transform 0.35s cubic-bezier(0.55, 0.09, 0.68, 0.53);
+  transition:
+    opacity 0.3s cubic-bezier(0.55, 0.09, 0.68, 0.53),
+    transform 0.3s cubic-bezier(0.55, 0.09, 0.68, 0.53);
 }
 
 :deep(.selected-verses-enter-from),
@@ -347,30 +349,39 @@ const handleVersionSelect = (version: Version) => {
 }
 
 :deep(.selected-verses-enter-from) {
-  transform: translateX(1.5rem);
+  transform: translateX(1.25rem) scale(0.98);
 }
 
 :deep(.selected-verses-leave-to) {
-  transform: translateX(1.5rem);
+  transform: translateX(1.25rem) scale(0.98);
 }
 
 @media (max-width: 1023px) {
-  :deep(.selected-verses-enter-from),
+  :deep(.selected-verses-enter-from) {
+    transform: translateY(1rem) scale(0.98);
+  }
+
   :deep(.selected-verses-leave-to) {
-    transform: translateY(1.25rem);
+    transform: translateY(1rem) scale(0.98);
   }
 }
 
-/* Navigation buttons: smooth transition when the panel opens/closes */
-@media (min-width: 1024px) {
-  .nav-btn-prev {
-    transition: margin-left .8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      margin-right .8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
+/* Navigation buttons: smooth transition when the panel opens/closes + hover/active */
+.nav-btn {
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s ease,
+    margin-left 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-  .nav-btn-next {
-    transition: margin-left .8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      margin-right .8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
+.nav-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.nav-btn:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
 }
 </style>

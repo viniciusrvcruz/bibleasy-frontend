@@ -13,14 +13,14 @@ const toggle = (event: Event) => {
 </script>
 
 <template>
-  <div class="inline-flex relative -top-1">
+  <div class="inline-flex relative -top-1" @click.stop>
     <button
       type="button"
-      class="inline-flex items-center justify-center align-middle mx-3 text-base-content/60 hover:text-base-content/90 transition-colors cursor-pointer"
+      class="group inline-flex items-center justify-center align-middle mx-3 p-1.5 rounded-md text-base-content/60 hover:text-base-content/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 transition-all duration-200 cursor-pointer hover:bg-base-content/10 active:scale-95"
       :aria-label="`Ver referência bíblica: ${reference.text}`"
-      @click.stop="toggle"
+      @click="toggle"
     >
-      <Icon icon="file_text" :size="16" />
+      <Icon icon="file_text" :size="16" class="transition-transform duration-200 group-hover:scale-110" />
       <span class="sr-only">Ver referência bíblica</span>
     </button>
     <Popover ref="popover">
