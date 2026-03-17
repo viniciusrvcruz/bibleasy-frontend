@@ -132,10 +132,6 @@ const handleCopySelectedVerses = () =>
     versionAbbreviation: versionStore.currentVersion?.abbreviation ?? '',
   })
 
-watch(() => props.chapter.id, () => {
-  clearSelection()
-}, { immediate: false })
-
 onMounted(() => {
   if(!import.meta.client) return
 
