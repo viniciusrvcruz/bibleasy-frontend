@@ -1,6 +1,14 @@
 import type { Verse } from '~/types/verse/Verse.type'
 import { stripVersePlaceholders } from '~/utils/bible/versePlaceholders'
 
+export interface CopySelectedVersesParams {
+  verses: Verse[]
+  bookName: string
+  chapter: number
+  bookAbbreviation: string
+  versionAbbreviation: string
+}
+
 /**
  * Formats an array of verse numbers into a reference string.
  * Groups consecutive numbers into ranges (e.g. 1,2,3 -> "1-3").
@@ -16,6 +24,7 @@ export function formatVerseReference(numbers: number[]): string {
 
   for (let i = 1; i < sorted.length; i++) {
     const current = sorted[i]!
+
     if (current === rangeEnd + 1) {
       rangeEnd = current
     } else {
@@ -24,27 +33,22 @@ export function formatVerseReference(numbers: number[]): string {
       rangeEnd = current
     }
   }
+
   ranges.push(rangeStart === rangeEnd ? String(rangeStart) : `${rangeStart}-${rangeEnd}`)
 
   return ranges.join(',')
 }
 
-export interface CopySelectedVersesParams {
-  verses: Verse[]
-  bookName: string
-  chapter: number
-  bookAbbreviation: string
-  versionId: number
-  versionAbbreviation: string
-}
-
 export function useSelectedVerses() {
   const selectedVerses = ref<number[]>([])
+
+  const selectedVersesSet = computed(() => new Set(selectedVerses.value))
 
   const hasSelection = computed(() => selectedVerses.value.length > 0)
 
   const toggleVerse = (verseNumber: number) => {
     const idx = selectedVerses.value.indexOf(verseNumber)
+
     if (idx === -1) {
       selectedVerses.value = [...selectedVerses.value, verseNumber].sort((a, b) => a - b)
     } else {
@@ -58,6 +62,7 @@ export function useSelectedVerses() {
 
   const formattedReference = (bookName: string, chapter: number) => {
     if (selectedVerses.value.length === 0) return ''
+
     return `${bookName} ${chapter}:${formatVerseReference(selectedVerses.value)}`
   }
 
@@ -71,7 +76,6 @@ export function useSelectedVerses() {
       bookName,
       chapter,
       bookAbbreviation,
-      versionId,
       versionAbbreviation,
     } = params
 
@@ -89,13 +93,13 @@ export function useSelectedVerses() {
       })
       .join(' ')
 
-    const origin = typeof window !== 'undefined' ? window.location.origin : ''
-    const shareUrl = `${origin}/bible/${bookAbbreviation}.${chapter}.${verseRangeStr}.${versionAbbreviation}`
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'https://bibleasy.com'
+    const shareUrl = `${origin}/bible/${bookAbbreviation}.${chapter}.${versionAbbreviation}`
 
     const textToCopy = [
       `'${verseTexts}'`,
       '',
-      `${bookName} ${chapter}:${verseRangeStr}`,
+      `${bookName} ${chapter}:${verseRangeStr} (${versionAbbreviation})`,
       shareUrl,
     ].join('\n')
 
@@ -109,6 +113,7 @@ export function useSelectedVerses() {
 
   return {
     selectedVerses,
+    selectedVersesSet,
     hasSelection,
     toggleVerse,
     clearSelection,

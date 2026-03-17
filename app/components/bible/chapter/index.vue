@@ -115,7 +115,7 @@ const {
 } = useVerseFocus(chapterContainerRef, verseNumber, clearHash)
 
 const {
-  selectedVerses,
+  selectedVersesSet,
   hasSelection,
   toggleVerse,
   clearSelection,
@@ -129,7 +129,6 @@ const handleCopySelectedVerses = () =>
     bookName: props.chapter.book.name,
     chapter: props.chapter.number,
     bookAbbreviation: props.chapter.book.abbreviation,
-    versionId: versionStore.currentVersion?.id ?? 0,
     versionAbbreviation: versionStore.currentVersion?.abbreviation ?? '',
   })
 
@@ -231,7 +230,7 @@ const handleVersionSelect = (version: Version) => {
               :id="`v${verse.number}`"
               :verse="verse"
               :is-focused="verse.number === focusedVerseNumber"
-              :is-selected="selectedVerses.includes(verse.number)"
+              :is-selected="selectedVersesSet.has(verse.number)"
               @toggle-select="toggleVerse(verse.number)"
             />
 
@@ -258,7 +257,7 @@ const handleVersionSelect = (version: Version) => {
       </div>
 
       <!-- Navigation buttons -->
-      <div class="flex justify-between w-full pointer-events-none z-2 sticky bottom-0 shrink-0 py-4 lg:py-12">
+      <div class="flex justify-between w-full pointer-events-none z-2 sticky bottom-0 shrink-0">
         <RouterLink
           v-if="previousChapterLink"
           :to="previousChapterLink"
@@ -373,11 +372,6 @@ const handleVersionSelect = (version: Version) => {
     box-shadow 0.2s ease,
     margin-left 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     margin-right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.nav-btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
 .nav-btn:active {
