@@ -5,6 +5,7 @@ import type { Version } from '~/types/version/Version.type'
 import { VerseTitlePositionEnum } from '~/types/verseTitle/verseTitle.schema'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
 import { useSelectedVerses } from '~/composables/bible/useSelectedVerses'
+import { useVerseHighlights } from '~/composables/bible/useVerseHighlights'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
 
@@ -115,6 +116,7 @@ const {
 } = useVerseFocus(chapterContainerRef, verseNumber, clearHash)
 
 const {
+  selectedVerses,
   selectedVersesSet,
   hasSelection,
   toggleVerse,
@@ -122,6 +124,24 @@ const {
   formattedReference,
   copySelectedVerses,
 } = useSelectedVerses()
+
+const chapterKey = `${props.chapter.book.abbreviation}.${props.chapter.number}.${versionStore.currentVersion?.abbreviation ?? ''}`
+
+const {
+  loadHighlights,
+  getVerseHighlightColor,
+  highlightVerses,
+  removeHighlightsByColor,
+  activeColors,
+} = useVerseHighlights(chapterKey, selectedVerses)
+
+const handleHighlight = (color: string) => {
+  highlightVerses(selectedVerses.value, color)
+}
+
+const handleRemoveHighlight = (color: string) => {
+  removeHighlightsByColor(selectedVerses.value, color)
+}
 
 const handleCopySelectedVerses = () =>
   copySelectedVerses({
@@ -133,8 +153,9 @@ const handleCopySelectedVerses = () =>
   })
 
 onMounted(() => {
-  if(!import.meta.client) return
+  if (!import.meta.client) return
 
+  loadHighlights()
   addCurrentChapterToHistory()
   handleVerseFocus()
 })
@@ -227,6 +248,7 @@ const handleVersionSelect = (version: Version) => {
               :verse="verse"
               :is-focused="verse.number === focusedVerseNumber"
               :is-selected="selectedVersesSet.has(verse.number)"
+              :highlight-color="getVerseHighlightColor(verse.number)"
               @toggle-select="toggleVerse(verse.number)"
             />
 
@@ -295,7 +317,10 @@ const handleVersionSelect = (version: Version) => {
         v-if="hasSelection"
         :reference-label="formattedReference(bookName, chapter.number)"
         :copy-fn="handleCopySelectedVerses"
+        :active-colors="Array.from(activeColors)"
         @clear="clearSelection"
+        @highlight="handleHighlight"
+        @remove-highlight="handleRemoveHighlight"
       />
     </Transition>
   </section>

@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { isValidHexColor } from '~/utils/color'
 
 const props = defineProps<{
   referenceLabel: string
   copyFn: () => Promise<boolean>
+  activeColors?: string[]
 }>()
 
 const emit = defineEmits<{
   clear: []
+  highlight: [color: string]
+  removeHighlight: [color: string]
 }>()
 
 const copySuccess = ref(false)
@@ -34,6 +38,29 @@ const MARKER_COLORS = [
   '#FF7AE2',
   '#8A38F5',
 ]
+
+const activeColorsSet = computed(() => new Set(props.activeColors ?? []))
+
+const allColors = computed(() => {
+  const active = props.activeColors ?? []
+  const combined = [...active]
+
+  for (const c of MARKER_COLORS) {
+    if (!combined.includes(c)) combined.push(c)
+  }
+
+  return combined
+})
+
+const isColorActive = (color: string) => activeColorsSet.value.has(color)
+
+const handleColorClick = (color: string) => {
+  if (isColorActive(color)) {
+    emit('removeHighlight', color)
+  } else {
+    emit('highlight', color)
+  }
+}
 </script>
 
 <template>
@@ -55,20 +82,45 @@ const MARKER_COLORS = [
       </button>
     </div>
 
-    <!-- Marking (visual only) -->
+    <!-- Marking -->
     <div class="stagger-item stagger-2 mb-4">
       <h3 class="text-sm font-semibold text-base-content/70 mb-2">
         Marcação
       </h3>
       <div class="flex gap-2 overflow-x-auto overflow-y-hidden py-1 -mx-1 lg:flex-wrap lg:overflow-visible">
         <button
-          v-for="color in MARKER_COLORS"
+          v-for="color in allColors"
           :key="color"
           type="button"
-          class="w-10 h-10 shrink-0 rounded-full flex items-center justify-center cursor-pointer hover:border-2 hover:border-base-content/30 transition-transform duration-150 hover:scale-110 active:scale-95"
-          :style="{ backgroundColor: color }"
-          :aria-label="`Marcação ${color}`"
-        />
+          class="relative w-10 h-10 shrink-0 rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-2 transition-all duration-200 ease-out hover:scale-110 active:scale-95"
+          :class="[
+            isColorActive(color)
+              ? 'border-base-content/40 ring-2 ring-base-content/20'
+              : 'border-transparent hover:border-base-content/30',
+          ]"
+          :style="{
+            backgroundColor: isValidHexColor(color) ? color : '#94a3b8',
+          }"
+          :aria-label="
+            isColorActive(color)
+              ? `Remover marcação ${color}`
+              : `Aplicar marcação ${color}`
+          "
+          @click="handleColorClick(color)"
+        >
+          <Transition name="marker-fade">
+            <span
+              v-if="isColorActive(color)"
+              class="absolute inset-0 flex items-center justify-center bg-black/25 transition-opacity duration-200"
+            >
+              <Icon
+                icon="close"
+                :size="16"
+                class="text-white drop-shadow-sm"
+              />
+            </span>
+          </Transition>
+        </button>
       </div>
     </div>
 
@@ -117,5 +169,14 @@ const MARKER_COLORS = [
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.marker-fade-enter-active,
+.marker-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.marker-fade-enter-from,
+.marker-fade-leave-to {
+  opacity: 0;
 }
 </style>
