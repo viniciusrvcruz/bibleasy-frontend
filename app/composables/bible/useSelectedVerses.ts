@@ -89,7 +89,7 @@ export function useSelectedVerses() {
       .map((num) => {
         const rawText = versesMap.get(num)!
         const plainText = stripVersePlaceholders(rawText)
-        return `${num} ${plainText}`
+        return `[${num}] ${plainText}`
       })
       .join(' ')
 
