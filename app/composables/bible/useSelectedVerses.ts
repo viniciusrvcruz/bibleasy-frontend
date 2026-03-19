@@ -47,13 +47,13 @@ export function useSelectedVerses() {
   const hasSelection = computed(() => selectedVerses.value.length > 0)
 
   const toggleVerse = (verseNumber: number) => {
-    const idx = selectedVerses.value.indexOf(verseNumber)
+    const set = new Set(selectedVerses.value)
 
-    if (idx === -1) {
-      selectedVerses.value = [...selectedVerses.value, verseNumber].sort((a, b) => a - b)
-    } else {
-      selectedVerses.value = selectedVerses.value.filter((n) => n !== verseNumber)
-    }
+    set.has(verseNumber)
+      ? set.delete(verseNumber)
+      : set.add(verseNumber)
+
+    selectedVerses.value = Array.from(set).sort((a, b) => a - b)
   }
 
   const clearSelection = () => {
