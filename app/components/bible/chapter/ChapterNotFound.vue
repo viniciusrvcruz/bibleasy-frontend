@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Version } from '~/types/version/Version.type'
-import type { BookAbbreviationType } from '~/utils/book'
+import type { BookAbbreviationType } from '~/utils/bible/book'
 import { useBookService } from '~/composables/services/useBookService'
 
 const props = defineProps<{

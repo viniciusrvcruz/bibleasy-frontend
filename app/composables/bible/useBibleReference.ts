@@ -1,4 +1,4 @@
-import { getBookAbbreviation, BookAbbreviation, type BookAbbreviationType } from '~/utils/book'
+import { getBookAbbreviation, BookAbbreviation, type BookAbbreviationType } from '~/utils/bible/book'
 import type { Version } from '~/types/version/Version.type'
 
 export interface ParsedReference {

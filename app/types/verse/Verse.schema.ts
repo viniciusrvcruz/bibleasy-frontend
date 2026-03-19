@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BookAbbreviation } from '~/utils/book'
+import { BookAbbreviation } from '~/utils/bible/book'
 import { verseReferenceSchema } from '../verseReference/VerseReference.schema'
 import { verseTitleSchema } from '../verseTitle/verseTitle.schema'
 

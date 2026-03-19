@@ -1,4 +1,4 @@
-import { BookAbbreviation, getBookAbbreviation, type BookAbbreviationType } from '~/utils/book'
+import { BookAbbreviation, getBookAbbreviation, type BookAbbreviationType } from '~/utils/bible/book'
 
 interface LastChapterReference {
   book: BookAbbreviationType
