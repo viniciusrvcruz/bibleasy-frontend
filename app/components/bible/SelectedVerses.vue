@@ -87,7 +87,7 @@ const handleColorClick = (color: string) => {
       <h3 class="text-sm font-semibold text-base-content/70 mb-2">
         Marcação
       </h3>
-      <div class="flex gap-2 overflow-x-auto overflow-y-hidden py-1 px-0.5 lg:flex-wrap lg:overflow-visible">
+      <div class="flex gap-2 overflow-x-auto overflow-y-hidden py-2 px-0.5 lg:flex-wrap lg:overflow-visible">
         <button
           v-for="color in allColors"
           :key="color"
