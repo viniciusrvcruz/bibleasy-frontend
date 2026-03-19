@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BookAbbreviationType } from '~/utils/book'
+import type { BookAbbreviationType } from '~/utils/bible/book'
 import type { ChapterSelection } from '~/types/chapter/Chapter.type'
 import type { VerseSelection } from '~/types/verse/Verse.type'
 import { normalizeString } from '~/utils/helpers'

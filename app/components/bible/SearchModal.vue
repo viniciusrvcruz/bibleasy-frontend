@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BookAbbreviationType } from '~/utils/book'
+import type { BookAbbreviationType } from '~/utils/bible/book'
 import type { BookWithChapters } from '~/types/book/Book.type'
 import { normalizeString } from '~/utils/helpers'
 import { useNavigateToBible } from '~/composables/useNavigateToBible'

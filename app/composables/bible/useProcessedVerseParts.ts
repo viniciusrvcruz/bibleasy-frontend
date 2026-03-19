@@ -1,15 +1,11 @@
 import type { VerseReference } from '~/types/verseReference/VerseReference.type'
 import type { VerseTitle } from '~/types/verseTitle/verseTitle.type'
+import { VERSE_PLACEHOLDER_PATTERNS } from '~/utils/bible/versePlaceholders'
 
 export type TextPart = { type: 'text'; content: string }
 export type ReferencePart = { type: 'reference'; reference: VerseReference }
 export type TitlePart = { type: 'title'; title: VerseTitle }
 export type ProcessedPart = TextPart | ReferencePart | TitlePart
-
-const PLACEHOLDER_PATTERNS = [
-  { pattern: /\{\{(\w+)\}\}/g, type: 'reference' },
-  { pattern: /\[\[(\w+)\]\]/g, type: 'title' },
-] as const
 
 function buildReferenceMap(references: VerseReference[]): Map<string, VerseReference> {
   return new Map(references.map(ref => [ref.slug, ref]))
@@ -33,7 +29,8 @@ type Match = { index: number; length: number; type: 'reference'; slug: string }
 function collectMatches(text: string): Match[] {
   const matches: Match[] = []
 
-  for (const { pattern, type } of PLACEHOLDER_PATTERNS) {
+  for (const { patternSource, type } of VERSE_PLACEHOLDER_PATTERNS) {
+    const pattern = new RegExp(patternSource, 'g')
     for (const m of text.matchAll(pattern)) {
       const slug = m[1]
 

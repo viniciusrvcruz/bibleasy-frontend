@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { VerseSelection } from '~/types/verse/Verse.type'
-import type { BookAbbreviationType } from '~/utils/book'
+import type { BookAbbreviationType } from '~/utils/bible/book'
 
 defineProps<{
   currentBook?: BookAbbreviationType | null

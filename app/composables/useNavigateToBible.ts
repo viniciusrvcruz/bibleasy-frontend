@@ -1,4 +1,4 @@
-import { BookAbbreviation } from '~/utils/book'
+import { BookAbbreviation } from '~/utils/bible/book'
 
 export const useNavigateToBible = () => {
   const versionStore = useVersionStore()

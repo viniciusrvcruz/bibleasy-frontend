@@ -1,11 +1,24 @@
 <script setup lang="ts">
 import type { Verse } from '~/types/verse/Verse.type'
 import { useProcessedVerseParts } from '~/composables/bible/useProcessedVerseParts'
+import { getContrastTextColor } from '~/utils/color'
 
 const props = defineProps<{
   verse: Verse
   isFocused: boolean
+  isSelected?: boolean
+  highlightColor?: string | null
 }>()
+
+const emit = defineEmits<{
+  toggleSelect: []
+}>()
+
+const contrastTextClass = computed(() =>
+  props.highlightColor
+    ? getContrastTextColor(props.highlightColor)
+    : null
+)
 
 // Processes verse text: {{slug}} → reference, [[slug]] → title
 const { processedText } = useProcessedVerseParts(
@@ -17,15 +30,28 @@ const { processedText } = useProcessedVerseParts(
 
 <template>
   <div
-    class="p-1 inline leading-[1.9] indent-0 transition-all duration-200 ease-in-out whitespace-pre-line wrap-break-word"
-    :class="{
-      'relative bg-base-100 rounded shadow-lg z-1': isFocused,
-    }"
+    class="p-1 inline leading-[1.9] indent-0 whitespace-pre-line wrap-break-word cursor-pointer transition-colors duration-300 ease-out"
+    :class="[
+      {
+        'relative bg-base-100 rounded shadow-lg z-1': isFocused,
+        'border-b-3 border-dotted': isSelected,
+        'rounded px-0.5': !!highlightColor,
+      },
+      contrastTextClass
+     ]"
+    :style="highlightColor ? { backgroundColor: highlightColor } : undefined"
+    @click="emit('toggleSelect')"
   >
-    <span class="text-[0.8em] align-super leading-0 font-bold text-base-content/50 me-2">
+    <span
+      class="text-[0.8em] align-super leading-0 font-bold me-2 transition-colors duration-300 ease-out"
+      :class="contrastTextClass"
+    >
       {{ verse.number }}
     </span>
-    <div class="inline leading-[1.9]">
+    <div
+      class="inline leading-[1.9] transition-colors duration-300 ease-out"
+      :class="contrastTextClass"
+    >
       <template v-for="(part, index) in processedText" :key="index">
         <template v-if="part.type === 'text'">
           {{ part.content }}
@@ -34,6 +60,7 @@ const { processedText } = useProcessedVerseParts(
           v-else-if="part.type === 'title'"
           :title="part.title"
           :references="verse.references"
+          class="text-base-content"
         />
         <BibleChapterVerseReference
           v-else-if="part.type === 'reference'"

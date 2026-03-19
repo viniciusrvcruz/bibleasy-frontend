@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ChapterHistory } from '~/types/chapterHistory/ChapterHistory.type'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
-import { getDefaultBookName } from '~/utils/book'
+import { getDefaultBookName } from '~/utils/bible/book'
 import { useBookService } from '~/composables/services/useBookService'
 
 const versionStore = useVersionStore()

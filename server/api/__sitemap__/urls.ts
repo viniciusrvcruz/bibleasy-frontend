@@ -1,4 +1,4 @@
-import { BOOKS } from '~/utils/book'
+import { BOOKS } from '~/utils/bible/book'
 
 // Static pages
 const staticPages = [

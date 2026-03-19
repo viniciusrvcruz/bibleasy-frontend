@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BookAbbreviation } from '~/utils/book'
+import { BookAbbreviation } from '~/utils/bible/book'
 
 export const chapterHistorySchema = z.object({
   book: z.enum(BookAbbreviation),
