@@ -44,7 +44,7 @@ const { processedText } = useProcessedVerseParts(
   >
     <span
       class="text-[0.8em] align-super leading-0 font-bold me-2 transition-colors duration-300 ease-out"
-      :class="contrastTextClass"
+      :class="highlightColor ? contrastTextClass : 'text-base-content/50'"
     >
       {{ verse.number }}
     </span>
