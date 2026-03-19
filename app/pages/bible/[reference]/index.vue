@@ -99,7 +99,5 @@ useSchemaOrg([
       :chapter="chapter"
       :version-name="version.name"
     />
-
-    <!-- TODO: Add selected verses section -->
   </main>
 </template>

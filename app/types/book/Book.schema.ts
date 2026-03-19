@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BookAbbreviation } from '~/utils/book'
+import { BookAbbreviation } from '~/utils/bible/book'
 
 export const chapterInBookSchema = z.object({
   id: z.int(),

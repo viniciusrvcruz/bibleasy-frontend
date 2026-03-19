@@ -1,4 +1,4 @@
-import type { BookAbbreviationType } from '~/utils/book'
+import type { BookAbbreviationType } from '~/utils/bible/book'
 import type { Chapter } from '~/types/chapter/Chapter.type'
 
 export function useChapterService() {

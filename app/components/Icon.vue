@@ -34,6 +34,7 @@ const ICON_MAP = {
   copy: 'lucide:copy',
   info: 'lucide:info',
   file_text: 'lucide:file-text',
+  broom: 'mdi:broom',
 } as const
 
 </script>
