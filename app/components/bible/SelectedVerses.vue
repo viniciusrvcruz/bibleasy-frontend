@@ -87,7 +87,7 @@ const handleColorClick = (color: string) => {
       <h3 class="text-sm font-semibold text-base-content/70 mb-2">
         Marcação
       </h3>
-      <div class="flex gap-2 overflow-x-auto overflow-y-hidden py-1 -mx-1 lg:flex-wrap lg:overflow-visible">
+      <div class="flex gap-2 overflow-x-auto overflow-y-hidden py-1 px-0.5 lg:flex-wrap lg:overflow-visible">
         <button
           v-for="color in allColors"
           :key="color"
@@ -95,7 +95,7 @@ const handleColorClick = (color: string) => {
           class="relative w-10 h-10 shrink-0 rounded-full flex items-center justify-center overflow-hidden cursor-pointer border-2 transition-all duration-200 ease-out hover:scale-110 active:scale-95"
           :class="[
             isColorActive(color)
-              ? 'border-base-content/40 ring-2 ring-base-content/20'
+              ? 'border-base-content/40 ring-2 ring-base-content/20 ring-inset'
               : 'border-transparent hover:border-base-content/30',
           ]"
           :style="{

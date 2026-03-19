@@ -137,10 +137,12 @@ const {
 
 const handleHighlight = (color: string) => {
   highlightVerses(selectedVerses.value, color)
+  clearSelection()
 }
 
 const handleRemoveHighlight = (color: string) => {
   removeHighlightsByColor(selectedVerses.value, color)
+  clearSelection()
 }
 
 const handleCopySelectedVerses = () =>
