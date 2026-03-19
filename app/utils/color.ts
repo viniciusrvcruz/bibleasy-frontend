@@ -50,26 +50,3 @@ export function getContrastTextColor(hexColor: string): 'text-black' | 'text-whi
 
   return isColorTooDark(hexColor) ? 'text-white' : 'text-black'
 }
-
-/**
- * Return a lighter version of the original color, adding a factor to each channel.
- */
-export function getLighterColor(color: string, factor: number): string | undefined {
-  if (!isValidHexColor(color)) return
-
-  const hex = color.replace('#', '')
-
-  let r = parseInt(hex.substring(0, 2), 16)
-  let g = parseInt(hex.substring(2, 4), 16)
-  let b = parseInt(hex.substring(4, 6), 16)
-
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return
-
-  r = Math.min(255, r + factor)
-  g = Math.min(255, g + factor)
-  b = Math.min(255, b + factor)
-
-  const newColor = (1 << 24) | (r << 16) | (g << 8) | b
-
-  return `#${newColor.toString(16).slice(1)}`
-}
