@@ -16,7 +16,7 @@ const toggle = (event: Event) => {
   <div class="inline-flex relative -top-1" @click.stop>
     <button
       type="button"
-      class="group inline-flex items-center justify-center align-middle mx-1.5 p-1.5 rounded-md bg-base-100 text-base-content/60 hover:text-base-content/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 transition-all duration-200 cursor-pointer hover:bg-base-300 active:scale-95"
+      class="group inline-flex items-center justify-center align-middle mx-1.5 p-1.5 rounded-md bg-base-100 text-base-content/60 hover:text-base-content/90 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 cursor-pointer hover:bg-base-300 active:scale-95"
       :aria-label="`Ver referência bíblica: ${reference.text}`"
       @click="toggle"
     >
