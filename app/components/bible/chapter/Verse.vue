@@ -35,7 +35,7 @@ const { processedText } = useProcessedVerseParts(
       {
         'relative bg-base-100 rounded shadow-lg z-1': isFocused,
         'border-b-3 border-dotted': isSelected,
-        'rounded px-0.5': !!highlightColor,
+        'rounded': !!highlightColor,
       },
       contrastTextClass
      ]"
