@@ -159,12 +159,7 @@ onMounted(() => {
 
   loadHighlights()
   addCurrentChapterToHistory()
-
-  if (!props.isLoading) handleVerseFocus()
-})
-
-watch(() => props.isLoading, (loading) => {
-  if (!loading) handleVerseFocus()
+  handleVerseFocus()
 })
 
 const addCurrentChapterToHistory = () => {
