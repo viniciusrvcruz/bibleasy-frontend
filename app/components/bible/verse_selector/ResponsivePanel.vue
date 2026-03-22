@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { VerseSelection } from '~/types/verse/Verse.type'
 import type { BookAbbreviationType } from '~/utils/bible/book'
+import { useFullscreen } from '~/composables/bible/useBibleFullscreen'
 
 defineProps<{
   currentBook?: BookAbbreviationType | null
 }>()
 
 const { goToChapter } = useNavigateToBible()
+const { isFullscreen } = useFullscreen()
 
 const isOpen = ref(false)
 const lgBreakpoint = ref<MediaQueryList | null>(null)
@@ -46,8 +48,11 @@ const handleSelectVerse = (verse: VerseSelection) => {
   <input v-model="isOpen" type="checkbox" id="select_verse_modal" class="modal-toggle" />
 
   <div
-    class="lg:w-3/12 lg:sticky lg:top-header lg:h-screen-header xl:w-1/5"
-    :class="{'modal': isOpen}"
+    class="lg:w-3/12 xl:w-1/5"
+    :class="{
+      'modal': isOpen,
+      'lg:sticky lg:top-header lg:h-screen-header': !isFullscreen
+    }"
     role="dialog"
     :aria-labelledby="isOpen ? 'verse-selector-title' : undefined"
     :aria-modal="isOpen"

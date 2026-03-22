@@ -8,6 +8,7 @@ import { useSelectedVerses } from '~/composables/bible/useSelectedVerses'
 import { useVerseHighlights } from '~/composables/bible/useVerseHighlights'
 import { useChapterHistory } from '~/composables/bible/useChapterHistory'
 import { useBookService } from '~/composables/services/useBookService'
+import { useFullscreen } from '~/composables/bible/useBibleFullscreen'
 
 const props = defineProps<{
   chapter: Chapter,
@@ -18,6 +19,7 @@ const route = useRoute()
 const { goToChapter, getChapterUrl } = useNavigateToBible()
 const versionStore = useVersionStore()
 const { addToHistory } = useChapterHistory()
+const { isFullscreen } = useFullscreen()
 
 const chapterContainerRef = ref<HTMLElement | null>(null)
 
@@ -193,7 +195,10 @@ const handleVersionSelect = (version: Version) => {
 </script>
 
 <template>
-  <section class="flex-1 flex flex-col lg:flex-row h-screen-header overflow-hidden sticky top-header">
+  <section
+    class="flex-1 flex flex-col lg:flex-row overflow-hidden sticky"
+    :class="{'h-screen-header top-header': !isFullscreen}"
+  >
     <div
       ref="chapterContainerRef"
       class="flex flex-col overflow-y-auto flex-1 scroll-smooth relative"
