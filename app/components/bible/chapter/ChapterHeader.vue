@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Version } from '~/types/version/Version.type'
+import { useFullscreen } from '~/composables/bible/useBibleFullscreen'
 
 defineProps<{
   bookName: string
@@ -14,8 +15,11 @@ const fontSize = defineModel<string>('fontSize', { required: true })
 const fontFamily = defineModel<string>('fontFamily', { required: true })
 
 const versionStore = useVersionStore()
+const { isFullscreen, toggle } = useFullscreen()
 const historyModalRef = ref()
 const versionModalRef = ref()
+
+const fullscreenLabel = computed(() => isFullscreen.value ? 'Sair da tela cheia' : 'Tela cheia')
 
 const handleVersionSelect = (version: Version) => {
   emit('version-select', version)
@@ -29,6 +33,19 @@ const handleVersionSelect = (version: Version) => {
     </span>
 
     <div class="ms-auto space-x-2 flex items-center">
+      <!-- Fullscreen button -->
+      <button
+        v-tooltip.bottom="fullscreenLabel"
+        class="btn btn-sm"
+        :aria-label="fullscreenLabel"
+        @click="toggle"
+      >
+        <Icon :icon="isFullscreen ? 'fullscreen_exit' : 'fullscreen'" :size="20" />
+        <span class="sr-only">
+          {{ fullscreenLabel }}
+        </span>
+      </button>
+
       <!-- History button -->
       <button
         v-tooltip.bottom="'Histórico de versículos'"

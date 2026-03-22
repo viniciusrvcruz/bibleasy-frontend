@@ -35,6 +35,8 @@ const ICON_MAP = {
   info: 'lucide:info',
   file_text: 'lucide:file-text',
   broom: 'mdi:broom',
+  fullscreen: 'lucide:maximize',
+  fullscreen_exit: 'lucide:minimize',
 } as const
 
 </script>

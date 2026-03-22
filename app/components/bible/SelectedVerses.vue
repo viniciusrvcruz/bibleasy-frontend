@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { isValidHexColor } from '~/utils/color'
+import { useFullscreen } from '~/composables/bible/useBibleFullscreen'
 
 const props = defineProps<{
   referenceLabel: string
@@ -14,6 +15,7 @@ const emit = defineEmits<{
 }>()
 
 const copySuccess = ref(false)
+const { isFullscreen } = useFullscreen()
 
 const handleCopy = async () => {
   copySuccess.value = false
@@ -65,7 +67,8 @@ const handleColorClick = (color: string) => {
 
 <template>
   <div
-    class="selected-verses-panel flex flex-col overflow-y-auto overflow-x-hidden bg-base-100 border-t-2 border-base-300 shrink-0 fixed bottom-0 left-0 right-0 z-10 max-h-[50dvh] lg:border-t-0 lg:border-s-2 lg:w-4/12 lg:sticky lg:top-header lg:bottom-auto lg:h-screen-header lg:max-h-none p-4 lg:p-5"
+    class="selected-verses-panel flex flex-col overflow-y-auto overflow-x-hidden bg-base-100 border-t-2 border-base-300 shrink-0 fixed bottom-0 left-0 right-0 z-10 max-h-[50dvh] lg:border-t-0 lg:border-s-2 lg:w-4/12 lg:sticky lg:bottom-auto lg:max-h-none p-4 lg:p-5"
+    :class="{'lg:top-header lg:h-screen-header': !isFullscreen}"
   >
     <!-- Header -->
     <div class="stagger-item stagger-1 flex justify-between items-center mb-2">
