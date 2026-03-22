@@ -2,11 +2,13 @@
 import { useChapterService } from '~/composables/services/useChapterService'
 import { useBookService } from '~/composables/services/useBookService'
 import { useBibleReference } from '~/composables/bible/useBibleReference'
+import { useFullscreen } from '~/composables/bible/useBibleFullscreen'
 
 const route = useRoute()
 const router = useRouter()
 const versionStore = useVersionStore()
 const lastChapterStore = useLastChapterStore()
+const { isFullscreen } = useFullscreen()
 
 const isLoading = ref(true)
 
@@ -84,7 +86,12 @@ useSchemaOrg([
 </script>
 
 <template>
-  <main class="flex-1 flex justify-between">
+  <main
+    class="flex-1 flex justify-between"
+    :class="{
+      'fixed inset-0 z-50 bg-base-100': isFullscreen,
+    }"
+  >
     <BibleVerseSelectorResponsivePanel :current-book="book" />
 
     <BibleChapter
