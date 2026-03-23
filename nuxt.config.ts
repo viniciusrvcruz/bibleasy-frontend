@@ -19,7 +19,51 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/seo',
     'nuxt-clarity-analytics',
+    '@vite-pwa/nuxt',
   ],
+
+  pwa: {
+    manifest: {
+      name: 'Bibleasy',
+      short_name: 'Bibleasy',
+      description:
+        'Leia a Bíblia online de forma fácil e intuitiva. Acesse diferentes versões, personalize sua experiência e encontre qualquer versículo rapidamente.',
+      lang: 'pt-BR',
+      start_url: '/',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
+      icons: [
+        {
+          src: '/logo.png',
+          sizes: '215x215',
+          type: 'image/png',
+          purpose: 'any',
+        },
+        {
+          src: '/favicon.ico',
+          sizes: '150x158',
+          type: 'image/x-icon',
+        },
+      ],
+      screenshots: [
+        {
+          src: '/screenshots/desktop.png',
+          sizes: '1280x719',
+          type: 'image/png',
+          form_factor: 'wide',
+          label: 'Bibleasy no desktop',
+        },
+        {
+          src: '/screenshots/mobile.png',
+          sizes: '360x740',
+          type: 'image/png',
+          form_factor: 'narrow',
+          label: 'Bibleasy no mobile',
+        },
+      ],
+    },
+  },
 
   runtimeConfig: {
     apiBaseUrl: env.NUXT_API_BASE_URL || env.NUXT_PUBLIC_API_BASE_URL,
