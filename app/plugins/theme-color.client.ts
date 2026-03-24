@@ -8,7 +8,7 @@ export default defineNuxtPlugin(() => {
     const styles = getComputedStyle(root)
 
     // DaisyUI usa --b1 como cor base
-    const oklch = styles.getPropertyValue('--root-bg').trim()
+    const oklch = styles.getPropertyValue('--color-base-300').trim()
 
     if (!oklch) return '#ffffff'
 
