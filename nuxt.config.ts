@@ -31,8 +31,8 @@ export default defineNuxtConfig({
       lang: 'pt-BR',
       start_url: '/',
       display: 'standalone',
-      background_color: '#ffffff',
-      theme_color: '#ffffff',
+      background_color: '#e2cec0',
+      theme_color: '#e2cec0',
       icons: [
         {
           src: '/logo.png',
