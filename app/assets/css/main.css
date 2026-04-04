@@ -5,7 +5,14 @@
 }
 
 :root {
-  --h-header: 4rem
+  --h-header: 4rem;
+}
+
+[data-theme="black"],
+[data-theme="cyberpunk"] {
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
 }
 
 /* Smooth scroll behavior */
