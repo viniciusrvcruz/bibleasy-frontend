@@ -1,87 +1,52 @@
+<script setup lang="ts">
+const features = [
+  { icon: 'globe' as const, title: 'Várias traduções', desc: 'Troque de versão quando quiser, sem sair da página.' },
+  { icon: 'palette' as const, title: 'Aparência', desc: 'Tema claro ou escuro, fonte e tamanho para leitura longa.' },
+  { icon: 'search' as const, title: 'Busca', desc: 'Atalho por teclado para abrir a pesquisa e ir ao capítulo.' },
+  { icon: 'smartphone' as const, title: 'Qualquer tela', desc: 'Do celular ao monitor — o leitor acompanha.' },
+  { icon: 'zap' as const, title: 'Sem conta', desc: 'Nada de login para abrir e ler.' },
+  { icon: 'book_open' as const, title: 'Navegação integrada', desc: 'Capítulos e livros no mesmo fluxo de leitura.' },
+]
+</script>
+
 <template>
-  <section class="py-14 bg-base-100">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <span class="text-primary font-semibold text-sm uppercase tracking-wider">Recursos</span>
-        <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Tudo que você precisa</h2>
-        <p class="text-lg text-base-content/60 max-w-2xl mx-auto">
-          Uma plataforma completa para sua leitura bíblica diária
+  <section>
+    <div class="lg:flex lg:gap-16">
+      <div class="lg:sticky lg:top-28 lg:max-w-xs lg:self-start">
+        <h2 class="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+          Recursos
+        </h2>
+        <p class="mt-3 text-2xl font-semibold leading-tight text-base-content md:text-3xl">
+          O leitor em seis ideias
+        </p>
+        <p class="mt-4 text-sm leading-relaxed text-base-content/60">
+          Lista alternada abaixo: um respiro visual entre um bloco e outro.
         </p>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-        <!-- Feature 1 -->
-        <div class="p-6 rounded-2xl bg-base-200">
-          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-            <Icon icon="book_open" :size="28" />
+      <ul class="mt-10 flex min-w-0 flex-1 flex-col gap-3 lg:mt-0">
+        <li
+          v-for="(feat, i) in features"
+          :key="feat.title"
+          class="flex gap-4 rounded-2xl border border-transparent px-4 py-5 transition-colors md:gap-5 md:px-5 md:py-6"
+          :class="i % 2 === 0 ? 'bg-base-200/70 md:ms-0 md:me-8' : 'bg-base-100 md:ms-8 md:me-0 border-base-300/80'"
+        >
+          <div
+            class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-base-100 text-primary shadow-sm ring-1 ring-base-300/60 md:size-12"
+            :class="i % 2 === 1 ? 'bg-primary/10 ring-primary/20' : ''"
+          >
+            <Icon :icon="feat.icon" :size="20" />
           </div>
-          <h3 class="text-xl font-bold mb-2">Navegação Intuitiva</h3>
-          <p class="text-base-content/60">
-            Encontre qualquer livro, capítulo ou versículo em segundos.
-            Interface limpa e organizada para você focar na leitura.
-          </p>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="p-6 rounded-2xl bg-base-200">
-          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-            <Icon icon="compare" :size="28" />
+          <div class="min-w-0 pt-0.5">
+            <h3 class="font-semibold text-base-content">
+              {{ feat.title }}
+            </h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-base-content/65">
+              {{ feat.desc }}
+            </p>
           </div>
-          <h3 class="text-xl font-bold mb-2">Múltiplas Versões</h3>
-          <p class="text-base-content/60">
-            Acesse diferentes traduções da Bíblia.
-            Troque entre versões a qualquer momento.
-          </p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="p-6 rounded-2xl bg-base-200">
-          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-            <Icon icon="palette" :size="28" />
-          </div>
-          <h3 class="text-xl font-bold mb-2">Personalização Total</h3>
-          <p class="text-base-content/60">
-            Escolha entre dezenas de temas e cores.
-            Ajuste fonte e tamanho do texto ao seu gosto.
-          </p>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="p-6 rounded-2xl bg-base-200">
-          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-            <Icon icon="search" :size="28" />
-          </div>
-          <h3 class="text-xl font-bold mb-2">Busca Instantânea</h3>
-          <p class="text-base-content/60">
-            Encontre qualquer passagem pelo livro, capítulo e versículo.
-            Digite o nome do livro e navegue em segundos.
-          </p>
-        </div>
-
-        <!-- Feature 5 -->
-        <div class="p-6 rounded-2xl bg-base-200">
-          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-            <Icon icon="globe" :size="28" />
-          </div>
-          <h3 class="text-xl font-bold mb-2">Leia em Qualquer Lugar</h3>
-          <p class="text-base-content/60">
-            Funciona perfeitamente em celular, tablet ou computador.
-            Leia a qualquer hora, em qualquer lugar.
-          </p>
-        </div>
-
-        <!-- Feature 6 -->
-        <div class="p-6 rounded-2xl bg-base-200">
-          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
-            <Icon icon="history" :size="28" />
-          </div>
-          <h3 class="text-xl font-bold mb-2">Histórico de Leitura</h3>
-          <p class="text-base-content/60">
-            Continue de onde parou automaticamente.
-            Acesse seu histórico de capítulos lidos recentemente.
-          </p>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </section>
 </template>

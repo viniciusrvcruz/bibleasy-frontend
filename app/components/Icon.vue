@@ -37,6 +37,13 @@ const ICON_MAP = {
   broom: 'mdi:broom',
   fullscreen: 'lucide:maximize',
   fullscreen_exit: 'lucide:minimize',
+  sparkles: 'lucide:sparkles',
+  zap: 'lucide:zap',
+  smartphone: 'lucide:smartphone',
+  star: 'lucide:star',
+  trending_up: 'lucide:trending-up',
+  arrow_right: 'lucide:arrow-right',
+  heart: 'lucide:heart',
 } as const
 
 </script>
