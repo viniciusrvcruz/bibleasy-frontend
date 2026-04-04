@@ -1,26 +1,26 @@
 <script setup lang="ts">
 const features = [
-  { icon: 'globe' as const, title: 'Várias traduções', desc: 'Troque de versão quando quiser, sem sair da página.' },
-  { icon: 'palette' as const, title: 'Aparência', desc: 'Tema claro ou escuro, fonte e tamanho para leitura longa.' },
-  { icon: 'search' as const, title: 'Busca', desc: 'Atalho por teclado para abrir a pesquisa e ir ao capítulo.' },
-  { icon: 'smartphone' as const, title: 'Qualquer tela', desc: 'Do celular ao monitor — o leitor acompanha.' },
-  { icon: 'zap' as const, title: 'Sem conta', desc: 'Nada de login para abrir e ler.' },
-  { icon: 'book_open' as const, title: 'Navegação integrada', desc: 'Capítulos e livros no mesmo fluxo de leitura.' },
+  { icon: 'book_open' as const, title: 'Navegação Intuitiva', desc: 'Encontre qualquer livro, capítulo ou versículo em segundos. Interface limpa e organizada para você focar na leitura.' },
+  { icon: 'compare' as const, title: 'Múltiplas Versões', desc: 'Acesse diferentes traduções da Bíblia. Troque entre versões a qualquer momento.' },
+  { icon: 'palette' as const, title: 'Personalização Total', desc: 'Escolha entre dezenas de temas e cores. Ajuste fonte e tamanho do texto ao seu gosto.' },
+  { icon: 'search' as const, title: 'Busca Instantânea', desc: 'Encontre qualquer passagem pelo livro, capítulo e versículo. Digite o nome do livro e navegue em segundos.' },
+  { icon: 'globe' as const, title: 'Leia em Qualquer Lugar', desc: 'Funciona perfeitamente em celular, tablet ou computador. Leia a qualquer hora, em qualquer lugar.' },
+  { icon: 'history' as const, title: 'Histórico de Leitura', desc: 'Continue de onde parou automaticamente. Acesse seu histórico de capítulos lidos recentemente.' },
 ]
 </script>
 
 <template>
-  <section>
+  <section class="relative mx-auto w-full max-w-5xl px-4 py-6 md:py-12">
     <div class="lg:flex lg:gap-16">
       <div class="lg:sticky lg:top-28 lg:max-w-xs lg:self-start">
         <h2 class="text-xs font-bold uppercase tracking-[0.25em] text-primary">
           Recursos
         </h2>
         <p class="mt-3 text-2xl font-semibold leading-tight text-base-content md:text-3xl">
-          O leitor em seis ideias
+          Tudo que você precisa
         </p>
-        <p class="mt-4 text-sm leading-relaxed text-base-content/60">
-          Lista alternada abaixo: um respiro visual entre um bloco e outro.
+        <p class="mt-2 text-sm leading-relaxed text-base-content/60 lg:mt-4">
+          Uma plataforma completa para sua leitura bíblica diária.
         </p>
       </div>
 

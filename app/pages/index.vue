@@ -35,41 +35,45 @@ useSchemaOrg([
 </script>
 
 <template>
-  <main class="relative flex flex-1 flex-col bg-base-100">
-    <!-- textura discreta: evita “página vazia” sem repetir o mesmo bloco em todo lugar -->
-    <div
-      class="pointer-events-none fixed inset-0 -z-10 opacity-[0.35] dark:opacity-[0.2]"
-      aria-hidden="true"
-      style="background-image: radial-gradient(circle at 1px 1px, oklch(0.5 0.02 250 / 0.12) 1px, transparent 0); background-size: 24px 24px;"
-    />
-
-    <div class="relative mx-auto w-full max-w-6xl px-4 pt-6 pb-4 md:pt-10">
-      <HomeHeroSection :last-chapter-url="lastChapterUrl" />
-    </div>
-
-    <!-- faixa editorial: largura um pouco menor que o hero -->
-    <div class="relative mx-auto w-full max-w-3xl px-4 py-10 md:py-14">
-      <HomeVersePlaceholderSection />
-    </div>
-
-    <!-- bento mais largo -->
-    <div class="relative mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
-      <HomeQuickAccessSection />
-    </div>
-
-    <!-- números em contraste: quebra o ritmo das caixas claras -->
-    <div class="relative mx-auto w-full max-w-6xl px-4 py-8 md:py-12">
-      <HomeStatsSection />
-    </div>
-
-    <div class="relative mx-auto w-full max-w-5xl px-4 py-6 md:py-12">
-      <HomeFeaturesSection />
-    </div>
-
-    <div class="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-4">
-      <HomeCtaSection :last-chapter-url="lastChapterUrl" />
-    </div>
-
+  <main
+    class="home-main relative flex flex-1 flex-col bg-base-100"
+  >
+    <HomeHeroSection />
+    <HomeVersePlaceholderSection />
+    <HomeQuickAccessSection />
+    <HomeStatsSection />
+    <HomeFeaturesSection />
+    <HomeCtaSection />
     <HomePageFooter />
   </main>
 </template>
+
+<style scoped>
+.home-main {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    oklch(0.5 0.02 250 / 0.12) 1px,
+    transparent 0
+  );
+  background-size: 24px 24px;
+}
+
+:global(html[data-theme="dark"]) .home-main,
+:global(html[data-theme="synthwave"]) .home-main,
+:global(html[data-theme="halloween"]) .home-main,
+:global(html[data-theme="forest"]) .home-main,
+:global(html[data-theme="black"]) .home-main,
+:global(html[data-theme="luxury"]) .home-main,
+:global(html[data-theme="dracula"]) .home-main,
+:global(html[data-theme="business"]) .home-main,
+:global(html[data-theme="night"]) .home-main,
+:global(html[data-theme="coffee"]) .home-main,
+:global(html[data-theme="dim"]) .home-main,
+:global(html[data-theme="sunset"]) .home-main {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    oklch(0.75 0.02 250 / 0.07) 1px,
+    transparent 0
+  );
+}
+</style>

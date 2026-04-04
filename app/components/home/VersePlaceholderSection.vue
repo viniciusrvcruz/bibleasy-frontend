@@ -1,5 +1,5 @@
 <template>
-  <section class="relative">
+  <section class="relative mx-auto w-full max-w-3xl px-4 py-10 md:py-14">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
         <h2 class="font-serif text-2xl italic text-base-content md:text-3xl">
