@@ -39,7 +39,7 @@ useSchemaOrg([
     class="home-main relative flex flex-1 flex-col bg-base-100"
   >
     <HomeHeroSection />
-    <HomeVersePlaceholderSection />
+    <HomeVerseOfTheDaySection />
     <HomeQuickAccessSection />
     <HomeStatsSection />
     <HomeFeaturesSection />
