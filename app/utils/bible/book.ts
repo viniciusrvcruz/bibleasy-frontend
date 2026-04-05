@@ -84,7 +84,14 @@ export function getBookAbbreviation(key: string): BookAbbreviationType | undefin
   return isValidBookAbbreviation(lowerKey) ? lowerKey : undefined
 }
 
+function findDefaultBookRow(abbreviation: string): (typeof BOOKS)[number] | undefined {
+  return BOOKS.find(([key]) => key === abbreviation.toLowerCase())
+}
+
 export function getDefaultBookName(abbreviation: string): string {
-  const book = BOOKS.find(([key]) => key === abbreviation.toLowerCase())
-  return book?.[1] ?? ''
+  return findDefaultBookRow(abbreviation)?.[1] ?? ''
+}
+
+export function getDefaultBookChapterCount(abbreviation: string): number {
+  return findDefaultBookRow(abbreviation)?.[2] ?? 0
 }

@@ -46,7 +46,7 @@ const closeDrawer = () => {
 
         <div class="hidden sm:flex items-center text-xs text-base-content/70 ms-4">
           <Icon icon="keyboard" :size="16" class="me-1" />
-          <span>Digite qualquer letra para pesquisar</span>
+          <span>Pressione qualquer letra para pesquisar</span>
         </div>
 
         <ul class="menu menu-horizontal gap-2 items-center">

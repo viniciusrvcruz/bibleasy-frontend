@@ -8,6 +8,8 @@ defineProps<{
 const ICON_MAP = {
   circle_question: 'lucide:circle-question-mark',
   book_open: 'lucide:book-open-text',
+  book: 'lucide:book',
+  swap_horiz: 'lucide:repeat',
   document: 'mdi:file-document-outline',
   clock: 'mdi:clock-outline',
   edit: 'mdi:pencil',
@@ -37,6 +39,13 @@ const ICON_MAP = {
   broom: 'mdi:broom',
   fullscreen: 'lucide:maximize',
   fullscreen_exit: 'lucide:minimize',
+  sparkles: 'lucide:sparkles',
+  zap: 'lucide:zap',
+  smartphone: 'lucide:smartphone',
+  star: 'lucide:star',
+  trending_up: 'lucide:trending-up',
+  arrow_right: 'lucide:arrow-right',
+  heart: 'lucide:heart',
 } as const
 
 </script>
