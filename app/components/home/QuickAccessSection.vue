@@ -37,7 +37,7 @@ const popularBooks = computed(() =>
         <p class="mt-2 text-2xl font-semibold tracking-tight text-base-content md:text-3xl">
           Por onde começar a leitura
         </p>
-        <p class="mt-2 max-w-md text-sm text-base-content/60">
+        <p class="mt-2 max-w-md text-sm text-base-content/70">
           Selecione um livro para começar a ler.
         </p>
       </div>
@@ -72,7 +72,7 @@ const popularBooks = computed(() =>
           <Icon
             icon="arrow_right"
             :size="16"
-            class="text-base-content/25 transition-colors duration-200 group-hover:text-primary"
+            class="text-base-content/50 transition-colors duration-200 group-hover:text-primary"
           />
         </div>
         <div class="relative mt-3">
@@ -81,7 +81,7 @@ const popularBooks = computed(() =>
           >
             {{ book.name }}
           </p>
-          <p class="mt-1 text-xs text-base-content/55">
+          <p class="mt-1 text-xs text-base-content/70">
             {{ book.chapters }} capítulos
           </p>
         </div>

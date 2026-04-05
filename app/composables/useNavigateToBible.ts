@@ -18,6 +18,7 @@ export const useNavigateToBible = () => {
     book: string,
     chapter: number,
     versionAbbreviation?: string,
+    verse?: number,
   ) => {
     const version =
       versionAbbreviation ??
@@ -25,7 +26,13 @@ export const useNavigateToBible = () => {
       ''
     const versionSuffix = version ? `.${version}` : ''
 
-    return `/bible/${book}.${chapter}${versionSuffix}`
+    const path = `/bible/${book}.${chapter}${versionSuffix}`
+    const hash =
+      verse !== undefined && verse > 1
+        ? `#v${verse}`
+        : ''
+
+    return `${path}${hash}`
   }
 
   const goToChapter = async (
@@ -34,15 +41,7 @@ export const useNavigateToBible = () => {
     verse?: number,
     replace: boolean = false,
   ) => {
-    const hash = verse && verse > 1
-      ? `#v${verse}`
-      : undefined
-
-    await navigateTo({
-      path: getChapterUrl(book, chapter),
-      hash,
-      replace,
-    })
+    await navigateTo(getChapterUrl(book, chapter, undefined, verse), { replace })
   }
 
   const goToLastChapter = async (replace: boolean = false) => {
