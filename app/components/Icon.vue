@@ -8,6 +8,8 @@ defineProps<{
 const ICON_MAP = {
   circle_question: 'lucide:circle-question-mark',
   book_open: 'lucide:book-open-text',
+  book: 'lucide:book',
+  swap_horiz: 'lucide:repeat',
   document: 'mdi:file-document-outline',
   clock: 'mdi:clock-outline',
   edit: 'mdi:pencil',
