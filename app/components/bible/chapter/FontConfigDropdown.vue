@@ -48,21 +48,24 @@ const setFontFamily = (fontValue: string) => {
 </script>
 
 <template>
-  <div class="dropdown dropdown-center">
+  <div>
     <button
       v-tooltip.bottom="'Configurações de texto'"
       type="button"
       class="btn btn-sm"
       aria-label="Configurações de texto"
-      aria-haspopup="true"
-      aria-expanded="false"
+      popovertarget="font-config-popover"
+      :style="{ anchorName: '--font-config-anchor' }"
     >
       <Icon icon="letter_case" :size="20" />
       <span class="sr-only">Configurações de texto</span>
     </button>
-    <ul
-      tabindex="0"
-      class="dropdown-content menu bg-base-300 rounded-box z-1 w-56 p-4 shadow-lg text-base-content top-10"
+
+    <div
+      id="font-config-popover"
+      popover="auto"
+      class="dropdown menu bg-base-300 rounded-box w-56 p-4 shadow-lg text-base-content m-0"
+      :style="{ positionAnchor: '--font-config-anchor', inset: 'auto', positionArea: 'bottom' }"
     >
       <h3 class="font-bold text-lg mb-4">
         Configurações de Texto
@@ -118,6 +121,6 @@ const setFontFamily = (fontValue: string) => {
           </button>
         </div>
       </div>
-    </ul>
+    </div>
   </div>
 </template>
