@@ -15,6 +15,10 @@
   --radius-box: 0.5rem;
 }
 
+[data-theme="dark"] {
+  --color-base-200: oklch(20% 0.014 253.1);
+}
+
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
