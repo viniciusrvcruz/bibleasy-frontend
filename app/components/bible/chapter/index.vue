@@ -224,7 +224,7 @@ const handleVersionSelect = (version: Version) => {
       <div
         class="flex-1 px-5 pb-52 sm:px-10 lg:px-20 lg:pb-52"
         :class="{
-          'loading-shimmer blur-xs': isLoading,
+          'blur-xs': isLoading,
         }"
       >
         <h1 class="text-xl font-bold text-center text-base-content/60 mt-6 mb-2">
