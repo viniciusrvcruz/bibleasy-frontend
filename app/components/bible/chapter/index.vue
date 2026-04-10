@@ -224,7 +224,7 @@ const handleVersionSelect = (version: Version) => {
       <div
         class="flex-1 px-5 pb-52 sm:px-10 lg:px-20 lg:pb-52"
         :class="{
-          'loading-shimmer blur-xs': isLoading,
+          'blur-xs': isLoading,
         }"
       >
         <h1 class="text-xl font-bold text-center text-base-content/60 mt-6 mb-2">
@@ -334,29 +334,6 @@ const handleVersionSelect = (version: Version) => {
 </template>
 
 <style scoped>
-.loading-shimmer * {
-  color: transparent !important;
-  background-image: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--color-base-content) 20%, transparent) 25%,
-    color-mix(in oklab, var(--color-base-content) 80%, transparent) 50%,
-    color-mix(in oklab, var(--color-base-content) 20%, transparent) 75%
-  );
-  background-size: 200% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shimmer 4s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 /* Panel: smooth transition when opening/closing */
 :deep(.selected-verses-enter-active) {
   transition:
