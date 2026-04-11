@@ -49,7 +49,7 @@ export default defineNuxtConfig({
       screenshots: [
         {
           src: '/screenshots/desktop.png',
-          sizes: '1280x719',
+          sizes: '1280x720',
           type: 'image/png',
           form_factor: 'wide',
           label: 'Bibleasy no desktop',

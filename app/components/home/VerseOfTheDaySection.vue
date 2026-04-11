@@ -138,7 +138,7 @@ const chapterLink = computed(() => {
         <blockquote class="relative max-w-prose font-serif text-lg leading-relaxed text-base-content pe-5 md:text-xl">
           {{ verseText }}
         </blockquote>
-        <p class="relative mt-5 text-sm tracking-widest text-base-content/45">
+        <p class="relative mt-5 text-sm tracking-widest text-base-content/70">
           {{ verseReference }} · {{ versionStore.currentVersion?.abbreviation }}
         </p>
 
