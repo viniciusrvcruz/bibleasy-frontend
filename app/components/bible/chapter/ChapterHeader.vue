@@ -35,10 +35,10 @@ watch(isFullscreen, (newValue, oldValue) => {
 
 <template>
   <!-- Fullscreen exit button (outside header when in fullscreen) -->
-  <div v-if="isFullscreen" class="sticky top-0">
+  <div v-if="isFullscreen" class="sticky top-0 z-2">
     <button
       v-tooltip.bottom="fullscreenLabel"
-      class="btn absolute top-2 z-50 right-2 lg:right-10 max-lg:btn-sm transition-transform duration-300 ease-in-out"
+      class="btn absolute top-2 z-3 right-2 lg:right-10 max-lg:btn-sm transition-transform duration-300 ease-in-out"
       :class="{'animate-pulse-scale': shouldAnimate}"
       :aria-label="fullscreenLabel"
       @click="toggle"
