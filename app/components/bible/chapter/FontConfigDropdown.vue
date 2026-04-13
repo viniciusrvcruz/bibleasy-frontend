@@ -64,7 +64,7 @@ const setFontFamily = (fontValue: string) => {
     <div
       id="font-config-popover"
       popover="auto"
-      class="dropdown menu bg-base-300 rounded-box w-56 p-4 shadow-lg text-base-content m-0"
+      class="dropdown menu bg-base-300 rounded-box w-56 p-4 shadow-lg text-base-content m-0 top-0.75!"
       :style="{ positionAnchor: '--font-config-anchor', inset: 'auto', positionArea: 'bottom' }"
     >
       <h3 class="font-bold text-lg mb-4">
