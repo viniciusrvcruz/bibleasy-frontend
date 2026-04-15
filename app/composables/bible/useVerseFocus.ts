@@ -19,7 +19,7 @@ export const useVerseFocus = (
     scrollTimeout = setTimeout(() => {
       scrollTimeout = null
       isScrollingToVerse = false
-    }, 500)
+    }, 150)
   }
 
   const clearFocus = () => {
