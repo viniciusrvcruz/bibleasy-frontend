@@ -26,6 +26,15 @@ const { processedText } = useProcessedVerseParts(
   () => props.verse.references,
   () => props.verse.titles
 )
+
+const onClick = (event: MouseEvent) => {
+  const target = event.target as HTMLElement
+
+  if (target.closest('button')) return
+
+  emit('toggleSelect')
+}
+
 </script>
 
 <template>
@@ -40,7 +49,7 @@ const { processedText } = useProcessedVerseParts(
       contrastTextClass
      ]"
     :style="highlightColor ? { backgroundColor: highlightColor } : undefined"
-    @click="emit('toggleSelect')"
+    @click="onClick"
   >
     <span
       class="text-[0.8em] align-super leading-0 font-bold me-2 transition-colors duration-300 ease-out"
