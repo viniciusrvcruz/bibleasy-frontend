@@ -20,7 +20,12 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     'nuxt-clarity-analytics',
     '@vite-pwa/nuxt',
+    'nuxt-gtag',
   ],
+
+  gtag: {
+    enabled: process.env.NODE_ENV === 'production',
+  },
 
   pwa: {
     manifest: {
