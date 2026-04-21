@@ -20,6 +20,7 @@
     "daisyui": "^5.5.14",
     "nuxt": "^4.2.2",
     "nuxt-clarity-analytics": "^0.0.9",
+    "nuxt-gtag": "^4.1.0",
     "pinia": "^3.0.4",
     "primevue": "^4.5.4",
     "tailwindcss": "^4.1.18",
