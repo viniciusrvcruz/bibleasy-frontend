@@ -46,6 +46,10 @@ const ICON_MAP = {
   trending_up: 'lucide:trending-up',
   arrow_right: 'lucide:arrow-right',
   heart: 'lucide:heart',
+  message_circle: 'lucide:message-circle',
+  bug: 'lucide:bug',
+  lightbulb: 'lucide:lightbulb',
+  attachment: 'lucide:paperclip',
 } as const
 
 </script>

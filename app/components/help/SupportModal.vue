@@ -1,0 +1,86 @@
+<script setup lang="ts">
+const dialogRef = useTemplateRef<HTMLDialogElement>('dialogRef')
+const formRef = useTemplateRef('formRef')
+const success = ref(false)
+
+const open = () => {
+  success.value = false
+  formRef.value?.reset()
+  dialogRef.value?.showModal()
+}
+
+const close = () => {
+  dialogRef.value?.close()
+}
+
+defineExpose({ open })
+</script>
+
+<template>
+  <dialog
+    ref="dialogRef"
+    class="modal modal-bottom sm:modal-middle"
+    aria-labelledby="support-modal-title"
+    @click.self="close"
+  >
+    <div class="modal-box max-w-2xl flex flex-col sm:rounded-lg sm:max-h-[min(85vh,720px)] max-sm:max-w-full max-sm:w-full max-sm:h-[calc(100dvh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none">
+      <!-- Header (fixed) -->
+      <div class="flex items-center justify-between pb-4 border-b border-base-300 shrink-0">
+        <h3 id="support-modal-title" class="font-bold text-lg">
+          Enviar Feedback
+        </h3>
+        <button
+          class="btn btn-sm btn-ghost btn-circle"
+          aria-label="Fechar"
+          @click="close"
+        >
+          <Icon icon="close" :size="20" />
+        </button>
+      </div>
+
+      <!-- Success state -->
+      <div v-if="success" class="flex flex-col items-center gap-4 py-12 text-center flex-1">
+        <div class="rounded-full p-4 bg-success/10">
+          <Icon icon="check" :size="40" class="text-success" />
+        </div>
+        <div>
+          <p class="text-lg font-semibold mb-1">Enviado com sucesso!</p>
+          <p class="text-sm text-base-content/70">
+            Obrigado pelo seu feedback. Vamos analisar sua solicitação o mais breve possível.
+          </p>
+        </div>
+        <button class="btn btn-primary btn-sm mt-2" @click="close">
+          Fechar
+        </button>
+      </div>
+
+      <template v-else>
+        <!-- Scrollable body -->
+        <div class="overflow-y-auto flex-1 py-4 -mx-1 px-1">
+          <!-- Description -->
+          <p class="text-sm text-base-content/70 mb-5">
+            Reporte bugs, envie sugestões de melhoria ou peça ajuda quando travar em alguma parte do produto. Seu feedback nos ajuda a melhorar a experiência.
+          </p>
+
+          <HelpSupportForm ref="formRef" @success="success = true" />
+        </div>
+
+        <!-- Footer (fixed) -->
+        <div class="flex justify-end gap-2 pt-4 border-t border-base-300 shrink-0">
+          <button type="button" class="btn btn-ghost btn-sm" @click="close">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            :disabled="!formRef?.canSubmit || formRef?.loading"
+            @click="formRef?.submit()"
+          >
+            <span v-if="formRef?.loading" class="loading loading-spinner loading-sm" />
+            {{ formRef?.loading ? 'Enviando...' : 'Enviar' }}
+          </button>
+        </div>
+      </template>
+    </div>
+  </dialog>
+</template>
