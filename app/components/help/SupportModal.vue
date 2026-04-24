@@ -59,24 +59,24 @@ defineExpose({ open })
         <div class="overflow-y-auto flex-1 py-4 -mx-1 px-1">
           <!-- Description -->
           <p class="text-sm text-base-content/70 mb-5">
-            Reporte bugs, envie sugestões de melhoria ou peça ajuda quando travar em alguma parte do produto. Seu feedback nos ajuda a melhorar a experiência.
+            Reporte bugs, envie sugestões de melhoria ou peça ajuda para alguma situação. Seu feedback nos ajuda a melhorar a sua experiência com a plataforma.
           </p>
 
           <HelpSupportForm ref="formRef" @success="success = true" />
         </div>
 
         <!-- Footer (fixed) -->
-        <div class="flex justify-end gap-2 pt-4 border-t border-base-300 shrink-0">
-          <button type="button" class="btn btn-ghost btn-sm" @click="close">
+        <div class="flex justify-end gap-3 pt-4 border-t border-base-300 shrink-0">
+          <button type="button" class="btn btn-ghost min-w-28" @click="close">
             Cancelar
           </button>
           <button
             type="button"
-            class="btn btn-primary btn-sm"
+            class="btn btn-primary min-w-28"
             :disabled="!formRef?.canSubmit || formRef?.loading"
             @click="formRef?.submit()"
           >
-            <span v-if="formRef?.loading" class="loading loading-spinner loading-sm" />
+            <span v-if="formRef?.loading" class="loading loading-spinner loading-md" />
             {{ formRef?.loading ? 'Enviando...' : 'Enviar' }}
           </button>
         </div>

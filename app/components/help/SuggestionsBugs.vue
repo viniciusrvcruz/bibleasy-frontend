@@ -17,7 +17,7 @@ const supportModalRef = useTemplateRef('supportModalRef')
 
         <div class="flex flex-col items-start gap-3">
           <div class="space-y-2 text-sm text-base-content/70">
-            <p><strong>Quando usar:</strong> peça ajuda quando travar em alguma parte do produto, reporte bugs ou envie sugestões de melhoria.</p>
+            <p><strong>Quando usar:</strong> peça ajuda se travar em alguma tela ou não conseguir realizar alguma ação, reporte bugs ou envie sugestões de melhoria.</p>
             <p><strong>Dica:</strong> se for bug, explique o caminho que você fez antes do erro aparecer. Se for sugestão, diga o problema atual e como a mudança melhoraria o uso.</p>
           </div>
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useSupportService } from '~/composables/services/useSupportService'
+
 const emit = defineEmits<{
   success: []
 }>()
@@ -60,6 +62,8 @@ const formatFileSize = (bytes: number) => {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
+const supportService = useSupportService()
+
 const reset = () => {
   type.value = ''
   description.value = ''
@@ -75,26 +79,11 @@ const submit = async () => {
   errorMessage.value = ''
 
   try {
-    const api = useNuxtApp().$api as typeof $fetch
-
-    const formData = new FormData()
-    formData.append('type', type.value)
-    formData.append('description', description.value.trim())
-
-    if (email.value.trim()) {
-      formData.append('email', email.value.trim())
-    }
-
-    for (const file of files.value) {
-      formData.append('files', file)
-    }
-
-    await api('support', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Content-Type': undefined as any,
-      },
+    await supportService.create({
+      type: type.value,
+      description: description.value,
+      email: email.value,
+      files: files.value,
     })
 
     emit('success')
@@ -142,9 +131,14 @@ defineExpose({ reset, canSubmit, loading, submit })
 
     <!-- Description -->
     <div>
-      <label for="support-description" class="text-sm font-semibold mb-2 block">
-        Descrição <span class="text-error">*</span>
-      </label>
+      <div class="flex items-baseline justify-between gap-2 mb-2">
+        <label for="support-description" class="text-sm font-semibold">
+          Descrição <span class="text-error">*</span>
+        </label>
+        <span class="text-xs text-base-content/50 shrink-0 tabular-nums">
+          {{ description.length }} / {{ MAX_DESCRIPTION }}
+        </span>
+      </div>
       <textarea
         id="support-description"
         v-model="description"
@@ -153,9 +147,6 @@ defineExpose({ reset, canSubmit, loading, submit })
         class="textarea textarea-bordered w-full text-sm leading-relaxed"
         placeholder="Descreva o que aconteceu, o que você esperava, ou sua sugestão..."
       />
-      <div class="text-xs text-base-content/50 text-right mt-1">
-        {{ description.length }} / {{ MAX_DESCRIPTION }}
-      </div>
     </div>
 
     <!-- Files -->
