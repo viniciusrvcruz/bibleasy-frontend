@@ -24,8 +24,7 @@ const MAX_FILES = 5
 const MAX_DESCRIPTION = 5000
 
 const fileInputRef = useTemplateRef<HTMLInputElement>('fileInputRef')
-
-const canSubmit = computed(() => type.value && description.value.trim().length > 0)
+const formRef = useTemplateRef<HTMLFormElement>('formRef')
 
 const handleFileSelect = (event: Event) => {
   const input = event.target as HTMLInputElement
@@ -70,10 +69,15 @@ const reset = () => {
   email.value = ''
   files.value = []
   errorMessage.value = ''
+  formRef.value?.reset()
+}
+
+const requestSubmit = () => {
+  formRef.value?.requestSubmit()
 }
 
 const submit = async () => {
-  if (!canSubmit.value || loading.value) return
+  if (loading.value) return
 
   loading.value = true
   errorMessage.value = ''
@@ -94,11 +98,11 @@ const submit = async () => {
   }
 }
 
-defineExpose({ reset, canSubmit, loading, submit })
+defineExpose({ reset, requestSubmit, loading })
 </script>
 
 <template>
-  <form class="space-y-5" @submit.prevent="submit">
+  <form ref="formRef" class="space-y-5" @submit.prevent="submit">
     <!-- Type selector -->
     <fieldset>
       <legend class="text-sm font-semibold mb-2">Tipo de solicitação <span class="text-error">*</span></legend>
@@ -116,7 +120,9 @@ defineExpose({ reset, canSubmit, loading, submit })
             type="radio"
             name="support-type"
             :value="opt.value"
-            class="radio radio-primary radio-sm"
+            class="radio radio-primary radio-sm user-invalid:validator"
+            required
+            title="Selecione um tipo de solicitação"
           />
           <div class="min-w-0">
             <div class="font-medium text-sm flex items-center gap-1.5">
@@ -127,10 +133,11 @@ defineExpose({ reset, canSubmit, loading, submit })
           </div>
         </label>
       </div>
+      <p class="validator-hint hidden mt-2 text-xs">Selecione um tipo de solicitação</p>
     </fieldset>
 
     <!-- Description -->
-    <div>
+    <fieldset>
       <div class="flex items-baseline justify-between gap-2 mb-2">
         <label for="support-description" class="text-sm font-semibold">
           Descrição <span class="text-error">*</span>
@@ -143,11 +150,13 @@ defineExpose({ reset, canSubmit, loading, submit })
         id="support-description"
         v-model="description"
         :maxlength="MAX_DESCRIPTION"
+        required
         rows="5"
-        class="textarea textarea-bordered w-full text-sm leading-relaxed"
+        class="textarea textarea-bordered user-invalid:validator w-full text-sm leading-relaxed"
         placeholder="Descreva o que aconteceu, o que você esperava, ou sua sugestão..."
       />
-    </div>
+      <p class="hidden validator-hint">A descrição é obrigatória</p>
+    </fieldset>
 
     <!-- Files -->
     <div>
@@ -194,7 +203,7 @@ defineExpose({ reset, canSubmit, loading, submit })
     </div>
 
     <!-- Email -->
-    <div>
+    <fieldset>
       <label for="support-email" class="text-sm font-semibold mb-2 block">
         Email <span class="text-base-content/50 font-normal">(opcional)</span>
       </label>
@@ -202,13 +211,15 @@ defineExpose({ reset, canSubmit, loading, submit })
         id="support-email"
         v-model="email"
         type="email"
-        class="input input-bordered w-full text-sm"
+        class="input input-bordered user-invalid:validator w-full text-sm"
         placeholder="seu@email.com"
+        title="Digite um email válido"
       />
+      <p class="hidden validator-hint">Digite um email válido</p>
       <p class="text-xs text-base-content/50 mt-1">
         Caso queira receber um retorno sobre sua solicitação.
       </p>
-    </div>
+    </fieldset>
 
     <!-- Tips -->
     <div class="p-3 rounded-lg bg-base-200/60 border border-base-300/50 text-xs text-base-content/70 space-y-1.5">

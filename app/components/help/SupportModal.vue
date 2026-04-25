@@ -10,6 +10,8 @@ const open = () => {
 }
 
 const close = () => {
+  success.value = false
+  formRef.value?.reset()
   dialogRef.value?.close()
 }
 
@@ -22,6 +24,7 @@ defineExpose({ open })
     class="modal modal-bottom sm:modal-middle"
     aria-labelledby="support-modal-title"
     @click.self="close"
+    @close="close"
   >
     <div class="modal-box max-w-2xl flex flex-col sm:rounded-lg sm:max-h-[min(85vh,720px)] max-sm:max-w-full max-sm:w-full max-sm:h-[calc(100dvh-4rem)] max-sm:mb-0 max-sm:mt-16 max-sm:rounded-b-none">
       <!-- Header (fixed) -->
@@ -40,7 +43,7 @@ defineExpose({ open })
 
       <!-- Success state -->
       <div v-if="success" class="flex flex-col items-center gap-4 py-12 text-center flex-1">
-        <div class="rounded-full p-4 bg-success/10">
+        <div class="rounded-full p-4 bg-success/10 flex items-center justify-center">
           <Icon icon="check" :size="40" class="text-success" />
         </div>
         <div>
@@ -73,8 +76,7 @@ defineExpose({ open })
           <button
             type="button"
             class="btn btn-primary min-w-28"
-            :disabled="!formRef?.canSubmit || formRef?.loading"
-            @click="formRef?.submit()"
+            @click="formRef?.requestSubmit()"
           >
             <span v-if="formRef?.loading" class="loading loading-spinner loading-md" />
             {{ formRef?.loading ? 'Enviando...' : 'Enviar' }}
