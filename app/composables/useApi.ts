@@ -4,13 +4,17 @@ type RequestOptions = Omit<FetchOptions<'json'>, 'method' | 'body' | 'query'>
 
 type HttpMethod = 'get' | 'post' | 'put' | 'delete'
 
+export type ApiJsonRecord = Record<string, unknown>
+
+export type ApiRequestBody = ApiJsonRecord | FormData
+
 export const useApi = () => {
   const api = useNuxtApp().$api as $Fetch
 
   const request = async <TResponse>(
     method: HttpMethod,
     url: string,
-    data?: Record<string, unknown>,
+    data?: ApiJsonRecord | FormData,
     options?: RequestOptions
   ) => {
     const fetchOptions = {
@@ -28,21 +32,30 @@ export const useApi = () => {
     return api<TResponse>(url, fetchOptions)
   }
 
-  const get = <TResponse>(
+  const get = <
+    TResponse,
+    TQuery extends ApiJsonRecord = ApiJsonRecord,
+  >(
     url: string,
-    query?: Record<string, any>,
+    query?: TQuery,
     options?: RequestOptions
   ) => request<TResponse>('get', url, query, options)
 
-  const post = <TResponse>(
+  const post = <
+    TResponse,
+    TBody extends ApiRequestBody = ApiJsonRecord,
+  >(
     url: string,
-    body?: Record<string, any>,
+    body?: TBody,
     options?: RequestOptions
   ) => request<TResponse>('post', url, body, options)
 
-  const put = <TResponse>(
+  const put = <
+    TResponse,
+    TBody extends ApiRequestBody = ApiJsonRecord,
+  >(
     url: string,
-    body?: Record<string, any>,
+    body?: TBody,
     options?: RequestOptions
   ) => request<TResponse>('put', url, body, options)
 
