@@ -6,7 +6,7 @@ export type SupportCreatePayload = {
 }
 
 export function useSupportService() {
-  const api = useNuxtApp().$api as typeof $fetch
+  const { post } = useApi()
 
   const create = (payload: SupportCreatePayload) => {
     const formData = new FormData()
@@ -18,16 +18,10 @@ export function useSupportService() {
     }
 
     for (const file of payload.files) {
-      formData.append('files', file)
+      formData.append('files[]', file)
     }
 
-    return api('support', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Content-Type': undefined as any,
-      },
-    })
+    return post('support', formData)
   }
 
   return {
