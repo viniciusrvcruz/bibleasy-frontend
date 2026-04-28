@@ -25,11 +25,11 @@
           <div class="card bg-base-100 shadow-sm">
             <div class="card-body">
               <h3 class="card-title text-lg">
-                <Icon icon="bookmark" :size="20" />
-                Marcações de Versículos
+                <Icon icon="share" :size="20" />
+                Compartilhar Versículos
               </h3>
               <p class="text-sm text-base-content/70">
-                Marque versículos favoritos e organize-os em coleções personalizadas para acesso rápido.
+                Compartilhe versículos com outras pessoas através de links e imagens.
               </p>
             </div>
           </div>
@@ -56,11 +56,11 @@
             </div>
           </div>
         </div>
-        <div class="alert alert-info mt-4">
+        <div class="alert alert-soft mt-4">
           <Icon icon="info" :size="20" />
           <span class="text-sm">
             Quer sugerir uma nova funcionalidade?
-            <a href="#suggestions-bugs" class="link link-primary">
+            <a href="#suggestions-bugs" class="link font-bold">
               Use o formulário de feedback
             </a>
             para nos enviar suas ideias!

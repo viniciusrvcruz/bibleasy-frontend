@@ -50,6 +50,7 @@ const ICON_MAP = {
   bug: 'lucide:bug',
   lightbulb: 'lucide:lightbulb',
   attachment: 'lucide:paperclip',
+  share: 'mdi:share',
 } as const
 
 </script>
