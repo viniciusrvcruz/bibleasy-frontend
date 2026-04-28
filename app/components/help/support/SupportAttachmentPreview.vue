@@ -8,6 +8,7 @@ const emit = defineEmits<{
 }>()
 
 const dialogRef = useTemplateRef('dialogRef')
+const modalVideoRef = useTemplateRef('modalVideoRef')
 const objectUrl = shallowRef<string | null>(null)
 
 const isImage = computed(() => props.file.type.startsWith('image/'))
@@ -31,9 +32,26 @@ onBeforeUnmount(() => {
 
 const openLightbox = () => {
   dialogRef.value?.showModal()
+
+  if (isVideo.value) {
+    nextTick(() => {
+      // play() here is triggered from a user gesture (click),
+      // so browsers should allow it even with audio.
+      modalVideoRef.value?.play().catch(() => {})
+    })
+  }
+}
+
+const stopModalVideo = () => {
+  const videoElement = modalVideoRef.value
+  if (!videoElement) return
+
+  videoElement.pause()
+  videoElement.currentTime = 0
 }
 
 const closeLightbox = () => {
+  stopModalVideo()
   dialogRef.value?.close()
 }
 
@@ -112,6 +130,8 @@ const previewTitleId = useId()
       ref="dialogRef"
       class="modal z-70"
       :aria-labelledby="previewTitleId"
+      @close="stopModalVideo"
+      @cancel="stopModalVideo"
     >
       <div class="modal-box max-w-5xl max-h-[90vh] p-4 flex flex-col gap-3 bg-base-100">
         <div class="flex items-start justify-between gap-3 shrink-0">
@@ -140,6 +160,7 @@ const previewTitleId = useId()
           />
           <video
             v-else-if="isVideo && objectUrl"
+            ref="modalVideoRef"
             :src="objectUrl"
             controls
             playsinline
