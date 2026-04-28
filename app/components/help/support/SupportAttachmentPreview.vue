@@ -12,6 +12,7 @@ const objectUrl = shallowRef<string | null>(null)
 
 const isImage = computed(() => props.file.type.startsWith('image/'))
 const isVideo = computed(() => props.file.type.startsWith('video/'))
+const isPreviewableMedia = computed(() => isImage.value || isVideo.value)
 
 watch(() => props.file, (file) => {
   if (objectUrl.value) {
@@ -36,22 +37,39 @@ const closeLightbox = () => {
   dialogRef.value?.close()
 }
 
+const openAttachment = () => {
+  if (!objectUrl.value) return
+
+  if (isPreviewableMedia.value) return openLightbox()
+
+  window.open(objectUrl.value, '_blank', 'noopener,noreferrer')
+}
+
+const formatFileSize = (bytes: number) => {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
 const previewTitleId = useId()
 </script>
 
 <template>
-  <div class="relative rounded-lg overflow-hidden border border-base-300 bg-base-200 aspect-square shadow-sm">
-    <button
-      type="button"
-      class="absolute inset-0 z-1 flex items-center justify-center cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100"
-      :aria-label="`Ver ${file.name} em tamanho maior`"
-      @click="openLightbox"
-    >
+  <div
+    class="flex items-center gap-3 p-2 px-3 rounded-lg bg-base-200 border border-base-300/70 cursor-pointer select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ring-offset-base-100"
+    role="button"
+    tabindex="0"
+    :aria-label="`Abrir ${file.name}`"
+    @click="openAttachment"
+    @keydown.enter.prevent="openAttachment"
+    @keydown.space.prevent="openAttachment"
+  >
+    <div class="shrink-0 w-14 h-14 rounded-md overflow-hidden bg-base-100/70 border border-base-300/70 flex items-center justify-center">
       <img
         v-if="isImage && objectUrl"
         :src="objectUrl"
         :alt="file.name"
-        class="w-full h-full object-cover pointer-events-none"
+        class="w-full h-full object-cover"
         loading="lazy"
       />
       <video
@@ -60,33 +78,37 @@ const previewTitleId = useId()
         muted
         playsinline
         preload="metadata"
-        class="w-full h-full object-cover pointer-events-none"
+        class="w-full h-full object-cover"
       />
-      <span v-else class="text-xs text-base-content/60 px-2 text-center">
-        Preview indisponível
-      </span>
-    </button>
+      <Icon v-else icon="attachment" :size="18" class="text-base-content/60" />
+    </div>
 
-    <button
-      type="button"
-      class="btn btn-circle btn-xs btn-ghost bg-base-100/90 hover:bg-base-100 absolute top-1.5 right-1.5 z-2 shadow-sm"
-      aria-label="Remover arquivo"
-      @click.stop="emit('remove')"
-    >
-      <Icon icon="close" :size="14" />
-    </button>
-
-    <div
-      class="pointer-events-none absolute bottom-0 left-0 right-0 z-1 px-2 py-1.5 bg-linear-to-t from-black/70 to-transparent"
-    >
-      <p class="text-[11px] text-white/95 truncate leading-tight" :title="file.name">
+    <div class="min-w-0 flex-1">
+      <p class="text-sm font-medium truncate" :title="file.name">
         {{ file.name }}
       </p>
+      <p class="text-xs text-base-content/60 mt-0.5">
+        {{ formatFileSize(file.size) }}
+        <span v-if="file.type" class="mx-1 text-base-content/40">•</span>
+        <span v-if="file.type">{{ file.type }}</span>
+      </p>
+    </div>
+
+    <div class="shrink-0 flex items-center gap-1.5">
+      <button
+        type="button"
+        class="btn btn-ghost btn-xs btn-circle"
+        aria-label="Remover arquivo"
+        @click.stop="emit('remove')"
+      >
+        <Icon icon="close" :size="14" />
+      </button>
     </div>
   </div>
 
   <Teleport to="body">
     <dialog
+      v-if="isPreviewableMedia && objectUrl"
       ref="dialogRef"
       class="modal z-70"
       :aria-labelledby="previewTitleId"

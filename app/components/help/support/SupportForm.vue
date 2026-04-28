@@ -27,7 +27,6 @@ const MAX_FILE_SIZE = 20 * 1024 * 1024
 const MAX_FILES = 5
 const MAX_DESCRIPTION = 5000
 
-/** Tipos MIME iguais ao `File::types(...)` da API (Laravel). */
 const API_FILE_MIME_TYPES = [
   'image/jpeg',
   'image/png',
@@ -98,18 +97,6 @@ const handleFileSelect = (event: Event) => {
 
 const removeFile = (index: number) => {
   form.files.splice(index, 1)
-}
-
-const formatFileSize = (bytes: number) => {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
-
-const isPreviewableMedia = (file: File) => {
-  const type = file.type.toLowerCase()
-
-  return type.startsWith('image/') || type.startsWith('video/')
 }
 
 const supportService = useSupportService()
@@ -212,30 +199,13 @@ defineExpose({ reset, requestSubmit, loading })
 
       <div
         v-if="form.files.length > 0"
-        class="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-3"
+        class="space-y-2 mb-3"
       >
         <template v-for="(file, index) in form.files" :key="`${file.name}-${file.size}-${file.lastModified}-${index}`">
           <HelpSupportAttachmentPreview
-            v-if="isPreviewableMedia(file)"
             :file="file"
             @remove="removeFile(index)"
           />
-          <div
-            v-else
-            class="col-span-2 lg:col-span-3 flex items-center gap-3 p-2 px-3 rounded-lg bg-base-200 text-sm"
-          >
-            <Icon icon="attachment" :size="16" class="text-base-content/60 shrink-0" />
-            <span class="flex-1 truncate">{{ file.name }}</span>
-            <span class="text-xs text-base-content/50 shrink-0">{{ formatFileSize(file.size) }}</span>
-            <button
-              type="button"
-              class="btn btn-ghost btn-xs btn-circle"
-              aria-label="Remover arquivo"
-              @click="removeFile(index)"
-            >
-              <Icon icon="close" :size="14" />
-            </button>
-          </div>
         </template>
       </div>
 
