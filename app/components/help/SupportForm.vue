@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSupportService } from '~/composables/services/useSupportService'
+import { useSupportService, type SupportCreatePayload } from '~/composables/services/useSupportService'
 
 const emit = defineEmits<{
   success: []
@@ -14,10 +14,13 @@ const typeOptions = [
   { value: 'other', label: 'Outro', icon: 'message_circle', description: 'Feedback geral ou outro assunto' },
 ] as const
 
-const type = ref<string>('')
-const description = ref('')
-const email = ref('')
-const files = ref<File[]>([])
+const form = reactive<SupportCreatePayload>({
+  type: '',
+  description: '',
+  email: '',
+  files: [],
+})
+
 const loading = ref(false)
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024
@@ -82,19 +85,19 @@ const handleFileSelect = (event: Event) => {
     }
   }
 
-  if (files.value.length + newFiles.length > MAX_FILES) {
+  if (form.files.length + newFiles.length > MAX_FILES) {
     error.value = `Você pode anexar no máximo ${MAX_FILES} arquivos.`
     input.value = ''
     return
   }
 
   error.value = ''
-  files.value.push(...newFiles)
+  form.files.push(...newFiles)
   input.value = ''
 }
 
 const removeFile = (index: number) => {
-  files.value.splice(index, 1)
+  form.files.splice(index, 1)
 }
 
 const formatFileSize = (bytes: number) => {
@@ -106,10 +109,10 @@ const formatFileSize = (bytes: number) => {
 const supportService = useSupportService()
 
 const reset = () => {
-  type.value = ''
-  description.value = ''
-  email.value = ''
-  files.value = []
+  form.type = ''
+  form.description = ''
+  form.email = ''
+  form.files = []
   error.value = ''
   formRef.value?.reset()
 }
@@ -124,12 +127,7 @@ const submit = async () => {
   loading.value = true
   error.value = ''
 
-  await supportService.create({
-    type: type.value,
-    description: description.value,
-    email: email.value,
-    files: files.value,
-  })
+  await supportService.create(form)
     .then(() => {
       error.value = ''
       emit('success')
@@ -153,12 +151,12 @@ defineExpose({ reset, requestSubmit, loading })
           v-for="opt in typeOptions"
           :key="opt.value"
           class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
-          :class="type === opt.value
+          :class="form.type === opt.value
             ? 'border-primary bg-primary/5'
             : 'border-base-300 hover:bg-base-200'"
         >
           <input
-            v-model="type"
+            v-model="form.type"
             type="radio"
             name="support-type"
             :value="opt.value"
@@ -185,12 +183,12 @@ defineExpose({ reset, requestSubmit, loading })
           Descrição <span class="text-error">*</span>
         </label>
         <span class="text-xs text-base-content/50 shrink-0 tabular-nums">
-          {{ description.length }} / {{ MAX_DESCRIPTION }}
+          {{ form.description.length }} / {{ MAX_DESCRIPTION }}
         </span>
       </div>
       <textarea
         id="support-description"
-        v-model="description"
+        v-model="form.description"
         :maxlength="MAX_DESCRIPTION"
         required
         rows="5"
@@ -206,9 +204,9 @@ defineExpose({ reset, requestSubmit, loading })
         Anexos <span class="text-base-content/50 font-normal">(opcional, Até 5 arquivos, com limite de 20 MB cada)</span>
       </label>
 
-      <div v-if="files.length > 0" class="space-y-2 mb-3">
+      <div v-if="form.files.length > 0" class="space-y-2 mb-3">
         <div
-          v-for="(file, i) in files"
+          v-for="(file, i) in form.files"
           :key="i"
           class="flex items-center gap-3 p-2 px-3 rounded-lg bg-base-200 text-sm"
         >
@@ -227,7 +225,7 @@ defineExpose({ reset, requestSubmit, loading })
       </div>
 
       <button
-        v-if="files.length < MAX_FILES"
+        v-if="form.files.length < MAX_FILES"
         type="button"
         class="btn btn-outline btn-sm gap-2"
         @click="fileInputRef?.click()"
@@ -252,7 +250,7 @@ defineExpose({ reset, requestSubmit, loading })
       </label>
       <input
         id="support-email"
-        v-model="email"
+        v-model="form.email"
         type="email"
         class="input input-bordered user-invalid:validator w-full text-sm"
         placeholder="seu@email.com"
