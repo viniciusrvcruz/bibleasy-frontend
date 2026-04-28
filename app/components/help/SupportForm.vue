@@ -5,6 +5,8 @@ const emit = defineEmits<{
   success: []
 }>()
 
+const error = defineModel<string>('error', { default: '' })
+
 const typeOptions = [
   { value: 'bug', label: 'Bug / Erro', icon: 'bug', description: 'Algo não está funcionando como esperado' },
   { value: 'feature', label: 'Sugestão', icon: 'lightbulb', description: 'Ideia de melhoria ou novo recurso' },
@@ -17,7 +19,6 @@ const description = ref('')
 const email = ref('')
 const files = ref<File[]>([])
 const loading = ref(false)
-const errorMessage = ref('')
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024
 const MAX_FILES = 5
@@ -34,19 +35,19 @@ const handleFileSelect = (event: Event) => {
 
   for (const file of newFiles) {
     if (file.size > MAX_FILE_SIZE) {
-      errorMessage.value = `O arquivo "${file.name}" excede o limite de 20MB.`
+      error.value = `O arquivo "${file.name}" excede o limite de 20MB.`
       input.value = ''
       return
     }
   }
 
   if (files.value.length + newFiles.length > MAX_FILES) {
-    errorMessage.value = `Você pode anexar no máximo ${MAX_FILES} arquivos.`
+    error.value = `Você pode anexar no máximo ${MAX_FILES} arquivos.`
     input.value = ''
     return
   }
 
-  errorMessage.value = ''
+  error.value = ''
   files.value.push(...newFiles)
   input.value = ''
 }
@@ -68,7 +69,7 @@ const reset = () => {
   description.value = ''
   email.value = ''
   files.value = []
-  errorMessage.value = ''
+  error.value = ''
   formRef.value?.reset()
 }
 
@@ -80,22 +81,22 @@ const submit = async () => {
   if (loading.value) return
 
   loading.value = true
-  errorMessage.value = ''
+  error.value = ''
 
-  try {
-    await supportService.create({
-      type: type.value,
-      description: description.value,
-      email: email.value,
-      files: files.value,
+  await supportService.create({
+    type: type.value,
+    description: description.value,
+    email: email.value,
+    files: files.value,
+  })
+    .then(() => {
+      error.value = ''
+      emit('success')
     })
-
-    emit('success')
-  } catch {
-    errorMessage.value = 'Ocorreu um erro ao enviar. Tente novamente.'
-  } finally {
-    loading.value = false
-  }
+    .catch(() => {
+      error.value = 'Ocorreu um erro ao enviar. Tente novamente mais tarde.'
+    })
+    .finally(() => loading.value = false)
 }
 
 defineExpose({ reset, requestSubmit, loading })
@@ -232,12 +233,6 @@ defineExpose({ reset, requestSubmit, loading })
         <li>Se for sugestão, diga o problema atual e como a mudança melhoraria o uso.</li>
         <li>Prints ajudam bastante quando o problema é visual.</li>
       </ul>
-    </div>
-
-    <!-- Error -->
-    <div v-if="errorMessage" class="text-sm text-error flex items-center gap-2">
-      <Icon icon="info" :size="16" />
-      {{ errorMessage }}
     </div>
   </form>
 </template>
