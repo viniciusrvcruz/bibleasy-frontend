@@ -24,8 +24,43 @@ const MAX_FILE_SIZE = 20 * 1024 * 1024
 const MAX_FILES = 5
 const MAX_DESCRIPTION = 5000
 
-const fileInputRef = useTemplateRef<HTMLInputElement>('fileInputRef')
-const formRef = useTemplateRef<HTMLFormElement>('formRef')
+/** Tipos MIME iguais ao `File::types(...)` da API (Laravel). */
+const API_FILE_MIME_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+  'video/mp4',
+  'video/webm',
+  'video/quicktime',
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'text/plain',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'application/vnd.oasis.opendocument.text',
+  'text/csv',
+] as const
+
+const ALLOWED_FILE_MIME_TYPES = new Set<string>(API_FILE_MIME_TYPES)
+
+const fileInputAccept = API_FILE_MIME_TYPES.join(',')
+
+const isAllowedAttachmentType = (file: File) => {
+  const mime = file.type.trim().toLowerCase()
+
+  if (!mime) return true
+
+  return ALLOWED_FILE_MIME_TYPES.has(mime)
+}
+
+const fileInputRef = useTemplateRef('fileInputRef')
+const formRef = useTemplateRef('formRef')
 
 const handleFileSelect = (event: Event) => {
   const input = event.target as HTMLInputElement
@@ -34,6 +69,12 @@ const handleFileSelect = (event: Event) => {
   const newFiles = Array.from(input.files)
 
   for (const file of newFiles) {
+    if (!isAllowedAttachmentType(file)) {
+      error.value = `O arquivo "${file.name}" não é um tipo permitido (imagens, vídeo ou documentos PDF, Office, texto ou CSV).`
+      input.value = ''
+      return
+    }
+
     if (file.size > MAX_FILE_SIZE) {
       error.value = `O arquivo "${file.name}" excede o limite de 20MB.`
       input.value = ''
@@ -199,6 +240,7 @@ defineExpose({ reset, requestSubmit, loading })
         type="file"
         multiple
         class="hidden"
+        :accept="fileInputAccept"
         @change="handleFileSelect"
       />
     </div>
