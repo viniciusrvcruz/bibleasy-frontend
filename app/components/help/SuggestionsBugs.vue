@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const supportModalRef = useTemplateRef('supportModalRef')
+const supportModal = useSupportModal()
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const supportModalRef = useTemplateRef('supportModalRef')
             <p><strong>Dica:</strong> se for bug, explique o caminho que você fez antes do erro aparecer. Se for sugestão, diga o problema atual e como a mudança melhoraria o uso.</p>
           </div>
 
-          <button class="btn btn-primary gap-2" @click="supportModalRef?.open()">
+          <button class="btn btn-primary gap-2" @click="supportModal.open">
             <Icon icon="message_circle" :size="18" />
             Enviar Feedback
           </button>
@@ -29,6 +29,4 @@ const supportModalRef = useTemplateRef('supportModalRef')
       </div>
     </div>
   </section>
-
-  <HelpSupportModal ref="supportModalRef" />
 </template>

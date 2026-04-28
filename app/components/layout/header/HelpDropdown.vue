@@ -1,14 +1,14 @@
 <script setup lang="ts">
 const popover = ref()
-const supportModalRef = useTemplateRef('supportModalRef')
+const supportModal = useSupportModal()
 
 const toggle = (event: Event) => {
   popover.value.toggle(event)
 }
 
-const openSupportModal = () => {
+const openSupport = () => {
   popover.value.hide()
-  supportModalRef.value?.open()
+  supportModal.open()
 }
 
 defineExpose({ toggle })
@@ -21,7 +21,7 @@ defineExpose({ toggle })
         <button
           type="button"
           class="group flex items-start gap-3 p-3 rounded-lg border border-base-300 bg-base-100 hover:bg-base-200 hover:border-base-content/25 cursor-pointer transition-colors w-full text-left"
-          @click="openSupportModal"
+          @click="openSupport"
         >
           <div class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-base-200 leading-none transition-colors group-hover:bg-base-300 [&_svg]:block">
             <Icon icon="message_circle" :size="18" class="text-base-content/80" />
@@ -50,7 +50,5 @@ defineExpose({ toggle })
         </RouterLink>
       </div>
     </Popover>
-
-    <HelpSupportModal ref="supportModalRef" />
   </div>
 </template>

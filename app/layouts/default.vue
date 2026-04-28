@@ -42,6 +42,9 @@ if (!books.value?.length) {
 versionStore.setCurrentVersionBooks(books.value)
 
 const searchModalRef = useTemplateRef('searchModalRef')
+const supportModalRef = useTemplateRef('supportModalRef')
+
+const supportModal = useSupportModal()
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (isInputFocused()) return
@@ -57,6 +60,8 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 onMounted(() => {
   if (!import.meta.client) return
+
+  supportModal.registerRef(supportModalRef)
 
   window.addEventListener('keydown', handleKeydown)
 })
@@ -75,5 +80,6 @@ onBeforeUnmount(() => {
     <slot />
 
     <BibleSearchModal ref="searchModalRef" />
+    <HelpSupportModal ref="supportModalRef" />
   </div>
 </template>

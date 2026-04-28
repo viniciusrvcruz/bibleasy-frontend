@@ -12,9 +12,6 @@ const open = () => {
 }
 
 const close = () => {
-  success.value = false
-  errorMessage.value = ''
-  formRef.value?.reset()
   dialogRef.value?.close()
 }
 

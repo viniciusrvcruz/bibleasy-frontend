@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const supportModal = useSupportModal()
+</script>
+
 <template>
   <section id="future-features" class="card bg-base-200 shadow-lg scroll-mt-8">
     <div class="card-body">
@@ -60,9 +64,9 @@
           <Icon icon="info" :size="20" />
           <span class="text-sm">
             Quer sugerir uma nova funcionalidade?
-            <a href="#suggestions-bugs" class="link font-bold">
+            <button type="button" class="link font-bold" @click="supportModal.open">
               Use o formulário de feedback
-            </a>
+            </button>
             para nos enviar suas ideias!
           </span>
         </div>
