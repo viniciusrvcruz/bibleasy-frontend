@@ -14,12 +14,14 @@ const typeOptions = [
   { value: 'other', label: 'Outro', icon: 'message_circle', description: 'Feedback geral ou outro assunto' },
 ] as const
 
-const form = reactive<SupportCreatePayload>({
+const createEmptyForm = (): SupportCreatePayload => ({
   type: '',
   description: '',
   email: '',
   files: [],
 })
+
+const form = reactive<SupportCreatePayload>(createEmptyForm())
 
 const loading = ref(false)
 
@@ -27,7 +29,7 @@ const MAX_FILE_SIZE = 20 * 1024 * 1024
 const MAX_FILES = 5
 const MAX_DESCRIPTION = 5000
 
-const API_FILE_MIME_TYPES = [
+const FILE_MIME_TYPES = [
   'image/jpeg',
   'image/png',
   'image/gif',
@@ -49,9 +51,9 @@ const API_FILE_MIME_TYPES = [
   'text/csv',
 ] as const
 
-const ALLOWED_FILE_MIME_TYPES = new Set<string>(API_FILE_MIME_TYPES)
+const ALLOWED_FILE_MIME_TYPES = new Set<string>(FILE_MIME_TYPES)
 
-const fileInputAccept = API_FILE_MIME_TYPES.join(',')
+const fileInputAccept = FILE_MIME_TYPES.join(',')
 
 const isAllowedAttachmentType = (file: File) => {
   const mime = file.type.trim().toLowerCase()
@@ -102,10 +104,7 @@ const removeFile = (index: number) => {
 const supportService = useSupportService()
 
 const reset = () => {
-  form.type = ''
-  form.description = ''
-  form.email = ''
-  form.files = []
+  Object.assign(form, createEmptyForm())
   error.value = ''
   formRef.value?.reset()
 }
@@ -121,10 +120,7 @@ const submit = async () => {
   error.value = ''
 
   await supportService.create(form)
-    .then(() => {
-      error.value = ''
-      emit('success')
-    })
+    .then(() => emit('success'))
     .catch(() => {
       error.value = 'Ocorreu um erro ao enviar. Tente novamente mais tarde.'
     })
@@ -201,12 +197,12 @@ defineExpose({ reset, requestSubmit, loading })
         v-if="form.files.length > 0"
         class="space-y-2 mb-3"
       >
-        <template v-for="(file, index) in form.files" :key="`${file.name}-${file.size}-${file.lastModified}-${index}`">
-          <HelpSupportAttachmentPreview
-            :file="file"
-            @remove="removeFile(index)"
-          />
-        </template>
+        <HelpSupportAttachmentPreview
+          v-for="(file, index) in form.files"
+          :key="`${file.name}-${file.size}-${file.lastModified}-${index}`"
+          :file="file"
+          @remove="removeFile(index)"
+        />
       </div>
 
       <button

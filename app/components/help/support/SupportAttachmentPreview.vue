@@ -115,11 +115,11 @@ const previewTitleId = useId()
     <div class="shrink-0 flex items-center gap-1.5">
       <button
         type="button"
-        class="btn btn-ghost btn-xs btn-circle"
+        class="btn btn-ghost btn-sm btn-circle"
         aria-label="Remover arquivo"
         @click.stop="emit('remove')"
       >
-        <Icon icon="close" :size="14" />
+        <Icon icon="close" :size="20" />
       </button>
     </div>
   </div>
