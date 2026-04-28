@@ -106,6 +106,12 @@ const formatFileSize = (bytes: number) => {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
+const isPreviewableMedia = (file: File) => {
+  const type = file.type.toLowerCase()
+
+  return type.startsWith('image/') || type.startsWith('video/')
+}
+
 const supportService = useSupportService()
 
 const reset = () => {
@@ -204,24 +210,33 @@ defineExpose({ reset, requestSubmit, loading })
         Anexos <span class="text-base-content/50 font-normal">(opcional, Até 5 arquivos, com limite de 20 MB cada)</span>
       </label>
 
-      <div v-if="form.files.length > 0" class="space-y-2 mb-3">
-        <div
-          v-for="(file, i) in form.files"
-          :key="i"
-          class="flex items-center gap-3 p-2 px-3 rounded-lg bg-base-200 text-sm"
-        >
-          <Icon icon="attachment" :size="16" class="text-base-content/60 shrink-0" />
-          <span class="flex-1 truncate">{{ file.name }}</span>
-          <span class="text-xs text-base-content/50 shrink-0">{{ formatFileSize(file.size) }}</span>
-          <button
-            type="button"
-            class="btn btn-ghost btn-xs btn-circle"
-            aria-label="Remover arquivo"
-            @click="removeFile(i)"
+      <div
+        v-if="form.files.length > 0"
+        class="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-3"
+      >
+        <template v-for="(file, index) in form.files" :key="`${file.name}-${file.size}-${file.lastModified}-${index}`">
+          <HelpSupportAttachmentPreview
+            v-if="isPreviewableMedia(file)"
+            :file="file"
+            @remove="removeFile(index)"
+          />
+          <div
+            v-else
+            class="col-span-2 lg:col-span-3 flex items-center gap-3 p-2 px-3 rounded-lg bg-base-200 text-sm"
           >
-            <Icon icon="close" :size="14" />
-          </button>
-        </div>
+            <Icon icon="attachment" :size="16" class="text-base-content/60 shrink-0" />
+            <span class="flex-1 truncate">{{ file.name }}</span>
+            <span class="text-xs text-base-content/50 shrink-0">{{ formatFileSize(file.size) }}</span>
+            <button
+              type="button"
+              class="btn btn-ghost btn-xs btn-circle"
+              aria-label="Remover arquivo"
+              @click="removeFile(index)"
+            >
+              <Icon icon="close" :size="14" />
+            </button>
+          </div>
+        </template>
       </div>
 
       <button
