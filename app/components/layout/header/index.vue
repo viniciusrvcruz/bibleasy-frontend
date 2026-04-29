@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import ThemeSelectorPopover from './ThemeSelectorPopover.vue'
 import UserDropdown from './UserDropdown.vue'
+import HelpDropdown from './HelpDropdown.vue'
 
 const themeSelectorPopoverRef = useTemplateRef('themeSelectorPopoverRef')
 const userDropdownRef = useTemplateRef('userDropdownRef')
+const helpDropdownRef = useTemplateRef('helpDropdownRef')
 const { lastChapterUrl } = useNavigateToBible()
 
 const closeDrawer = () => {
@@ -51,10 +53,15 @@ const closeDrawer = () => {
 
         <ul class="menu menu-horizontal gap-2 items-center">
           <li>
-            <RouterLink to="/help" v-tooltip.bottom="'Central de Ajuda'" class="p-2" aria-label="Central de Ajuda">
+            <button
+              v-tooltip.bottom="'Ajuda'"
+              class="p-2"
+              aria-label="Ajuda"
+              @click="helpDropdownRef?.toggle"
+            >
               <Icon icon="circle_question" :size="22" />
-              <span class="sr-only">Central de Ajuda</span>
-            </RouterLink>
+              <span class="sr-only">Ajuda</span>
+            </button>
           </li>
           <li>
             <button
@@ -123,5 +130,6 @@ const closeDrawer = () => {
 
     <ThemeSelectorPopover ref="themeSelectorPopoverRef" />
     <UserDropdown ref="userDropdownRef" />
+    <HelpDropdown ref="helpDropdownRef" />
   </div>
 </template>

@@ -13,12 +13,19 @@ export default defineNuxtPlugin(() => {
     },
     retry: 0,
     onRequest({ options }) {
-      if (import.meta.client) return
-
-      const apiKey = config.apiKey
-
       const headers = new Headers(options.headers)
-      headers.set('X-Api-Key', apiKey)
+
+      if (!(options.body instanceof FormData)) {
+        headers.set('Content-Type', 'application/json')
+      } else {
+        headers.delete('Content-Type')
+      }
+
+      if (import.meta.server) {
+        const apiKey = config.apiKey
+        headers.set('X-Api-Key', apiKey)
+      }
+
       options.headers = headers
     },
   })
