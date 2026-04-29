@@ -122,7 +122,7 @@ const submit = async () => {
   await supportService.create(form)
     .then(() => emit('success'))
     .catch(() => {
-      error.value = 'Ocorreu um erro ao enviar. Tente novamente mais tarde.'
+      error.value = 'Ocorreu um erro ao enviar. Verifique se você preencheu todos os campos corretamente e tente novamente.'
     })
     .finally(() => loading.value = false)
 }
