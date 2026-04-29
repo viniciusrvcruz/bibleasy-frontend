@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const supportModal = useSupportModal()
+</script>
+
 <template>
   <section id="future-features" class="card bg-base-200 shadow-lg scroll-mt-8">
     <div class="card-body">
@@ -25,11 +29,11 @@
           <div class="card bg-base-100 shadow-sm">
             <div class="card-body">
               <h3 class="card-title text-lg">
-                <Icon icon="bookmark" :size="20" />
-                Marcações de Versículos
+                <Icon icon="share" :size="20" />
+                Compartilhar Versículos
               </h3>
               <p class="text-sm text-base-content/70">
-                Marque versículos favoritos e organize-os em coleções personalizadas para acesso rápido.
+                Compartilhe versículos com outras pessoas através de links e imagens.
               </p>
             </div>
           </div>
@@ -56,13 +60,13 @@
             </div>
           </div>
         </div>
-        <div class="alert alert-info mt-4">
+        <div class="alert alert-soft mt-4">
           <Icon icon="info" :size="20" />
           <span class="text-sm">
             Quer sugerir uma nova funcionalidade?
-            <a href="#suggestions-bugs" class="link link-primary">
+            <button type="button" class="link font-bold" @click="supportModal.open">
               Use o formulário de feedback
-            </a>
+            </button>
             para nos enviar suas ideias!
           </span>
         </div>

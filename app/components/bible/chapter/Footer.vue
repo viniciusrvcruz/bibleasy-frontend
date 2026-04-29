@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const supportModal = useSupportModal()
+</script>
+
 <template>
   <footer class="pb-8 text-center text-sm text-base-content/80 max-w-4xl mx-auto">
     <p class="mb-3">
@@ -7,12 +11,13 @@
       <p class="text-sm text-base-content/80 text-center">
         <Icon icon="info" :size="16" class="text-base-content/70 inline-block align-text-bottom mr-1 icon-info" />
         Encontrou algum problema de tradução ou erro no texto?
-        <RouterLink
-          to="/help#suggestions-bugs"
-          class="underline font-medium transition-colors ml-1"
+        <button
+          type="button"
+          class="underline font-medium transition-colors ml-1 cursor-pointer"
+          @click="supportModal.open"
         >
           Reporte aqui
-        </RouterLink>
+        </button>
       </p>
     </div>
     <SharedSocialLinks />

@@ -14,7 +14,7 @@ const stats = computed(() => [
 <template>
   <section
     class="relative mx-auto w-full max-w-6xl px-4 py-8 md:py-12"
-    aria-label="Destaques do produto"
+    aria-label="Destaques do Bibleasy"
   >
     <div
       class="overflow-hidden rounded-2xl border border-base-300/70 bg-base-200/40 p-px shadow-sm shadow-base-300/25"
