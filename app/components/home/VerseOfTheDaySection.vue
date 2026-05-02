@@ -89,14 +89,12 @@ const chapterLink = computed(() => {
       <!-- Skeleton -->
       <div
         v-if="status === 'pending' || status === 'idle'"
-        class="relative overflow-hidden rounded-2xl border border-base-300/80 bg-linear-to-br from-base-200/90 to-base-100 px-6 py-8 shadow-inner md:px-10 md:py-11"
+        class="relative overflow-hidden space-y-4 rounded-2xl border border-base-300/80 bg-linear-to-br from-base-200/90 to-base-100 px-6 py-8 shadow-inner md:px-10 md:py-11"
       >
-        <div class="space-y-4">
-          <div class="skeleton h-6 w-full" />
-          <div class="skeleton h-6 w-5/6" />
-          <div class="skeleton h-6 w-4/6" />
-          <div class="skeleton h-4 w-32 mt-8" />
-        </div>
+        <Skeleton height="1.5rem" width="100%" class="bg-base-content/12!" />
+        <Skeleton height="1.5rem" width="83.3333%" class="bg-base-content/12!" />
+        <Skeleton height="1.5rem" width="65.5557%" class="bg-base-content/12!" />
+        <Skeleton height="1rem" width="8rem" class="bg-base-content/12!" />
       </div>
 
       <!-- Error State -->
