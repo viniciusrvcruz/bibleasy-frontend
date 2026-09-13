@@ -145,26 +145,8 @@ function isDrawerOpen() {
   return drawer instanceof HTMLInputElement && drawer.checked
 }
 
-function hasVisibleOverlay() {
-  if (!import.meta.client) return false
-
-  try {
-    if (document.querySelector(':popover-open')) return true
-  }
-  catch {
-    // :popover-open is not supported in every test environment
-  }
-
-  const popovers = document.querySelectorAll<HTMLElement>('.p-popover')
-  for (const popover of popovers) {
-    if (popover.offsetWidth > 0 && popover.offsetHeight > 0) return true
-  }
-
-  return false
-}
-
 function isHideOnScrollBlocked() {
-  return isFullscreen.value || isDrawerOpen() || hasVisibleOverlay()
+  return isFullscreen.value || isDrawerOpen()
 }
 
 function onDrawerChange() {

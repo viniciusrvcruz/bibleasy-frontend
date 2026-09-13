@@ -67,7 +67,6 @@ describe('useHideOnScroll', () => {
     document.documentElement.classList.remove(READER_CHROME_HIDDEN_CLASS)
     document.documentElement.classList.remove(READER_LAYOUT_EXPANDED_CLASS)
     document.getElementById('drawer')?.remove()
-    document.querySelectorAll('.p-popover').forEach(node => node.remove())
     document.querySelectorAll(HIDE_ON_SCROLL_A11Y_SELECTOR).forEach(node => node.remove())
   })
 
@@ -210,50 +209,6 @@ describe('useHideOnScroll', () => {
     // Current behavior: closing the drawer does not re-evaluate scroll position.
     drawer.checked = false
     drawer.dispatchEvent(new Event('change'))
-
-    expect(mounted.areHeadersVisible.value).toBe(true)
-    expect(document.documentElement.classList.contains(READER_CHROME_HIDDEN_CLASS)).toBe(false)
-
-    mounted.unmount()
-  })
-
-  it('does not hide while a visible popover is open', async () => {
-    const popover = document.createElement('div')
-    popover.className = 'p-popover'
-    Object.defineProperty(popover, 'offsetWidth', { value: 120 })
-    Object.defineProperty(popover, 'offsetHeight', { value: 80 })
-    document.body.appendChild(popover)
-
-    const mounted = await mountHideOnScroll()
-
-    dispatchScroll(
-      mounted.container,
-      HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
-    )
-
-    expect(mounted.areHeadersVisible.value).toBe(true)
-
-    mounted.unmount()
-  })
-
-  it('keeps headers visible after removing a popover without a new scroll', async () => {
-    const popover = document.createElement('div')
-    popover.className = 'p-popover'
-    Object.defineProperty(popover, 'offsetWidth', { value: 120 })
-    Object.defineProperty(popover, 'offsetHeight', { value: 80 })
-    document.body.appendChild(popover)
-
-    const mounted = await mountHideOnScroll()
-
-    dispatchScroll(
-      mounted.container,
-      HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
-    )
-    expect(mounted.areHeadersVisible.value).toBe(true)
-
-    // Current behavior: overlay checks only run on scroll, so closing alone
-    // does not hide chrome until the next scroll event.
-    popover.remove()
 
     expect(mounted.areHeadersVisible.value).toBe(true)
     expect(document.documentElement.classList.contains(READER_CHROME_HIDDEN_CLASS)).toBe(false)
