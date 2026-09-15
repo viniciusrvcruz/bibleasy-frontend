@@ -2,6 +2,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, effectScope, h, nextTick, ref, type EffectScope, type Ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import { useVerseFocus } from '~/composables/bible/useVerseFocus'
+import { lockUserScroll } from '~/utils/dom/scrollLock'
+import { waitForScrollEnd } from '~/utils/dom/waitForScrollEnd'
+
+vi.mock('~/utils/dom/scrollLock', () => ({
+  lockUserScroll: vi.fn(() => ({ release: vi.fn() })),
+}))
+
+vi.mock('~/utils/dom/waitForScrollEnd', () => ({
+  waitForScrollEnd: vi.fn(() => Promise.resolve()),
+}))
 
 type ContainerOptions = {
   scrollHeight?: number
@@ -75,16 +85,24 @@ function setupVerseFocus(options: SetupOptions = {}) {
 
 describe('useVerseFocus', () => {
   let activeScope: EffectScope | undefined
+  let resolveScrollEnd: (() => void) | null = null
 
   beforeEach(() => {
-    vi.useFakeTimers()
+    resolveScrollEnd = null
+    vi.mocked(lockUserScroll).mockReturnValue({ release: vi.fn() })
+    vi.mocked(waitForScrollEnd).mockImplementation(
+      () => new Promise<void>((resolve) => {
+        resolveScrollEnd = resolve
+      }),
+    )
   })
 
   afterEach(() => {
     activeScope?.stop()
     activeScope = undefined
+    resolveScrollEnd?.()
+    resolveScrollEnd = null
     vi.clearAllMocks()
-    vi.useRealTimers()
   })
 
   function useSetup(options: SetupOptions = {}) {
@@ -109,14 +127,19 @@ describe('useVerseFocus', () => {
       focusVerseByNumber(5, false)
 
       expect(getVerseElement(container!, 5).scrollIntoView).not.toHaveBeenCalled()
+      expect(lockUserScroll).not.toHaveBeenCalled()
     })
 
-    it('scrolls smoothly when shouldScrollIntoVerse is true', () => {
+    it('scrolls smoothly and locks user scroll when needed', () => {
       const { container, focusVerseByNumber } = useSetup()
 
       focusVerseByNumber(5, true)
 
       expect(getVerseElement(container!, 5).scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' })
+      expect(lockUserScroll).toHaveBeenCalledOnce()
+      expect(waitForScrollEnd).toHaveBeenCalledWith(container, expect.objectContaining({
+        signal: expect.any(AbortSignal),
+      }))
     })
 
     it('does nothing when the container is missing', () => {
@@ -280,17 +303,22 @@ describe('useVerseFocus', () => {
       expect(focusedVerseNumber.value).toBe(5)
     })
 
-    it('clears focus after programmatic scroll completes and user scrolls again', () => {
+    it('clears focus after programmatic scroll completes and user scrolls again', async () => {
+      const release = vi.fn()
+      vi.mocked(lockUserScroll).mockReturnValue({ release })
+
       const { focusedVerseNumber, focusVerseByNumber, handleScroll } = useSetup()
 
       focusVerseByNumber(5, true)
       handleScroll()
-
       expect(focusedVerseNumber.value).toBe(5)
 
-      vi.advanceTimersByTime(150)
-      handleScroll()
+      resolveScrollEnd?.()
+      await Promise.resolve()
 
+      expect(release).toHaveBeenCalledOnce()
+
+      handleScroll()
       expect(focusedVerseNumber.value).toBeNull()
     })
   })
