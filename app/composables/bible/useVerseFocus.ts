@@ -1,11 +1,15 @@
+import { lockUserScroll, type ScrollLockHandle } from '~/utils/dom/scrollLock'
+import { waitForScrollEnd } from '~/utils/dom/waitForScrollEnd'
+
 export const useVerseFocus = (
   containerRef: Ref<HTMLElement | null>,
   verseNumber: Ref<number | null> | ComputedRef<number | null>,
   onClearFocus?: () => void
 ) => {
   const focusedVerseNumber = ref<number | null>(null)
-  let scrollTimeout: ReturnType<typeof setTimeout> | null = null
   let isScrollingToVerse = false
+  let scrollLock: ScrollLockHandle | null = null
+  let scrollAbortController: AbortController | null = null
 
   const overlayHeight = computed(() => {
     if (!focusedVerseNumber.value || !containerRef.value) return 0
@@ -13,13 +17,12 @@ export const useVerseFocus = (
     return containerRef.value.scrollHeight
   })
 
-  const resetScrollTimeout = () => {
-    if (scrollTimeout) clearTimeout(scrollTimeout)
-
-    scrollTimeout = setTimeout(() => {
-      scrollTimeout = null
-      isScrollingToVerse = false
-    }, 150)
+  const releaseProgrammaticScroll = () => {
+    scrollAbortController?.abort()
+    scrollAbortController = null
+    scrollLock?.release()
+    scrollLock = null
+    isScrollingToVerse = false
   }
 
   const clearFocus = () => {
@@ -32,15 +35,34 @@ export const useVerseFocus = (
     if (!containerRef.value) return
 
     const verseElement = containerRef.value.querySelector(`#v${targetVerseNumber}`)
-    if (!verseElement) return
+    if (!(verseElement instanceof HTMLElement)) return
 
     focusedVerseNumber.value = targetVerseNumber
 
     if (!shouldScrollIntoVerse) return
 
+    // Always scrollIntoView (default block: 'start') so near-top verses like v2
+    // still align under the reader chrome — "already visible" is not "already focused".
+    // waitForScrollEnd unlocks quickly when scrollTop does not move.
+    releaseProgrammaticScroll()
+
+    const container = containerRef.value
     isScrollingToVerse = true
+    scrollLock = lockUserScroll()
+    scrollAbortController = new AbortController()
+
+    const { signal } = scrollAbortController
+
     verseElement.scrollIntoView({ behavior: 'smooth' })
-    resetScrollTimeout()
+
+    waitForScrollEnd(container, { signal }).then(() => {
+      if (signal.aborted) return
+
+      scrollAbortController = null
+      scrollLock?.release()
+      scrollLock = null
+      isScrollingToVerse = false
+    })
   }
 
   const focusVerse = () => {
@@ -61,12 +83,16 @@ export const useVerseFocus = (
   }
 
   const handleScroll = () => {
-    if (isScrollingToVerse || scrollTimeout) return resetScrollTimeout()
+    if (isScrollingToVerse) return
 
     if (focusedVerseNumber.value) clearFocus()
   }
 
   watch(verseNumber, handleVerseFocus)
+
+  onScopeDispose(() => {
+    releaseProgrammaticScroll()
+  })
 
   return {
     focusedVerseNumber,
