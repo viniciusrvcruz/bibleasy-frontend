@@ -11,6 +11,7 @@ const modalRef = useModalRef('modalRef')
 const bookInputRef = useTemplateRef<HTMLInputElement>('bookInputRef')
 const chapterInputRef = useTemplateRef<HTMLInputElement>('chapterInputRef')
 const verseInputRef = useTemplateRef<HTMLInputElement>('verseInputRef')
+const bookSuggestionsListRef = useTemplateRef<HTMLElement>('bookSuggestionsListRef')
 
 const bookSearch = ref('')
 const chapterSearch = ref('')
@@ -18,6 +19,7 @@ const verseSearch = ref('')
 
 const selectedBook = ref<BookAbbreviationType | null>(null)
 const selectedChapter = ref<number | null>(null)
+const highlightedBookIndex = ref(0)
 
 const selectedBookData = computed(() => {
   if (!selectedBook.value) return null
@@ -45,17 +47,28 @@ const filteredBooks = computed(() => {
     .slice(0, 10)
 })
 
+const isBookSuggestionsOpen = computed(() => {
+  return Boolean(bookSearch.value && filteredBooks.value.length > 0 && !selectedBook.value)
+})
+
+const highlightedBookOptionId = computed(() => {
+  if (!isBookSuggestionsOpen.value) return undefined
+
+  return `search-book-option-${highlightedBookIndex.value}`
+})
+
 const canNavigate = computed(() => {
   return selectedBook.value !== null && selectedChapter.value !== null
 })
 
-
-// Auto-selects the book if there is only one result in the search
 watch(filteredBooks, (books) => {
+  highlightedBookIndex.value = 0
+
+  // Auto-selects the book if there is only one result in the search
   if (books.length === 1 && !selectedBook.value) {
     const book = books[0]
 
-    if(!book) return
+    if (!book) return
 
     selectBook(book)
   }
@@ -93,6 +106,13 @@ const focusInput = (ref: Ref<HTMLInputElement | null | undefined>) => {
 }
 
 /**
+ * Focuses an input and selects its contents
+ */
+const selectInput = (el: HTMLInputElement | null | undefined) => {
+  el?.select()
+}
+
+/**
  * Validates if a key is invalid for number input
  */
 const isInvalidNumberKey = (key: string): boolean => {
@@ -111,6 +131,38 @@ const clearChapterSelection = () => {
  */
 const clearBookSelection = () => {
   selectedBook.value = null
+  highlightedBookIndex.value = 0
+}
+
+/**
+ * Keeps the highlighted suggestion visible inside the scrollable list
+ */
+const scrollHighlightedBookIntoView = () => {
+  const list = bookSuggestionsListRef.value
+
+  if (!list) return
+
+  const option = list.querySelector<HTMLElement>(
+    `[data-book-option-index="${highlightedBookIndex.value}"]`,
+  )
+
+  option?.scrollIntoView({ block: 'nearest' })
+}
+
+/**
+ * Moves the book suggestion highlight within the visible list (clamped)
+ */
+const moveBookHighlight = (delta: number) => {
+  if (!isBookSuggestionsOpen.value) return
+
+  const maxIndex = filteredBooks.value.length - 1
+
+  highlightedBookIndex.value = Math.min(
+    maxIndex,
+    Math.max(0, highlightedBookIndex.value + delta),
+  )
+
+  nextTick(() => scrollHighlightedBookIntoView())
 }
 
 /**
@@ -218,13 +270,41 @@ const handleVerseInput = (e: Event) => {
  * Handler for keys in the book field
  */
 const handleBookKeydown = (e: KeyboardEvent) => {
-  // Enter or Tab: selects the first book or goes to chapter
-  const firstBook = filteredBooks.value[0]
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
 
-  if (firstBook) {
-    selectBook(firstBook)
-  } else if (selectedBook.value) {
-    chapterInputRef.value?.focus()
+    if (isBookSuggestionsOpen.value) {
+      moveBookHighlight(1)
+    } else if (selectedBook.value) {
+      selectInput(chapterInputRef.value)
+    }
+
+    return
+  }
+
+  if (e.key === 'ArrowUp') {
+    if (!isBookSuggestionsOpen.value) return
+
+    e.preventDefault()
+    moveBookHighlight(-1)
+    return
+  }
+
+  if (e.key !== 'Enter' && e.key !== 'Tab') return
+
+  if (isBookSuggestionsOpen.value) {
+    e.preventDefault()
+
+    const book = filteredBooks.value[highlightedBookIndex.value]
+
+    if (book) selectBook(book)
+
+    return
+  }
+
+  if (selectedBook.value) {
+    e.preventDefault()
+    selectInput(chapterInputRef.value)
   }
 }
 
@@ -236,17 +316,33 @@ const handleChapterKeydown = (e: KeyboardEvent) => {
     return e.preventDefault()
   }
 
+  // Arrow keys move between fields instead of changing the number
+  if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    return selectInput(bookInputRef.value)
+  }
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+
+    if (selectedChapter.value) {
+      selectInput(verseInputRef.value)
+    }
+
+    return
+  }
+
   // Empty backspace: goes back to book
   if (!chapterSearch.value && e.key === 'Backspace' && selectedBook.value) {
     e.preventDefault()
 
-    return bookInputRef.value?.select()
+    return selectInput(bookInputRef.value)
   }
 
   // Enter: goes to verse
   if (e.key === 'Enter' && chapterSearch.value) {
     e.preventDefault()
-    verseInputRef.value?.focus()
+    selectInput(verseInputRef.value)
   }
 }
 
@@ -258,10 +354,21 @@ const handleVerseKeydown = (e: KeyboardEvent) => {
     return e.preventDefault()
   }
 
+  // Arrow keys move between fields instead of changing the number
+  if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    return selectInput(chapterInputRef.value)
+  }
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    return
+  }
+
   // Empty backspace: goes back to chapter
   if (!verseSearch.value && e.key === 'Backspace' && selectedChapter.value) {
     e.preventDefault()
-    return chapterInputRef.value?.select()
+    return selectInput(chapterInputRef.value)
   }
 
   // Enter: navigates to the reference
@@ -327,21 +434,35 @@ defineExpose({
             ref="bookInputRef"
             v-model="bookSearch"
             type="text"
+            role="combobox"
             placeholder="Digite o nome do livro..."
             class="input input-bordered w-full"
+            aria-autocomplete="list"
+            aria-controls="search-book-suggestions"
+            :aria-expanded="isBookSuggestionsOpen"
+            :aria-activedescendant="highlightedBookOptionId"
             @input="handleBookInput"
-            @keydown.enter.prevent="handleBookKeydown"
-            @keydown.tab.prevent="handleBookKeydown"
+            @keydown="handleBookKeydown"
           />
           <!-- Suggestions list -->
           <div
-            v-if="bookSearch && filteredBooks.length > 0 && !selectedBook"
+            v-if="isBookSuggestionsOpen"
+            id="search-book-suggestions"
+            ref="bookSuggestionsListRef"
+            role="listbox"
             class="absolute z-10 w-full mt-1 bg-base-100 border border-base-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
           >
             <button
-              v-for="book in filteredBooks"
+              v-for="(book, index) in filteredBooks"
+              :id="`search-book-option-${index}`"
               :key="book.abbreviation"
-              class="w-full text-left px-4 py-2 hover:bg-base-200 transition-colors"
+              type="button"
+              role="option"
+              :data-book-option-index="index"
+              :aria-selected="index === highlightedBookIndex"
+              class="w-full text-left px-4 py-2 transition-colors"
+              :class="index === highlightedBookIndex ? 'bg-base-200' : 'hover:bg-base-200'"
+              @mouseenter="highlightedBookIndex = index"
               @click="selectBook(book)"
             >
               {{ book.name }}
