@@ -16,8 +16,17 @@ export const HIDE_ON_SCROLL_BOTTOM_RELEASE = 80
 /** Minimum downward movement before hiding (px). Ignores 1–2px noise. */
 export const HIDE_ON_SCROLL_DOWN_DELTA = 12
 
-/** Minimum upward movement before showing (px). Larger than down to resist bounce. */
-export const HIDE_ON_SCROLL_UP_DELTA = 24
+/**
+ * Minimum upward movement (px) before velocity can reveal chrome.
+ * Filters 1–2px jitter; reveal itself is gated by speed, not distance.
+ */
+export const HIDE_ON_SCROLL_UP_MIN_DELTA = 8
+
+/**
+ * Minimum upward speed (px/ms) before showing chrome.
+ * Slow reading adjustments never reveal, regardless of distance.
+ */
+export const HIDE_ON_SCROLL_UP_VELOCITY = 1
 
 export type HideOnScrollSnapshot = {
   scrollTop: number
@@ -28,11 +37,16 @@ export type HideOnScrollSnapshot = {
   forceVisible: boolean
   /** Latched after reaching the bottom; cleared only after scrolling far enough up. */
   pinnedAtBottom: boolean
+  /** `performance.now()` (or equivalent) for this scroll sample. */
+  nowMs: number
+  /** Timestamp of the previous sample used for velocity. */
+  lastScrollTimeMs: number
 }
 
 export type HideOnScrollResult = {
   isVisible: boolean
   lastScrollTop: number
+  lastScrollTimeMs: number
   changed: boolean
   pinnedAtBottom: boolean
 }
@@ -40,6 +54,9 @@ export type HideOnScrollResult = {
 /**
  * Pure hide-on-scroll decision. Does not read the window — callers pass the
  * scrolling container's metrics (e.g. the chapter overflow element).
+ *
+ * Hide is distance-based; show (while mid-chapter) is velocity-based so slow
+ * upward reading adjustments do not bring chrome back.
  */
 export function computeHideOnScroll(snapshot: HideOnScrollSnapshot): HideOnScrollResult {
   const {
@@ -50,20 +67,29 @@ export function computeHideOnScroll(snapshot: HideOnScrollSnapshot): HideOnScrol
     isVisible,
     forceVisible,
     pinnedAtBottom,
+    nowMs,
+    lastScrollTimeMs,
   } = snapshot
 
   const maxScroll = Math.max(0, scrollHeight - clientHeight)
 
   // Rubber-band above the top: ignore without moving the baseline.
   if (scrollTop < 0) {
-    return { isVisible, lastScrollTop, changed: false, pinnedAtBottom }
+    return {
+      isVisible,
+      lastScrollTop,
+      lastScrollTimeMs,
+      changed: false,
+      pinnedAtBottom,
+    }
   }
 
-  // Overscroll past the bottom: treat as "at end" and keep chrome visible.
-  if (maxScroll > 0 && scrollTop > maxScroll) {
+  const isPastBottom = maxScroll > 0 && scrollTop > maxScroll
+  if (isPastBottom) {
     return {
       isVisible: true,
       lastScrollTop: maxScroll,
+      lastScrollTimeMs: nowMs,
       changed: !isVisible,
       pinnedAtBottom: true,
     }
@@ -71,12 +97,14 @@ export function computeHideOnScroll(snapshot: HideOnScrollSnapshot): HideOnScrol
 
   const clamped = Math.min(Math.max(scrollTop, 0), maxScroll)
   const distanceFromBottom = maxScroll - clamped
+  const atTop = clamped <= HIDE_ON_SCROLL_TOP_THRESHOLD
   const atBottom = maxScroll > 0 && distanceFromBottom <= HIDE_ON_SCROLL_BOTTOM_THRESHOLD
 
-  if (forceVisible || clamped <= HIDE_ON_SCROLL_TOP_THRESHOLD) {
+  if (forceVisible || atTop) {
     return {
       isVisible: true,
       lastScrollTop: clamped,
+      lastScrollTimeMs: nowMs,
       changed: !isVisible,
       pinnedAtBottom: false,
     }
@@ -86,6 +114,7 @@ export function computeHideOnScroll(snapshot: HideOnScrollSnapshot): HideOnScrol
     return {
       isVisible: true,
       lastScrollTop: clamped,
+      lastScrollTimeMs: nowMs,
       changed: !isVisible,
       pinnedAtBottom: true,
     }
@@ -94,10 +123,12 @@ export function computeHideOnScroll(snapshot: HideOnScrollSnapshot): HideOnScrol
   // Stay visible at the end until the user clearly scrolls up — never hide on
   // residual down movement in the post-layout gap.
   if (pinnedAtBottom) {
-    if (distanceFromBottom <= HIDE_ON_SCROLL_BOTTOM_RELEASE) {
+    const stillNearBottom = distanceFromBottom <= HIDE_ON_SCROLL_BOTTOM_RELEASE
+    if (stillNearBottom) {
       return {
         isVisible: true,
         lastScrollTop: clamped,
+        lastScrollTimeMs: nowMs,
         changed: false,
         pinnedAtBottom: true,
       }
@@ -106,37 +137,49 @@ export function computeHideOnScroll(snapshot: HideOnScrollSnapshot): HideOnScrol
     return {
       isVisible,
       lastScrollTop: clamped,
+      lastScrollTimeMs: nowMs,
       changed: false,
       pinnedAtBottom: false,
     }
   }
 
   const delta = clamped - lastScrollTop
+  const elapsedMs = nowMs - lastScrollTimeMs
+  const scrolledDownEnough = delta >= HIDE_ON_SCROLL_DOWN_DELTA
 
-  if (delta >= HIDE_ON_SCROLL_DOWN_DELTA) {
+  if (scrolledDownEnough) {
     return {
       isVisible: false,
       lastScrollTop: clamped,
+      lastScrollTimeMs: nowMs,
       changed: isVisible,
       pinnedAtBottom: false,
     }
   }
 
-  if (delta <= -HIDE_ON_SCROLL_UP_DELTA) {
+  const upwardSpeedPxPerMs = elapsedMs > 0 ? -delta / elapsedMs : 0
+  const scrolledUpEnough = delta <= -HIDE_ON_SCROLL_UP_MIN_DELTA
+  const isFastUpwardFlick =
+    scrolledUpEnough && upwardSpeedPxPerMs >= HIDE_ON_SCROLL_UP_VELOCITY
+
+  if (isFastUpwardFlick) {
     return {
       isVisible: true,
       lastScrollTop: clamped,
+      lastScrollTimeMs: nowMs,
       changed: !isVisible,
       pinnedAtBottom: false,
     }
   }
 
-  const continuingInCurrentDirection =
-    (delta > 0 && !isVisible) || (delta < 0 && isVisible)
+  // Upward/noise: refresh baselines for the next velocity sample.
+  // Small downward moves while visible keep lastScrollTop so hide can accumulate.
+  const shouldAdvanceBaseline = delta < 0 || !isVisible || delta === 0
 
   return {
     isVisible,
-    lastScrollTop: continuingInCurrentDirection ? clamped : lastScrollTop,
+    lastScrollTop: shouldAdvanceBaseline ? clamped : lastScrollTop,
+    lastScrollTimeMs: nowMs,
     changed: false,
     pinnedAtBottom: false,
   }

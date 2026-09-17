@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { defineComponent, h, nextTick, ref, type Ref } from 'vue'
 import { mountSuspended } from '@nuxt/test-utils/runtime'
 import {
@@ -16,6 +16,8 @@ type MountedState = {
   reset: () => void
   container: HTMLElement
 }
+
+let fakeNow = 1_000
 
 function createScrollContainer() {
   const container = document.createElement('div')
@@ -61,7 +63,13 @@ async function mountHideOnScroll(container = createScrollContainer()) {
 }
 
 describe('useHideOnScroll', () => {
+  beforeEach(() => {
+    fakeNow = 1_000
+    vi.spyOn(performance, 'now').mockImplementation(() => fakeNow)
+  })
+
   afterEach(() => {
+    vi.restoreAllMocks()
     resetHideOnScrollState()
     useFullscreen().disable()
     document.documentElement.classList.remove(READER_CHROME_HIDDEN_CLASS)
@@ -82,6 +90,7 @@ describe('useHideOnScroll', () => {
   it('hides headers when the chapter container scrolls down past the tolerance', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -98,6 +107,7 @@ describe('useHideOnScroll', () => {
     const { appHeader, chapterHeader } = mountChromeElements()
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -108,6 +118,7 @@ describe('useHideOnScroll', () => {
     expect(appHeader.inert).toBe(true)
     expect(chapterHeader.inert).toBe(true)
 
+    fakeNow += 16
     dispatchScroll(mounted.container, 0)
 
     expect(appHeader.hasAttribute('aria-hidden')).toBe(false)
@@ -121,12 +132,14 @@ describe('useHideOnScroll', () => {
   it('shows headers when scrolling back to the top', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
     )
     expect(mounted.areHeadersVisible.value).toBe(false)
 
+    fakeNow += 16
     dispatchScroll(mounted.container, 0)
 
     expect(mounted.areHeadersVisible.value).toBe(true)
@@ -138,6 +151,7 @@ describe('useHideOnScroll', () => {
   it('reset forces headers visible without unbinding', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -148,6 +162,7 @@ describe('useHideOnScroll', () => {
 
     expect(mounted.areHeadersVisible.value).toBe(true)
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA + 40,
@@ -160,6 +175,7 @@ describe('useHideOnScroll', () => {
   it('restores visibility when the reader unmounts', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -181,6 +197,7 @@ describe('useHideOnScroll', () => {
 
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -200,6 +217,7 @@ describe('useHideOnScroll', () => {
 
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -220,6 +238,7 @@ describe('useHideOnScroll', () => {
     const mounted = await mountHideOnScroll()
     useFullscreen().enable()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -233,6 +252,7 @@ describe('useHideOnScroll', () => {
   it('shows chrome when the chapter container reaches the bottom', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -241,6 +261,7 @@ describe('useHideOnScroll', () => {
     expect(document.documentElement.classList.contains(READER_LAYOUT_EXPANDED_CLASS)).toBe(true)
 
     // scrollHeight 2000, clientHeight 400 → maxScroll 1600
+    fakeNow += 16
     dispatchScroll(mounted.container, 1600)
 
     expect(mounted.areHeadersVisible.value).toBe(true)
@@ -251,14 +272,16 @@ describe('useHideOnScroll', () => {
     mounted.unmount()
   })
 
-  it('restores layout when chrome reappears while scrolling up', async () => {
+  it('restores layout on a fast upward flick', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(mounted.container, 200)
     expect(mounted.areHeadersVisible.value).toBe(false)
     expect(document.documentElement.classList.contains(READER_LAYOUT_EXPANDED_CLASS)).toBe(true)
 
-    // Significant upward scroll (not at bottom) should show chrome and restore offset
+    // 40px / 16ms = 2.5 px/ms → above velocity threshold
+    fakeNow += 16
     dispatchScroll(mounted.container, 160)
 
     expect(mounted.areHeadersVisible.value).toBe(true)
@@ -267,9 +290,27 @@ describe('useHideOnScroll', () => {
     mounted.unmount()
   })
 
+  it('does not restore layout on a slow upward reading adjustment', async () => {
+    const mounted = await mountHideOnScroll()
+
+    fakeNow += 16
+    dispatchScroll(mounted.container, 300)
+    expect(mounted.areHeadersVisible.value).toBe(false)
+
+    // 100px / 200ms = 0.5 px/ms → below velocity threshold
+    fakeNow += 200
+    dispatchScroll(mounted.container, 200)
+
+    expect(mounted.areHeadersVisible.value).toBe(false)
+    expect(document.documentElement.classList.contains(READER_LAYOUT_EXPANDED_CLASS)).toBe(true)
+
+    mounted.unmount()
+  })
+
   it('does not show chrome when only near the bottom', async () => {
     const mounted = await mountHideOnScroll()
 
+    fakeNow += 16
     dispatchScroll(
       mounted.container,
       HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
@@ -277,6 +318,7 @@ describe('useHideOnScroll', () => {
     expect(mounted.areHeadersVisible.value).toBe(false)
 
     // maxScroll 1600 — 48px away is "near" but not at the end
+    fakeNow += 16
     dispatchScroll(mounted.container, 1552)
 
     expect(mounted.areHeadersVisible.value).toBe(false)

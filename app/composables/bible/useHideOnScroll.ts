@@ -20,6 +20,7 @@ const isLayoutExpanded = ref(false)
 
 let boundElement: HTMLElement | null = null
 let lastScrollTop = 0
+let lastScrollTimeMs = 0
 let pinnedAtBottom = false
 let ignoreScrollEvents = false
 let ignoreScrollTimeout: ReturnType<typeof setTimeout> | null = null
@@ -90,6 +91,7 @@ function snapToBottom(el: HTMLElement) {
     el.scrollTop = maxScroll
   }
   lastScrollTop = el.scrollTop
+  lastScrollTimeMs = performance.now()
 }
 
 /**
@@ -179,9 +181,12 @@ function onContainerScroll() {
     isVisible: areHeadersVisible.value,
     forceVisible: isHideOnScrollBlocked(),
     pinnedAtBottom,
+    nowMs: performance.now(),
+    lastScrollTimeMs,
   })
 
   lastScrollTop = next.lastScrollTop
+  lastScrollTimeMs = next.lastScrollTimeMs
   const wasPinned = pinnedAtBottom
   pinnedAtBottom = next.pinnedAtBottom
 
@@ -207,6 +212,7 @@ function bindScrollContainer(element: HTMLElement | null) {
 
   boundElement = element
   lastScrollTop = element?.scrollTop ?? 0
+  lastScrollTimeMs = performance.now()
   pinnedAtBottom = false
   ignoreScrollEvents = false
   clearIgnoreScrollTimeout()
@@ -223,6 +229,7 @@ function unbindScrollContainer() {
   boundElement?.removeEventListener('scroll', onContainerScroll)
   boundElement = null
   lastScrollTop = 0
+  lastScrollTimeMs = 0
   pinnedAtBottom = false
   ignoreScrollEvents = false
   clearIgnoreScrollTimeout()
@@ -240,6 +247,7 @@ function unbindScrollContainer() {
 
 function resetHideOnScroll() {
   lastScrollTop = 0
+  lastScrollTimeMs = performance.now()
   pinnedAtBottom = false
   areHeadersVisible.value = true
   isLayoutExpanded.value = false
