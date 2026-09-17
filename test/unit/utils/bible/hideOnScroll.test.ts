@@ -5,7 +5,8 @@ import {
   HIDE_ON_SCROLL_BOTTOM_THRESHOLD,
   HIDE_ON_SCROLL_DOWN_DELTA,
   HIDE_ON_SCROLL_TOP_THRESHOLD,
-  HIDE_ON_SCROLL_UP_DELTA,
+  HIDE_ON_SCROLL_UP_MIN_DELTA,
+  HIDE_ON_SCROLL_UP_VELOCITY,
 } from '~/utils/bible/hideOnScroll'
 
 const tallContainer = {
@@ -24,6 +25,8 @@ function snapshot(
     isVisible: true,
     forceVisible: false,
     pinnedAtBottom: false,
+    nowMs: 1000,
+    lastScrollTimeMs: 1000,
     ...tallContainer,
     ...overrides,
   })
@@ -74,39 +77,64 @@ describe('computeHideOnScroll', () => {
     expect(result.lastScrollTop).toBe(start + HIDE_ON_SCROLL_DOWN_DELTA)
   })
 
-  it('does not show for an upward movement below the up tolerance', () => {
+  it('does not show for a slow upward scroll even over a long distance', () => {
+    // 120px up over 200ms = 0.6 px/ms < velocity threshold
     const result = snapshot({
-      scrollTop: 200,
-      lastScrollTop: 200 + HIDE_ON_SCROLL_UP_DELTA - 1,
+      scrollTop: 80,
+      lastScrollTop: 200,
+      lastScrollTimeMs: 1000,
+      nowMs: 1200,
+      isVisible: false,
+    })
+
+    expect(120 / 200).toBeLessThan(HIDE_ON_SCROLL_UP_VELOCITY)
+    expect(result.isVisible).toBe(false)
+    expect(result.changed).toBe(false)
+    expect(result.lastScrollTop).toBe(80)
+  })
+
+  it('shows after a fast upward flick', () => {
+    // 24px up over 16ms = 1.5 px/ms >= velocity threshold
+    const delta = Math.max(HIDE_ON_SCROLL_UP_MIN_DELTA, HIDE_ON_SCROLL_UP_VELOCITY * 16 + 1)
+    const result = snapshot({
+      scrollTop: 200 - delta,
+      lastScrollTop: 200,
+      lastScrollTimeMs: 1000,
+      nowMs: 1016,
+      isVisible: false,
+    })
+
+    expect(delta / 16).toBeGreaterThanOrEqual(HIDE_ON_SCROLL_UP_VELOCITY)
+    expect(result.isVisible).toBe(true)
+    expect(result.changed).toBe(true)
+  })
+
+  it('does not show on upward movement when dt is zero', () => {
+    const result = snapshot({
+      scrollTop: 160,
+      lastScrollTop: 200,
+      lastScrollTimeMs: 500,
+      nowMs: 500,
       isVisible: false,
     })
 
     expect(result.isVisible).toBe(false)
     expect(result.changed).toBe(false)
-    expect(result.lastScrollTop).toBe(200 + HIDE_ON_SCROLL_UP_DELTA - 1)
-  })
-
-  it('shows after a significant upward movement', () => {
-    const result = snapshot({
-      scrollTop: 200,
-      lastScrollTop: 200 + HIDE_ON_SCROLL_UP_DELTA,
-      isVisible: false,
-    })
-
-    expect(result.isVisible).toBe(true)
-    expect(result.changed).toBe(true)
   })
 
   it('ignores overscroll below 0 without changing state', () => {
     const result = snapshot({
       scrollTop: -40,
       lastScrollTop: 80,
+      lastScrollTimeMs: 100,
+      nowMs: 120,
       isVisible: false,
     })
 
     expect(result.isVisible).toBe(false)
     expect(result.changed).toBe(false)
     expect(result.lastScrollTop).toBe(80)
+    expect(result.lastScrollTimeMs).toBe(100)
   })
 
   it('shows chrome when overscrolling past the bottom', () => {
