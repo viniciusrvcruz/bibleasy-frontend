@@ -249,6 +249,100 @@ describe('useHideOnScroll', () => {
     mounted.unmount()
   })
 
+  it('keeps headers visible after leaving fullscreen even if layout reflow scrolls down', async () => {
+    const mounted = await mountHideOnScroll()
+    useFullscreen().enable()
+    await nextTick()
+
+    fakeNow += 16
+    dispatchScroll(mounted.container, 400)
+    expect(mounted.areHeadersVisible.value).toBe(true)
+
+    useFullscreen().disable()
+    await nextTick()
+
+    // Simulate the scroll event layout reflow often fires when exiting fullscreen
+    // (clientHeight shrinks). Baseline was reset, so a small down delta must not hide.
+    fakeNow += 16
+    dispatchScroll(
+      mounted.container,
+      400 + HIDE_ON_SCROLL_DOWN_DELTA - 1,
+    )
+
+    expect(mounted.areHeadersVisible.value).toBe(true)
+    expect(document.documentElement.classList.contains(READER_CHROME_HIDDEN_CLASS)).toBe(false)
+
+    mounted.unmount()
+  })
+
+  it('keeps headers visible when hide-on-scroll is disabled even if the container scrolls', async () => {
+    const mounted = await mountHideOnScroll()
+    const { enabled } = useHideOnScroll()
+    enabled.value = false
+
+    dispatchScroll(
+      mounted.container,
+      HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
+    )
+
+    expect(mounted.areHeadersVisible.value).toBe(true)
+    expect(document.documentElement.classList.contains(READER_CHROME_HIDDEN_CLASS)).toBe(false)
+
+    mounted.unmount()
+  })
+
+  it('forces headers visible when hide-on-scroll is turned off after they were hidden', async () => {
+    const mounted = await mountHideOnScroll()
+
+    dispatchScroll(
+      mounted.container,
+      HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
+    )
+    expect(mounted.areHeadersVisible.value).toBe(false)
+
+    const { enabled } = useHideOnScroll()
+    enabled.value = false
+    await nextTick()
+
+    expect(mounted.areHeadersVisible.value).toBe(true)
+    expect(document.documentElement.classList.contains(READER_CHROME_HIDDEN_CLASS)).toBe(false)
+
+    mounted.unmount()
+  })
+
+  it('resumes hide-on-scroll after it is turned back on', async () => {
+    const mounted = await mountHideOnScroll()
+    const { enabled } = useHideOnScroll()
+    enabled.value = false
+
+    dispatchScroll(
+      mounted.container,
+      HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA,
+    )
+    expect(mounted.areHeadersVisible.value).toBe(true)
+
+    enabled.value = true
+    await nextTick()
+
+    dispatchScroll(
+      mounted.container,
+      HIDE_ON_SCROLL_TOP_THRESHOLD + 1 + HIDE_ON_SCROLL_DOWN_DELTA + 40,
+    )
+
+    expect(mounted.areHeadersVisible.value).toBe(false)
+
+    mounted.unmount()
+  })
+
+  it('defaults to hide-on-scroll enabled', async () => {
+    const mounted = await mountHideOnScroll()
+    const { enabled } = useHideOnScroll()
+
+    expect(enabled.value).toBe(true)
+
+    mounted.unmount()
+  })
+
   it('shows chrome when the chapter container reaches the bottom', async () => {
     const mounted = await mountHideOnScroll()
 
