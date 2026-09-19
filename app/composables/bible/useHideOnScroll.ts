@@ -1,6 +1,9 @@
+import type { CookieRef } from '#app'
 import type { MaybeRefOrGetter } from 'vue'
 import { computeHideOnScroll } from '~/utils/bible/hideOnScroll'
 import { useFullscreen } from '~/composables/bible/useBibleFullscreen'
+
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365
 
 /** Visual hide (transform). Independent from layout expansion to avoid bottom flicker. */
 export const READER_CHROME_HIDDEN_CLASS = 'reader-chrome-hidden'
@@ -18,6 +21,9 @@ export const HIDE_ON_SCROLL_A11Y_SELECTOR =
 const areHeadersVisible = ref(true)
 const isLayoutExpanded = ref(false)
 
+/** User preference: hide chrome while scrolling (chapter more-menu toggle). */
+let enabledCookie: CookieRef<boolean> | null = null
+
 let boundElement: HTMLElement | null = null
 let lastScrollTop = 0
 let lastScrollTimeMs = 0
@@ -28,6 +34,18 @@ let resizeObserver: ResizeObserver | null = null
 let drawerToggle: HTMLInputElement | null = null
 
 const { isFullscreen } = useFullscreen()
+
+/** Must run in Nuxt setup (useCookie). Shared across chapter bind + more-menu. */
+function ensureEnabledCookie() {
+  if (!enabledCookie) {
+    enabledCookie = useCookie<boolean>('bible-hide-on-scroll', {
+      default: () => true,
+      maxAge: COOKIE_MAX_AGE,
+    })
+  }
+
+  return enabledCookie
+}
 
 function syncChromeA11y(hidden: boolean) {
   if (!import.meta.client) return
@@ -148,7 +166,9 @@ function isDrawerOpen() {
 }
 
 function isHideOnScrollBlocked() {
-  return isFullscreen.value || isDrawerOpen()
+  const isEnabled = Boolean(enabledCookie?.value)
+
+  return isFullscreen.value || isDrawerOpen() || !isEnabled
 }
 
 function onDrawerChange() {
@@ -255,12 +275,15 @@ function resetHideOnScroll() {
 }
 
 /**
- * Shared reader chrome visibility. Bind the chapter overflow container from
- * BibleChapter; LayoutHeader / ChapterHeader follow the html classes toggled here.
+ * Shared reader chrome visibility + user preference to enable/disable it.
+ * Bind the chapter overflow container from BibleChapter; call without a
+ * container from the more-menu to read/write `enabled`.
  */
 export const useHideOnScroll = (
   containerRef?: MaybeRefOrGetter<HTMLElement | null>,
 ) => {
+  const enabled = ensureEnabledCookie()
+
   if (containerRef) {
     watch(
       () => toValue(containerRef),
@@ -271,7 +294,20 @@ export const useHideOnScroll = (
     )
 
     watch(isFullscreen, (fullscreen) => {
-      if (fullscreen) setHeadersVisible(true)
+      // Entering or leaving fullscreen: always restore chrome. On exit, also
+      // reset the scroll baseline — layout reflow can fire a spurious "down"
+      // scroll that would immediately re-hide headers (looks stuck fullscreen).
+      setHeadersVisible(true)
+
+      if (!fullscreen && boundElement) {
+        lastScrollTop = boundElement.scrollTop
+        lastScrollTimeMs = performance.now()
+        pinnedAtBottom = false
+      }
+    })
+
+    watch(enabled, (isEnabled) => {
+      if (!isEnabled) setHeadersVisible(true)
     })
 
     onBeforeUnmount(() => {
@@ -281,11 +317,15 @@ export const useHideOnScroll = (
 
   return {
     areHeadersVisible: readonly(areHeadersVisible),
+    enabled,
     reset: resetHideOnScroll,
   }
 }
 
-/** Test helper: drop listeners and restore the default visible state. */
+/** Test helper: drop listeners and restore defaults. */
 export function resetHideOnScrollState() {
   unbindScrollContainer()
+  if (enabledCookie) {
+    enabledCookie.value = true
+  }
 }

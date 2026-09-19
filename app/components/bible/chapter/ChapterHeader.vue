@@ -61,19 +61,6 @@ watch(isFullscreen, (newValue, oldValue) => {
     </span>
 
     <div class="ms-auto space-x-2 flex items-center">
-      <!-- Fullscreen button -->
-      <button
-        v-tooltip.bottom="fullscreenLabel"
-        class="btn btn-sm"
-        :aria-label="fullscreenLabel"
-        @click="toggle"
-      >
-        <Icon icon="fullscreen" :size="20" />
-        <span class="sr-only">
-          {{ fullscreenLabel }}
-        </span>
-      </button>
-
       <!-- History button -->
       <button
         v-tooltip.bottom="'Histórico de versículos'"
@@ -90,6 +77,8 @@ watch(isFullscreen, (newValue, oldValue) => {
         v-model:font-size="fontSize"
         v-model:font-family="fontFamily"
       />
+
+      <BibleChapterMoreMenuDropdown />
 
       <!-- Version button -->
       <button
@@ -130,5 +119,3 @@ watch(isFullscreen, (newValue, oldValue) => {
   animation: chapter-header-pulse-scale .5s ease-in-out 1;
 }
 </style>
-
-

@@ -38,6 +38,7 @@ const ICON_MAP = {
   file_text: 'lucide:file-text',
   fullscreen: 'lucide:maximize',
   fullscreen_exit: 'lucide:minimize',
+  more_horizontal: 'lucide:ellipsis',
   sparkles: 'lucide:sparkles',
   zap: 'lucide:zap',
   smartphone: 'lucide:smartphone',
